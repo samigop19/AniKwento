@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - AniKwento</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link id="theme-style" rel="stylesheet" href="../../../public/files/css/SettingsDashboard.css">
+</head>
+<body>
+  <button class="mobile-menu-toggle">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="dashboard">
+    <header class="header">
+      <div class="header-content">
+        <h3 class="mb-4">Teacher Rachel</h3>
+        <nav>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a href="StoryDashboard.html" class="nav-link">
+                <img src="../../../public/files/images/StoryIC.png" class="icon" alt="">
+                <span>My Stories</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="TeacherProfile.html" class="nav-link">
+                <i class="far fa-user-circle icon"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="SettingsDashboard.html" class="nav-link active">
+                <img src="../../../public/files/images/SettingIC.png" class="icon" alt="">
+                <span>Settings</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="StoryHelp.html" class="nav-link">
+                <img src="../../../public/files/images/HelpIC.png" class="icon" alt="">
+                <span>Help</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="../../handlers/logout_process.php" class="nav-link">
+                <img src="../../../public/files/images/LogoutIC.png" class="icon" alt="">
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <img src="../../../public/files/images/AKlogo.png" alt="AniKwento Logo" class="footer-logo">
+      </div>
+    </header>
+
+    <div class="main">
+      <div class="settings-container">
+        <h2 class="settings-title">
+          <img src="../../../public/files/images/SettingsSettingsIcon.png" alt="Settings Icon">
+          Story Settings
+          <span class="help-text">Customize your story experience here</span>
+        </h2>
+
+        <div class="settings-section">
+          <h3>Voice Narration <i class="fas fa-question-circle help-icon" data-bs-toggle="tooltip" title="Choose between recording your own voice or using AI narration"></i></h3>
+          <div class="option-group">
+            <div class="voice-selection">
+              <label>Choose Your Narration Style:</label>
+              <select id="voiceSelector" class="form-select">
+                <option value="teacher">Record My Own Voice</option>
+                <option value="ai-cheerful">AI Voice - Cheerful Teacher</option>
+                <option value="ai-gentle">AI Voice - Gentle Storyteller</option>
+                <option value="ai-engaging">AI Voice - Engaging Narrator</option>
+              </select>
+              <div class="voice-actions">
+                <button class="preview-voice-btn" onclick="previewVoice()" data-bs-toggle="tooltip" title="Listen to a sample of the selected voice">
+                  <i class="fas fa-play"></i> Preview Voice
+                  <div class="preview-indicator"></div>
+                </button>
+                <button class="record-btn" onclick="startRecording()" id="recordButton" data-bs-toggle="tooltip" title="Record your own voice narration">
+                  <i class="fas fa-microphone"></i> Record Voice
+                  <div class="recording-indicator"></div>
+                </button>
+              </div>
+              <div class="recording-timer" id="recordingTimer">00:00</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Background Music <i class="fas fa-question-circle help-icon" data-bs-toggle="tooltip" title="Choose kid-friendly background music"></i></h3>
+          <div class="option-group">
+            <div class="music-selection">
+              <label>Choose Background Music:</label>
+              <select id="musicSelector" class="form-select">
+                <option value="">No Music</option>
+                <option value="gentle">Gentle Lullaby</option>
+                <option value="playful">Playful Adventure</option>
+                <option value="nature">Nature Sounds</option>
+              </select>
+              <button class="preview-voice-btn" onclick="previewMusic()" data-bs-toggle="tooltip" title="Listen to a sample of the selected music">
+                <i class="fas fa-play"></i> Preview Music
+                <div class="preview-indicator"></div>
+              </button>
+              <div class="volume-control">
+                <label>Music Volume:</label>
+                <div class="volume-slider">
+                  <input type="range" class="custom-range" id="musicVolumeRange" min="0" max="100" value="50">
+                  <span class="volume-value" id="musicVolumeValue">50%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Interactive Questions <i class="fas fa-question-circle help-icon" data-bs-toggle="tooltip" title="Configure age-appropriate questions for 3-4 year olds"></i></h3>
+          <div class="option-group">
+            <div class="question-timing">
+              <label class="section-label">When to Ask Questions:</label>
+              <div class="timing-options">
+                <div class="form-check custom-radio">
+                  <input class="form-check-input" type="radio" name="questionTiming" id="duringStory" value="during">
+                  <label class="form-check-label" for="duringStory">
+                    <i class="fas fa-book-reader"></i>
+                    <span class="label-text">During the Story</span>
+                  </label>
+                </div>
+                <div class="form-check custom-radio">
+                  <input class="form-check-input" type="radio" name="questionTiming" id="afterStory" value="after" checked>
+                  <label class="form-check-label" for="afterStory">
+                    <i class="fas fa-flag-checkered"></i>
+                    <span class="label-text">After the Story</span>
+                  </label>
+                </div>
+                <div class="form-check custom-radio">
+                  <input class="form-check-input" type="radio" name="questionTiming" id="bothTiming" value="both">
+                  <label class="form-check-label" for="bothTiming">
+                    <i class="fas fa-clock"></i>
+                    <span class="label-text">Both</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="question-types">
+              <div class="types-header">
+                <label class="section-label">Question Types for 3-4 Year Olds:</label>
+                <span class="selection-limit">(Select up to 2)</span>
+              </div>
+              <div class="types-grid">
+                <div class="form-check custom-checkbox">
+                  <input class="form-check-input question-type" type="checkbox" id="colorRecognition" checked>
+                  <label class="form-check-label" for="colorRecognition">
+                    <div class="checkbox-content">
+                      <div class="checkbox-header">
+                        <i class="fas fa-palette"></i>
+                        <span class="label-text">Color Recognition</span>
+                      </div>
+                      <span class="example-text">Example: "What color is the happy butterfly?"</span>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-check custom-checkbox">
+                  <input class="form-check-input question-type" type="checkbox" id="shapeMatching" checked>
+                  <label class="form-check-label" for="shapeMatching">
+                    <div class="checkbox-content">
+                      <div class="checkbox-header">
+                        <i class="fas fa-shapes"></i>
+                        <span class="label-text">Shape Matching</span>
+                      </div>
+                      <span class="example-text">Example: "Can you find the circle?"</span>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-check custom-checkbox">
+                  <input class="form-check-input question-type" type="checkbox" id="simpleNumbers">
+                  <label class="form-check-label" for="simpleNumbers">
+                    <div class="checkbox-content">
+                      <div class="checkbox-header">
+                        <i class="fas fa-sort-numeric-up"></i>
+                        <span class="label-text">Simple Counting (1-5)</span>
+                      </div>
+                      <span class="example-text">Example: "How many flowers do you see?"</span>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-check custom-checkbox">
+                  <input class="form-check-input question-type" type="checkbox" id="emotions">
+                  <label class="form-check-label" for="emotions">
+                    <div class="checkbox-content">
+                      <div class="checkbox-header">
+                        <i class="fas fa-smile"></i>
+                        <span class="label-text">Basic Emotions</span>
+                      </div>
+                      <span class="example-text">Example: "How does the puppy feel?"</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-preview">
+          <h3>Settings Preview <i class="fas fa-eye"></i></h3>
+          <div class="preview-content">
+            <div class="preview-item">
+              <i class="fas fa-microphone-alt"></i>
+              <span id="voicePreviewText">Teacher's Voice</span>
+            </div>
+            <div class="preview-item">
+              <i class="fas fa-music"></i>
+              <span id="musicPreviewText">No Music</span>
+            </div>
+            <div class="preview-item">
+              <i class="fas fa-question-circle"></i>
+              <span id="questionPreviewText">2 Question Types Selected</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-actions">
+          <button class="save-btn" data-bs-toggle="tooltip" title="Save your settings">
+            <i class="fas fa-save"></i> Save Settings
+          </button>
+          <button class="discard-btn" data-bs-toggle="tooltip" title="Reset all settings to default">
+            <i class="fas fa-undo"></i> Reset to Default
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../public/files/js/story/preview.js"></script>
+  <script src="../../../public/files/js/story/settings-volume.js"></script>
+  <script src="../../../public/files/js/common/mobiletoggle.js"></script>
+
+  <script>
+    window.history.forward();
+    function preventBack() { 
+        window.history.forward();
+    }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+
+    
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+  
+    const volumeRange = document.getElementById('volumeRange');
+    const volumeValue = document.querySelector('.volume-value');
+
+    volumeRange.addEventListener('input', function() {
+      volumeValue.textContent = this.value + '%';
+    });
+
+    
+    const questionTypes = document.querySelectorAll('.question-type');
+    const maxAllowed = 2;
+
+    function updateCheckboxStates() {
+      const checkedBoxes = document.querySelectorAll('.question-type:checked');
+      const atLimit = checkedBoxes.length >= maxAllowed;
+
+      questionTypes.forEach(box => {
+        const checkboxContainer = box.closest('.custom-checkbox');
+        if (!box.checked) {
+          box.disabled = atLimit;
+          if (atLimit) {
+            checkboxContainer.classList.add('disabled');
+          } else {
+            checkboxContainer.classList.remove('disabled');
+          }
+        }
+      });
+    }
+
+    questionTypes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const checkedBoxes = document.querySelectorAll('.question-type:checked');
+        
+        if (checkedBoxes.length > maxAllowed) {
+          this.checked = false;
+          return;
+        }
+
+        updateCheckboxStates();
+        updatePreviewPanel();
+      });
+    });
+
+    
+    updateCheckboxStates();
+
+   
+    let isRecording = false;
+    const recordButton = document.getElementById('recordButton');
+
+   
+    let recordingInterval;
+    let seconds = 0;
+    
+    function updateTimer() {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      document.getElementById('recordingTimer').textContent = 
+        `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+
+    function startRecording() {
+      if (!isRecording) {
+        recordButton.innerHTML = '<i class="fas fa-stop"></i> Stop Recording';
+        recordButton.classList.add('recording');
+        isRecording = true;
+        seconds = 0;
+        updateTimer();
+        recordingInterval = setInterval(() => {
+          seconds++;
+          updateTimer();
+        }, 1000);
+      } else {
+        recordButton.innerHTML = '<i class="fas fa-microphone"></i> Record Voice';
+        recordButton.classList.remove('recording');
+        isRecording = false;
+        clearInterval(recordingInterval);
+        seconds = 0;
+        updateTimer();
+      }
+    }
+
+
+    function updatePreviewPanel() {
+      const voiceSelector = document.getElementById('voiceSelector');
+      const musicSelector = document.getElementById('musicSelector');
+      const questionTypes = document.querySelectorAll('.question-type:checked');
+
+      document.getElementById('voicePreviewText').textContent = 
+        voiceSelector.options[voiceSelector.selectedIndex].text;
+      
+      document.getElementById('musicPreviewText').textContent = 
+        musicSelector.value ? musicSelector.options[musicSelector.selectedIndex].text : 'No Music';
+      
+      document.getElementById('questionPreviewText').textContent = 
+        `${questionTypes.length} Question Types Selected`;
+    }
+
+   
+    document.getElementById('voiceSelector').addEventListener('change', updatePreviewPanel);
+    document.getElementById('musicSelector').addEventListener('change', updatePreviewPanel);
+
+   
+    updatePreviewPanel();
+  </script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+@import url('https://fonts.googleapis.com/css2?family=Gluten:wght@400;600&display=swap');
+
+/* Custom Scrollbar */
+body::-webkit-scrollbar,
+html::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    width: 14px !important;
+}
+
+body::-webkit-scrollbar-track,
+html::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+    background: #f8f9fa !important;
+    border-radius: 8px !important;
+}
+
+body::-webkit-scrollbar-thumb,
+html::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+    background: #801B32 !important;
+    border-radius: 8px !important;
+    border: none !important;
+}
+
+body::-webkit-scrollbar-thumb:hover,
+html::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+    background: #972542 !important;
+}
+
+/* Firefox */
+html {
+    scrollbar-width: thin !important;
+    scrollbar-color: #801B32 #f8f9fa !important;
+}
+
+/* Modern Notification Styles */
+.alert {
+    border: none;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.4;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    animation: slideInDown 0.4s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.alert::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, currentColor, transparent);
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #dc2626;
+    border-left: 4px solid #ef4444;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    color: #16a34a;
+    border-left: 4px solid #22c55e;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    color: #2563eb;
+    border-left: 4px solid #3b82f6;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #d97706;
+    border-left: 4px solid #f59e0b;
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+header {
+    background: linear-gradient(to right, #801B32, #972542);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    height: 100px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.navbar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.AK-logo-Header {
+    height: auto;
+    width: 200px;
+    margin-left: -10px;
+    transition: transform 0.3s ease;
+}
+
+.AK-logo-Header:hover {
+    transform: scale(1.05);
+}
+
+
+
+footer {
+    background: linear-gradient(to right, #801B32, #972542);
+    color: #FFC553;
+    padding: 15px;
+    text-align: center;
+    margin-top: auto;
+    font-weight: bold;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+}
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 120px;
+    padding-bottom: 2rem;
+    min-height: calc(100vh - 100px);
+}
+
+
+
+.verification-container {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 60px rgba(0,0,0,0.15),
+        0 0 40px rgba(0,0,0,0.1);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.verification-container h2 {
+    color: #801B32;
+    font-family: 'Gluten', cursive;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.verification-container p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+
+.code-inputs {
+    margin: 2rem 0;
+}
+
+.code-input {
+    width: 50px !important;
+    height: 50px;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    border: 2px solid #801B32 !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, rgba(128, 27, 50, 0.05), rgba(151, 37, 66, 0.05));
+    transition: all 0.4s ease;
+    color: #801B32;
+}
+
+.code-input:focus {
+    border-color: #FFC553 !important;
+    box-shadow: 0 0 0 0.3rem rgba(255, 197, 83, 0.3) !important;
+    background: linear-gradient(135deg, rgba(255, 197, 83, 0.1), rgba(255, 215, 0, 0.1));
+    transform: scale(1.05);
+}
+
+
+.verification-form .btn {
+    background: linear-gradient(135deg, #FFC553, #FFD700);
+    color: #801B32;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-weight: 700;
+    transition: all 0.4s ease;
+    max-width: 200px;
+    margin: 1rem auto;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(255, 197, 83, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    overflow: hidden;
+}
+
+.verification-form .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.verification-form .btn:hover::before {
+    left: 100%;
+}
+
+.verification-form .btn:hover {
+    background: linear-gradient(135deg, #801B32, #972542);
+    color: #FFC553;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(128, 27, 50, 0.4);
+}
+
+
+#resendCode {
+    color: #801B32;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+#resendCode:hover {
+    color: #FFC553;
+}
+
+
+.alert-success {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+
+
+@media (max-width: 992px) {
+    .verification-form .btn {
+        width: 80%;
+        font-size: 18px;
+        position: relative;
+        bottom: auto;
+        margin: 1.5rem auto;
+    }
+    
+    .verification-container h2 {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 768px) {
+    main {
+        padding-top: 140px;
+    }
+    
+    .verification-container {
+        margin: 20px auto;
+        min-height: 350px;
+        margin: 1rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+      .navbar .container {
+        justify-content: center;
+    }
+
+    .AK-logo-Header {
+        width: 150px;
+        margin: 0 auto;
+    }
+    .navbar {
+        padding: 0.5rem 1rem;
+    }
+
+    .AK-logo-Header {
+        width: 150px;
+        margin-top: 5%;
+    }
+
+    .verification-container h2 {
+        margin-top: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .verification-form .btn {
+        max-width: 150px;
+        position: static;
+        transform: none;
+        margin: 1.5rem auto;
+    }
+
+    .code-input {
+        width: 40px !important;
+        height: 40px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+     .AK-logo-Header {
+        width: 120px;
+    }
+    .verification-container {
+        margin: 0.5rem;
+        min-height: 400px;
+        padding: 1.5rem 1rem;
+    }
+
+    .AK-logo-Header {
+        width: 120px;
+    }
+
+    .verification-container h2 {
+        font-size: 1.3rem;
+    }
+
+    .verification-container p {
+        font-size: 0.8rem;
+    }
+
+    .code-input {
+        width: 35px !important;
+        height: 35px;
+    }
+
+    .code-inputs {
+        gap: 0.5rem !important;
+    }
+
+    .verification-form .btn {
+        font-size: 1rem;
+        max-width: 130px;
+        padding: 8px;
+    }
+
+    main {
+        padding-top: 100px;
+    }
+}
+

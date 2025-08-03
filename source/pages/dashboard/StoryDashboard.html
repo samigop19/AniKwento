@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Stories - AniKwento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="files/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../../public/files/css/StoryDashboard.css?v=1.0">
+    <link rel="stylesheet" href="../../../public/files/css/storyboard-player.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <button class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="dashboard">
+        <header class="header">
+            <div class="header-content">
+                <h3 class="mb-4">Teacher Rachel</h3>
+                <nav>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a href="StoryDashboard.html" class="nav-link active">
+                                <img src="../../../public/files/images/StoryIC.png" class="icon" alt="">
+                                <span>My Stories</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="TeacherProfile.html" class="nav-link">
+                                <i class="far fa-user-circle icon"></i>
+                                <span>My Profile</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="SettingsDashboard.html" class="nav-link">
+                                <img src="../../../public/files/images/SettingIC.png" class="icon" alt="">
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="StoryHelp.html" class="nav-link">
+                                <img src="../../../public/files/images/HelpIC.png" class="icon" alt="">
+                                <span>Help</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../../handlers/logout_process.php" class="nav-link">
+                                <img src="../../../public/files/images/LogoutIC.png" class="icon" alt="">
+                                <span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <img src="../../../public/files/images/AKlogo.png" alt="AniKwento Logo" class="footer-logo">
+            </div>
+        </header>
+        <main class="main">
+            <div class="container-fluid">
+                <div class="story-grid">
+                    <div class="story-card card" data-bs-toggle="modal" data-bs-target="#story1Modal">
+                        <img src="../../../public/files/images/story1.png" class="card-img-top" alt="Story 1">
+                        <div class="card-body">
+                            <h4 class="card-title">The Rainbow Train Adventure</h4>
+                            <div class="learning-tags">
+                                <span class="tag">🎨 Colors</span>
+                                <span class="tag">👥 Friendship</span>
+                                <span class="tag">🚂 Transportation</span>
+                            </div>
+                        </div>
+                        <div class="story-actions">
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/delete.png" alt="Delete"></button>
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/download.png" alt="Download"></button>
+                            <button class="btn btn-success">
+                                <img src="../../../public/files/images/play.png" alt="Play">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="story-card card" data-bs-toggle="modal" data-bs-target="#story2Modal">
+                        <img src="../../../public/files/images/story2.png" class="card-img-top" alt="Story 1">
+                        <div class="card-body">
+                            <h4 class="card-title">Luna and the Talking Moon</h4>
+                            <div class="learning-tags">
+                                <span class="tag">🌙 Night & Day</span>
+                                <span class="tag">😊 Emotions</span>
+                                <span class="tag">💫 Space</span>
+                            </div>
+                        </div>
+                        <div class="story-actions">
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/delete.png" alt="Delete"></button>
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/download.png" alt="Download"></button>
+                            <button class="btn btn-success">
+                                <img src="../../../public/files/images/play.png" alt="Play">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="story-card card" data-bs-toggle="modal" data-bs-target="#story3Modal">
+                        <img src="../../../public/files/images/story3.png" class="card-img-top" alt="Story 1">
+                        <div class="card-body">
+                            <h4 class="card-title">The Jungle Toy Rescue</h4>
+                            <div class="learning-tags">
+                                <span class="tag">🦁 Animals</span>
+                                <span class="tag">🤝 Teamwork</span>
+                                <span class="tag">💪 Courage</span>
+                            </div>
+                        </div>
+                        <div class="story-actions">
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/delete.png" alt="Delete"></button>
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/download.png" alt="Download"></button>
+                            <button class="btn btn-success">
+                                <img src="../../../public/files/images/play.png" alt="Play">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="story-card card" data-bs-toggle="modal" data-bs-target="#story4Modal">
+                        <img src="../../../public/files/images/story4.png" class="card-img-top" alt="Story 1">
+                        <div class="card-body">
+                            <h4 class="card-title">Captain Bubbles and the Flying Bathtub</h4>
+                            <div class="learning-tags">
+                                <span class="tag">✨ Imagination</span>
+                                <span class="tag">🛁 Hygiene</span>
+                                <span class="tag">☁️ Weather</span>
+                            </div>
+                        </div>
+                        <div class="story-actions">
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/delete.png" alt="Delete"></button>
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/download.png" alt="Download"></button>
+                            <button class="btn btn-success">
+                                <img src="../../../public/files/images/play.png" alt="Play">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="story-card card" data-bs-toggle="modal" data-bs-target="#story5Modal">
+                        <img src="../../../public/files/images/story5.png" class="card-img-top" alt="Story 5">
+                        <div class="card-body">
+                            <h4 class="card-title">The Secret School Under the Sea</h4>
+                            <div class="learning-tags">
+                                <span class="tag">🌊 Ocean Life</span>
+                                <span class="tag">🐠 Marine Animals</span>
+                                <span class="tag">♻️ Environment</span>
+                            </div>
+                        </div>
+                        <div class="story-actions">
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/delete.png" alt="Delete"></button>
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/download.png" alt="Download"></button>
+                            <button class="btn btn-success">
+                                <img src="../../../public/files/images/play.png" alt="Play">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="story-card card" data-bs-toggle="modal" data-bs-target="#story6Modal">
+                        <img src="../../../public/files/images/story6.png" class="card-img-top" alt="Story 6">
+                        <div class="card-body">
+                            <h4 class="card-title">Nico and the Time-Traveling Shoes</h4>
+                            <div class="learning-tags">
+                                <span class="tag">⏰ Time</span>
+                                <span class="tag">🌍 History</span>
+                                <span class="tag">🤝 Cultural Diversity</span>
+                            </div>
+                        </div>
+                        <div class="story-actions">
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/delete.png" alt="Delete"></button>
+                            <button class="btn btn-link" onclick="event.stopPropagation()"><img src="../../../public/files/images/download.png" alt="Download"></button>
+                            <button class="btn btn-success" onclick="playStory('Images/story6.png', 'Nico and the Time-Traveling Shoes')">
+                                <img src="../../../public/files/images/play.png" alt="Play">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="add-new" data-bs-toggle="modal" data-bs-target="#createStoryModal">
+                        <span class="plus-icon">+</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div class="modal fade" id="story1Modal" tabindex="-1" aria-labelledby="story1ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+                <div class="modal-body">
+                    <img src="../../../public/files/images/story1.png" class="modal-story-image" alt="Colorful train traveling through a mountain landscape with rainbow carriages" loading="lazy">
+                    <div class="modal-story-content">
+                        <h5 id="story1ModalLabel">The Rainbow Train Adventure</h5>
+                        <div class="modal-learning-tags" role="list" aria-label="Story learning topics">
+                            <span class="modal-tag" role="listitem">
+                                <span class="tag-icon" aria-hidden="true">🎨</span>
+                                <span class="tag-text">Colors</span>
+                            </span>
+                            <span class="modal-tag" role="listitem">
+                                <span class="tag-icon" aria-hidden="true">👥</span>
+                                <span class="tag-text">Friendship</span>
+                            </span>
+                            <span class="modal-tag" role="listitem">
+                                <span class="tag-icon" aria-hidden="true">🚂</span>
+                                <span class="tag-text">Transportation</span>
+                            </span>
+                        </div>
+                        <p>Join the magical journey on a colorful train that travels through enchanted lands, teaching children about colors and friendship.</p>
+                        <div class="modal-actions">
+                            <button class="btn btn-danger" aria-label="Delete story">
+                                <img src="../../../public/files/images/delete.png" alt="" aria-hidden="true">
+                                <span>Delete</span>
+                            </button>
+                            <button class="btn btn-primary" aria-label="Download story">
+                                <img src="../../../public/files/images/download.png" alt="" aria-hidden="true">
+                                <span>Download</span>
+                            </button>
+                            <button class="btn btn-success" onclick="playStory('Images/story1.png', 'The Rainbow Train Adventure')" aria-label="Play story">
+                                <img src="../../../public/files/images/play.png" alt="" aria-hidden="true">
+                                <span>Play</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="story2Modal" tabindex="-1" aria-labelledby="story2ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+                <div class="modal-body">
+                    <img src="../../../public/files/images/story2.png" class="modal-story-image" alt="Story 1">
+                    <div class="modal-story-content">
+                        <h5>Luna and the Talking Moon</h5>
+                        <div class="modal-learning-tags">
+                            <span class="modal-tag">🌙 Night & Day</span>
+                            <span class="modal-tag">😊 Emotions</span>
+                            <span class="modal-tag">💫 Space</span>
+                        </div>
+                        <p>Luna discovers she can talk to the moon and learns important lessons about nighttime, dreams, and facing fears.</p>
+                        <div class="modal-actions">
+                            <button class="btn btn-danger">
+                                <img src="../../../public/files/images/delete.png" alt="Delete">
+                                <span>Delete</span>
+                            </button>
+                            <button class="btn btn-primary">
+                                <img src="../../../public/files/images/download.png" alt="Download">
+                                <span>Download</span>
+                            </button>
+                            <button class="btn btn-success"  onclick="playStory('Images/story2.png', 'Luna and the Talking Moon')">
+                                <img src="../../../public/files/images/play.png" alt="Play">
+                                <span>Play</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="story3Modal" tabindex="-1" aria-labelledby="story3ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+                <div class="modal-body">
+                    <img src="../../../public/files/images/story3.png" class="modal-story-image" alt="Story 1">
+                    <div class="modal-story-content">
+                        <h5>The Jungle Toy Rescue</h5>
+                        <div class="modal-learning-tags">
+                            <span class="modal-tag">🦁 Animals</span>
+                            <span class="modal-tag">🤝 Teamwork</span>
+                            <span class="modal-tag">💪 Courage</span>
+                        </div>
+                        <p>Join a brave group of toys as they venture through a magical jungle to rescue their lost friend, learning about teamwork and courage along the way.</p>
+                        <div class="modal-actions">
+                            <button class="btn btn-danger">
+                                <img src="../../../public/files/images/delete.png" alt="Delete">
+                                <span>Delete</span>
+                            </button>
+                            <button class="btn btn-primary">
+                                <img src="../../../public/files/images/download.png" alt="Download">
+                                <span>Download</span>
+                            </button>
+                            <button class="btn btn-success"  onclick="playStory('Images/story3.png', 'The Jungle Toy Rescue')">
+                                <img src="../../../public/files/images/play.png" alt="Play">
+                                <span>Play</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="story4Modal" tabindex="-1" aria-labelledby="story4ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+                <div class="modal-body">
+                    <img src="../../../public/files/images/story4.png" class="modal-story-image" alt="Story 1">
+                    <div class="modal-story-content">
+                        <h5>Captain Bubbles and the Flying Bathtub</h5>
+                        <div class="modal-learning-tags">
+                            <span class="modal-tag">✨ Imagination</span>
+                            <span class="modal-tag">🛁 Hygiene</span>
+                            <span class="modal-tag">☁️ Weather</span>
+                        </div>
+                        <p>Captain Bubbles transforms an ordinary bath time into an extraordinary adventure with his magical flying bathtub, exploring the skies and meeting cloud creatures.</p>
+                        <div class="modal-actions">
+                            <button class="btn btn-danger">
+                                <img src="../../../public/files/images/delete.png" alt="Delete">
+                                <span>Delete</span>
+                            </button>
+                            <button class="btn btn-primary">
+                                <img src="../../../public/files/images/download.png" alt="Download">
+                                <span>Download</span>
+                            </button>
+                            <button class="btn btn-success" onclick="playStory('Images/story4.png', 'Captain Bubbles and the Flying Bathtub')">
+                                <img src="../../../public/files/images/play.png" alt="Play">
+                                <span>Play</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="story5Modal" tabindex="-1" aria-labelledby="story5ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+                <div class="modal-body">
+                    <img src="../../../public/files/images/story5.png" class="modal-story-image" alt="Story 5">
+                    <div class="modal-story-content">
+                        <h5>The Secret School Under the Sea</h5>
+                        <div class="modal-learning-tags">
+                            <span class="modal-tag">🌊 Ocean Life</span>
+                            <span class="modal-tag">🐠 Marine Animals</span>
+                            <span class="modal-tag">♻️ Environment</span>
+                        </div>
+                        <p>Discover an amazing underwater school where sea creatures learn about ocean life, environmental protection, and the importance of preserving marine ecosystems.</p>
+                        <div class="modal-actions">
+                            <button class="btn btn-danger">
+                                <img src="../../../public/files/images/delete.png" alt="Delete">
+                                <span>Delete</span>
+                            </button>
+                            <button class="btn btn-primary">
+                                <img src="../../../public/files/images/download.png" alt="Download">
+                                <span>Download</span>
+                            </button>
+                            <button class="btn btn-success"  onclick="playStory('Images/story5.png', 'The Secret School Under the Sea')" >
+                                <img src="../../../public/files/images/play.png" alt="Play">
+                                <span>Play</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="story6Modal" tabindex="-1" aria-labelledby="story6ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+                <div class="modal-body">
+                    <img src="../../../public/files/images/story6.png" class="modal-story-image" alt="Story 6">
+                    <div class="modal-story-content">
+                        <h5>Nico and the Time-Traveling Shoes</h5>
+                        <div class="modal-learning-tags">
+                            <span class="modal-tag">⏰ Time</span>
+                            <span class="modal-tag">🌍 History</span>
+                            <span class="modal-tag">🤝 Cultural Diversity</span>
+                        </div>
+                        <p>Follow Nico's exciting adventures as he discovers a magical pair of shoes that can transport him to different time periods, learning about various cultures and historical events.</p>
+                        <div class="modal-actions">
+                            <button class="btn btn-danger">
+                                <img src="../../../public/files/images/delete.png" alt="Delete">
+                                <span>Delete</span>
+                            </button>
+                            <button class="btn btn-primary">
+                                <img src="../../../public/files/images/download.png" alt="Download">
+                                <span>Download</span>
+                            </button>
+                            <button class="btn btn-success" onclick="playStory('Images/story6.png', 'Nico and the Time-Traveling Shoes')">
+                                <img src="../../../public/files/images/play.png" alt="Play">
+                                <span>Play</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="createStoryModal" tabindex="-1" aria-labelledby="createStoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content create-story-modal">
+                <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+                <div class="modal-body">
+                    <div class="modal-story-content">
+                        <h5>Create New Story</h5>
+                        <form id="createStoryForm">
+                            <div class="api-key-section mb-3">
+                                <label for="apiProvider" class="form-label">AI Provider</label>
+                                <select class="form-select mb-2" id="apiProvider" onchange="updateApiHelp()">
+                                    <option value="openai" selected>OpenAI</option>
+                                    <option value="google">Google AI</option>
+                                </select>
+                                <label for="storyApiKey" class="form-label">API Key</label>
+                                <input type="password" class="form-control" id="storyApiKey" placeholder="Enter your OpenAI API key">
+                                <small class="form-text text-muted" id="apiHelp">Your API key is needed to generate stories and is not stored on our servers.</small>
+                            </div>
+                            <div class="story-prompt-section">
+                                <label for="storyPrompt" class="form-label">Story Prompt (Optional)</label>
+                                <textarea class="form-control" id="storyPrompt" placeholder="Leave blank to generate a random story with one of our themes"></textarea>
+                                <div class="story-suggestions">
+                                    <p class="suggestions-title">Try these kid-friendly prompts:</p>
+                                    <div class="suggestion-chips">
+                                        <button type="button" class="suggestion-chip">
+                                            <i class="fas fa-shapes"></i>
+                                            Learning shapes and colors with magical bubbles
+                                        </button>
+                                        <button type="button" class="suggestion-chip">
+                                            <i class="fas fa-apple-alt"></i>
+                                            Counting fruits in the magical garden
+                                        </button>
+                                        <button type="button" class="suggestion-chip">
+                                            <i class="fas fa-smile-beam"></i>
+                                            Making new friends on the first day of school
+                                        </button>
+                                        <button type="button" class="suggestion-chip">
+                                            <i class="fas fa-music"></i>
+                                            Singing the ABC song with animal friends
+                                        </button>
+                                        <button type="button" class="suggestion-chip">
+                                            <i class="fas fa-heart"></i>
+                                            Learning to share toys with classmates
+                                        </button>
+                                        <button type="button" class="suggestion-chip">
+                                            <i class="fas fa-cloud-rain"></i>
+                                            Weather adventures with happy clouds
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="settings-grid">
+                                <div class="settings-section student-names-section">
+                                    <h6 class="section-title">Student Names (Optional)</h6>
+                                    <div class="student-names-container">
+                                        <div class="student-name-input">
+                                            <input type="text" placeholder="Enter student name">
+                                            <button type="button" class="remove-name" aria-label="Remove student name">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-add-name">
+                                        <i class="fas fa-plus"></i> Add Student Name
+                                    </button>
+                                </div>
+                                <div class="settings-section voice-section">
+                                    <h6 class="section-title">Voiceover Settings</h6>
+                                    <div class="voice-control">
+                                        <select class="form-select" id="voiceOption">
+                                            <option value="" disabled selected>Voice Option</option>
+                                            <option value="voice1">Voice 1</option>
+                                            <option value="voice2">Voice 2</option>
+                                        </select>
+                                        <button type="button" class="record-btn">
+                                            <i class="fas fa-microphone"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="settings-section music-section">
+                                    <h6 class="section-title">Background Music</h6>
+                                    <div class="music-option-container">
+                                        <select class="form-select" id="musicOption">
+                                            <option value="" disabled selected>Select music</option>
+                                            <option value="music1">Playful Adventure</option>
+                                            <option value="music2">Happy Learning</option>
+                                            <option value="music3">Magical Journey</option>
+                                        </select>
+                                    </div>
+                                    <div class="volume-control">
+                                        <label class="form-label">Volume</label>
+                                        <div class="volume-slider-container">
+                                            <input type="range" class="custom-range" id="volumeRange" min="0" max="100" value="50">
+                                            <span class="volume-value">50%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings-section gamification-section">
+                                    <h6 class="section-title">Gamification</h6>
+                                    <div class="timing-options mb-3">
+                                        <label class="form-label">When to Ask Questions</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="questionTiming" id="duringStory" value="during">
+                                            <label class="form-check-label" for="duringStory">During Story</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="questionTiming" id="afterStory" value="after">
+                                            <label class="form-check-label" for="afterStory">After Story</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="questionTiming" id="bothTiming" value="both" checked>
+                                            <label class="form-check-label" for="bothTiming">Both</label>
+                                        </div>
+                                    </div>
+                                    <div class="question-types">
+                                        <label class="form-label">Question Types <span class="limit-indicator">(Select up to 2)</span></label>
+                                        <div class="type-options">
+                                            <div class="form-check">
+                                                <input class="form-check-input question-type-checkbox" type="checkbox" id="colorRecognition">
+                                                <label class="form-check-label" for="colorRecognition">
+                                                    <i class="fas fa-palette"></i> Color Recognition
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input question-type-checkbox" type="checkbox" id="shapeMatching">
+                                                <label class="form-check-label" for="shapeMatching">
+                                                    <i class="fas fa-shapes"></i> Shape Matching
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input question-type-checkbox" type="checkbox" id="numberCounting">
+                                                <label class="form-check-label" for="numberCounting">
+                                                    <i class="fas fa-sort-numeric-up"></i> Number Counting
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input question-type-checkbox" type="checkbox" id="emotionIdentification">
+                                                <label class="form-check-label" for="emotionIdentification">
+                                                    <i class="fas fa-smile-beam"></i> Emotion Identification
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="create-button-container">
+                                <button type="submit" class="btn create-btn">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="progressModal" tabindex="-1" aria-labelledby="progressModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content progress-modal">
+                <div class="modal-body text-center">
+                    <h5>Generating Your Story</h5>
+                    <div class="progress-container">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="progress-text">Crafting your magical story...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content preview-modal">
+                <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1051;"></button>
+                <div class="modal-body p-0">
+                    <div id="storyboardPlayerContainer" class="storyboard-player-container">
+                        <!-- Storyboard player will be inserted here -->
+                    </div>
+                    <div class="preview-actions p-3 border-top">
+                        <button class="btn btn-secondary" id="generateAgain">
+                            <i class="fas fa-redo"></i>
+                            Generate Again
+                        </button>
+                        <button class="btn btn-primary" id="saveStory">
+                            <i class="fas fa-save"></i>
+                            Save Story
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../../public/files/js/common/mobiletoggle.js"></script>
+    <script src="../../../public/files/js/common/add.js"></script>
+    <script src="../../../public/files/js/common/modal.js"> </script>
+    <script src="../../../public/files/js/common/range.js"> </script>
+    <script src="../../../public/files/js/story/storyboard-generator.js"></script>
+    <script src="../../../public/files/js/story/storyboard-player.js"></script>
+    <script src="../../../public/files/js/story/preview.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const volumeRange = document.getElementById('volumeRange');
+        const volumeValue = document.querySelector('.volume-value');
+        function updateVolumeValue(value) {
+            volumeValue.textContent = value + '%';
+        }
+        volumeRange.addEventListener('input', function() {
+            updateVolumeValue(this.value);
+        });
+        volumeRange.addEventListener('change', function() {
+            updateVolumeValue(this.value);
+        });
+        updateVolumeValue(volumeRange.value);
+        const questionTypeCheckboxes = document.querySelectorAll('.question-type-checkbox');
+        const maxAllowed = 2;
+        questionTypeCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checkedBoxes = document.querySelectorAll('.question-type-checkbox:checked');
+                if (checkedBoxes.length > maxAllowed) {
+                    this.checked = false;
+                    return;
+                }
+                questionTypeCheckboxes.forEach(box => {
+                    if (!box.checked) {
+                        box.disabled = checkedBoxes.length >= maxAllowed;
+                    }
+                });
+            });
+        });
+        const storyPrompt = document.getElementById('storyPrompt');
+        const suggestionChips = document.querySelectorAll('.suggestion-chip');
+        suggestionChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                const promptText = this.textContent.trim();
+                storyPrompt.value = promptText;
+                storyPrompt.focus();
+            });
+        });
+    });
+    
+    function updateApiHelp() {
+        const provider = document.getElementById('apiProvider').value;
+        const keyInput = document.getElementById('storyApiKey');
+        const helpText = document.getElementById('apiHelp');
+        
+        if (provider === 'openai') {
+            keyInput.placeholder = 'Enter your OpenAI API key (sk-...)';
+            helpText.textContent = 'Your OpenAI API key is needed to generate stories and is not stored on our servers.';
+        } else {
+            keyInput.placeholder = 'Enter your Google AI API key';
+            helpText.textContent = 'Your Google AI API key is needed to generate stories and is not stored on our servers.';
+        }
+    }
+    
+    function playStory(imageUrl, title) {
+        sessionStorage.setItem('storyImage', imageUrl);
+        sessionStorage.setItem('storyTitle', title);
+        window.location.href = '../story/StoryPlayer.html';
+    }
+    </script>
+</body>
+</html>

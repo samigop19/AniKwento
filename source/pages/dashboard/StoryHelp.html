@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - AniKwento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="files/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../../public/files/css/StoryHelp.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <button class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="dashboard">
+        <header class="header">
+            <div class="header-content">
+                <h3 class="mb-4">Teacher Rachel</h3>
+                <nav>
+                   <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a href="StoryDashboard.html" class="nav-link">
+                                <img src="../../../public/files/images/StoryIC.png" class="icon" alt="">
+                                <span>My Stories</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="TeacherProfile.html" class="nav-link">
+                                <i class="far fa-user-circle icon"></i>
+                                <span>My Profile</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="SettingsDashboard.html" class="nav-link">
+                                <img src="../../../public/files/images/SettingIC.png" class="icon" alt="">
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="StoryHelp.html" class="nav-link active">
+                                <img src="../../../public/files/images/HelpIC.png" class="icon" alt="">
+                                <span>Help</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../../handlers/logout_process.php" class="nav-link">
+                                <img src="../../../public/files/images/LogoutIC.png" class="icon" alt="">
+                                <span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <img src="../../../public/files/images/AKlogo.png" alt="AniKwento Logo" class="footer-logo">
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+                <div class="help-header mb-4">
+                    <i class="fas fa-info-circle"></i>
+                    <h1>Help</h1>
+                </div>
+
+                <div class="row g-4">
+              
+                    <div class="col-md-4">
+                        <div class="help-card">
+                            <div class="help-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h3>About AniKwento</h3>
+                            <p>Discover what is AniKwento</p>
+                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#aboutModal"></a>
+                        </div>
+                    </div>
+
+                
+                    <div class="col-md-4">
+                        <div class="help-card">
+                            <div class="help-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                          <h3>My Account</h3>
+<p>Secure your account by changing your password</p>
+                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#accountModal"></a>
+                        </div>
+                    </div>
+
+              
+                    <div class="col-md-4">
+                        <div class="help-card">
+                            <div class="help-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <h3>Contacts</h3>
+                            <p>Have questions or feedback? Reach out through our contact page to connect with us!</p>
+                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#contactsModal"></a>
+                        </div>
+                    </div>
+
+                    <!-- Feedback -->
+                    <div class="col-md-4">
+                        <div class="help-card">
+                            <div class="help-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h3>Feedback</h3>
+                            <p>Write a feedback!</p>
+                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#feedbackModal"></a>
+                        </div>
+                    </div>
+
+    
+                    <div class="col-md-4">
+                        <div class="help-card">
+                            <div class="help-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <h3>Guide</h3>
+                            <p>A general guide for AniKwento</p>
+                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#guideModal"></a>
+                        </div>
+                    </div>
+
+             
+                    <div class="col-md-4">
+                        <div class="help-card">
+                            <div class="help-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3>Report</h3>
+                            <p>Report bugs and errors</p>
+                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#reportModal"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-book me-2"></i>About AniKwento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>AniKwento is an innovative AI-powered storytelling platform designed specifically for kindergarten teachers to create engaging, interactive stories for young learners (ages 3-4). Our platform combines the power of AI-generated content, animation, and interactive elements to create an immersive learning experience in the classroom.</p>
+                    
+                    <h6 class="mt-4 mb-3">Key Features:</h6>
+                    <ul>
+                        <li>AI-powered story generation tailored for kindergarten level</li>
+                        <li>Personalized storytelling with student name integration</li>
+                        <li>Choice of AI voices or teacher's own voice recording</li>
+                        <li>Age-appropriate background music selection</li>
+                        <li>Interactive questions and gamification elements</li>
+                        <li>Classroom-friendly visual presentations</li>
+                        <li>Easy-to-use interface for teachers</li>
+                    </ul>
+
+                    <div class="mt-4 bg-light p-3 rounded">
+                        <h6 class="mb-3">Perfect for:</h6>
+                        <ul>
+                            <li>English language development</li>
+                            <li>Story time activities</li>
+                            <li>Interactive classroom sessions</li>
+                            <li>Vocabulary building</li>
+                            <li>Student engagement and participation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="accountModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-lock me-2"></i>Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+          
+                <div class="step" id="step1">
+                    <h6 class="mb-4">Step 1: Verify Your Email</h6>
+                    <div class="mb-4">
+                        <label class="form-label">UB Email Address</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" id="ubEmail" placeholder="Enter your UB email" required>
+                            <button class="btn btn-primary" type="button" id="sendCodeBtn">
+                                Send Code <i class="fas fa-paper-plane ms-1"></i>
+                            </button>
+                        </div>
+                        <small class="text-muted mt-2 d-block">We'll send a verification code to your UB email</small>
+                    </div>
+                </div>
+
+    
+                <div class="step" id="step2" style="display: none;">
+                    <h6 class="mb-4">Step 2: Enter Verification Code</h6>
+                    <div class="verification-section mb-4">
+                        <div class="text-center mb-3">
+                            <p class="mb-1">Enter the 6-digit code sent to:</p>
+                            <strong id="emailDisplay"></strong>
+                        </div>
+                        <div class="verification-input-group">
+                            <input type="text" class="form-control verification-input" maxlength="6" placeholder="000000" required>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <small class="text-muted">Didn't receive the code?</small>
+                            <button type="button" class="btn btn-link p-0" id="resendCodeBtn">Resend Code</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-100" id="verifyCodeBtn">Verify Code</button>
+                </div>
+
+            
+                <div class="step" id="step3" style="display: none;">
+                    <h6 class="mb-4">Step 3: Change Password</h6>
+                    <form id="changePasswordForm">
+                        <div class="mb-4">
+                            <label class="form-label">New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="newPassword" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="newPassword">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Confirm New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="confirmPassword">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Change Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="modal fade" id="contactsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-phone me-2"></i>Contact Us</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="contact-methods">
+                        <div class="contact-item mb-4">
+                            <h6><i class="fas fa-envelope me-2"></i>Email</h6>
+                            <p>support@anikwento.com</p>
+                        </div>
+                        <div class="contact-item mb-4">
+                            <h6><i class="fas fa-clock me-2"></i>Support Hours</h6>
+                            <p>Monday to Friday: 9:00 AM - 6:00 PM</p>
+                        </div>
+                        <div class="contact-item">
+                            <h6><i class="fas fa-location-dot me-2"></i>Location</h6>
+                            <p>Kumintang Ibaba, Hilltop, Batangas City</p>
+                                <p>University Of Batangas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-comments me-2"></i>Send Feedback</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-select">
+                                <option>Story Content Quality</option>
+                                <option>Animation and Visuals</option>
+                                <option>Voice and Audio</option>
+                                <option>Interactive Questions</option>
+                                <option>Student Engagement</option>
+                                <option>Classroom Management</option>
+                                <option>Technical Issues</option>
+                                <option>Feature Request</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Age Group</label>
+                            <select class="form-select mb-3">
+                                <option>3 years old</option>
+                                <option>4 years old</option>
+                                <option>Mixed age group</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Your Feedback</label>
+                            <textarea class="form-control" rows="5" placeholder="Share your experience using AniKwento in your classroom..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Student Response (Optional)</label>
+                            <textarea class="form-control" rows="3" placeholder="How did your students respond to the story?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="guideModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-question-circle me-2"></i>AniKwento Guide</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="accordion" id="guideAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                    Getting Started
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#guideAccordion">
+                                <div class="accordion-body">
+                                    <h6>Welcome to AniKwento!</h6>
+                                    <p>Follow these simple steps to create engaging stories for your kindergarten students:</p>
+                                    <ol>
+                                        <li>Click the "+" button in My Stories to start a new story</li>
+                                        <li>Choose a theme suitable for ages 3-4</li>
+                                        <li>Enter your story prompt or select from templates</li>
+                                        <li>Add your students' names to personalize the story</li>
+                                        <li>Select voice narration (AI or record your own)</li>
+                                        <li>Choose background music</li>
+                                        <li>Add interactive questions for engagement</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                    Story Elements
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#guideAccordion">
+                                <div class="accordion-body">
+                                    <h6>Key Story Components:</h6>
+                                    <ul>
+                                        <li><strong>Visual Presentation:</strong> Engaging animations suitable for young learners</li>
+                                        <li><strong>Voice Narration:</strong> Choose between AI voices or record your own voice</li>
+                                        <li><strong>Background Music:</strong> Select age-appropriate music to enhance the story</li>
+                                        <li><strong>Student Names:</strong> Personalize stories by including your students' names</li>
+                                        <li><strong>Interactive Elements:</strong> Add questions during or after the story</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                    Gamification Tips
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#guideAccordion">
+                                <div class="accordion-body">
+                                    <h6>Making Stories Interactive:</h6>
+                                    <ul>
+                                        <li><strong>Question Types:</strong>
+                                            <ul>
+                                                <li>Simple yes/no questions</li>
+                                                <li>Picture identification</li>
+                                                <li>Color recognition</li>
+                                                <li>Basic counting (1-5)</li>
+                                                <li>Emotion recognition</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>Timing:</strong> Add questions at natural pause points or story end</li>
+                                        <li><strong>Rewards:</strong> Use stars, stickers, or simple achievements</li>
+                                        <li><strong>Group Participation:</strong> Include whole-class response activities</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                    Best Practices
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#guideAccordion">
+                                <div class="accordion-body">
+                                    <h6>Tips for Kindergarten Stories:</h6>
+                                    <ul>
+                                        <li><strong>Story Length:</strong> Keep stories between 3-5 minutes</li>
+                                        <li><strong>Language Level:</strong> Use simple words and short sentences</li>
+                                        <li><strong>Visual Elements:</strong> Choose bright, engaging animations</li>
+                                        <li><strong>Interactive Timing:</strong> Space questions 1-2 minutes apart</li>
+                                        <li><strong>Classroom Management:</strong> 
+                                            <ul>
+                                                <li>Prepare students before story time</li>
+                                                <li>Create a comfortable seating arrangement</li>
+                                                <li>Use group responses for engagement</li>
+                                                <li>Plan for movement breaks if needed</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Report an Issue</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Issue Type</label>
+                            <select class="form-select">
+                                <option>Story Generation Issues</option>
+                                <option>Animation Not Playing</option>
+                                <option>Voice/Audio Problems</option>
+                                <option>Interactive Questions Not Working</option>
+                                <option>Student Name Integration Issues</option>
+                                <option>Loading or Performance Issues</option>
+                                <option>Account Access Problems</option>
+                                <option>Inappropriate Content</option>
+                                <option>Other Technical Issues</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Priority Level</label>
+                            <select class="form-select mb-3">
+                                <option>Low - Can Continue Teaching</option>
+                                <option>Medium - Affecting Some Features</option>
+                                <option>High - Disrupting Class</option>
+                                <option>Critical - Cannot Use System</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" rows="5" placeholder="Please describe what happened and when it occurred during your class..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Steps to Reproduce</label>
+                            <textarea class="form-control" rows="3" placeholder="What steps led to this issue? This helps us fix it faster..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Report</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../../public/files/js/common/mobiletoggle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../public/files/js/auth/password-manager.js"></script>
+</body>
+</html>
