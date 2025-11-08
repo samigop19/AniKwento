@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const playPauseBtn = document.getElementById('previewPlayPause');
     const muteBtn = document.getElementById('previewMute');
     const recordVoiceBtn = document.getElementById('recordVoiceBtn');
+    const recordBtn = document.getElementById('recordBtn');
+    const recordStatus = document.getElementById('recordStatus');
     const recordingControls = document.getElementById('recordingControls');
     const voiceSelect = document.getElementById('voiceOption');
 
@@ -84,15 +86,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function startRecording() {
         isRecording = true;
-        recordBtn.classList.add('recording');
-        recordStatus.textContent = 'Recording in progress...';
+        if (recordBtn) recordBtn.classList.add('recording');
+        if (recordStatus) recordStatus.textContent = 'Recording in progress...';
         startTimer();
     }
 
     function stopRecording() {
         isRecording = false;
-        recordBtn.classList.remove('recording');
-        recordStatus.textContent = 'Recording saved';
+        if (recordBtn) recordBtn.classList.remove('recording');
+        if (recordStatus) recordStatus.textContent = 'Recording saved';
         stopTimer();
     }
 

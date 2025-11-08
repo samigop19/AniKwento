@@ -1,0 +1,6 @@
+# Ignore all cached voice preview files
+*.mp3
+*.wav
+
+# Keep the directory structure
+!.gitignore

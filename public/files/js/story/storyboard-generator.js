@@ -632,8 +632,7 @@ Example:
             throw new Error(`Could not generate image prompt for scene ${sceneNumber}`);
         }
 
-        const encodedPrompt = encodeURIComponent(imagePrompt);
-        const imageUrl = `https://pollinations.ai/p/${encodedPrompt}?width=1024&height=768&model=flux&enhance=true`;
+        const imageUrl = await this.generateImageWithFallback(imagePrompt, sceneNumber);
         
         return {
             sceneNumber: sceneNumber,
@@ -642,26 +641,139 @@ Example:
         };
     }
 
+    async generateImageWithFallback(prompt, sceneNumber, maxRetries = 5) {
+        const fallbackStrategies = [
+            prompt, // Original prompt
+            prompt + ' storybook illustration', // Add context
+            prompt + ' children story art', // Different context
+            prompt + ' cartoon style', // Style modifier
+            prompt + ' simple illustration', // Simpler approach
+            `Scene ${sceneNumber} illustration: ${prompt.substring(0, 100)}`, // Truncated with context
+            `storybook scene number ${sceneNumber}`, // Basic fallback
+        ];
+        
+        for (let attempt = 0; attempt < maxRetries && attempt < fallbackStrategies.length; attempt++) {
+            try {
+                const currentPrompt = fallbackStrategies[attempt];
+                const encodedPrompt = encodeURIComponent(currentPrompt);
+                const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1920&height=1024&nologo=true`;
+                
+                // Test if the image loads properly with extended timeout
+                const isValid = await this.testImageLoad(imageUrl, `Scene ${sceneNumber} attempt ${attempt + 1}`, 15000);
+                
+                if (isValid) {
+                    console.log(`✅ Scene ${sceneNumber} image generated successfully on attempt ${attempt + 1} with prompt: "${currentPrompt}"`);
+                    return imageUrl;
+                }
+                
+                console.log(`⚠️ Scene ${sceneNumber} attempt ${attempt + 1} failed, trying next strategy...`);
+                await this.delay(3000); // Longer wait between attempts
+                
+            } catch (error) {
+                console.error(`❌ Scene ${sceneNumber} error on attempt ${attempt + 1}:`, error);
+                if (attempt < maxRetries - 1) {
+                    await this.delay(3000);
+                }
+            }
+        }
+        
+        // Final fallback - return a basic URL that should always work
+        console.warn(`⚠️ Scene ${sceneNumber} all ${maxRetries} attempts failed, using basic fallback`);
+        const basicPrompt = `storybook illustration scene ${sceneNumber}`;
+        const encodedBasic = encodeURIComponent(basicPrompt);
+        return `https://image.pollinations.ai/prompt/${encodedBasic}?width=1920&height=1024&nologo=true`;
+    }
+
+    async testImageLoad(imageUrl, description, timeoutMs = 15000) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            const timeout = setTimeout(() => {
+                console.warn(`⏰ Image load timeout for ${description} after ${timeoutMs}ms`);
+                resolve(false);
+            }, timeoutMs);
+            
+            img.onload = function() {
+                clearTimeout(timeout);
+                // Additional validation - check if image has actual content
+                if (this.naturalWidth > 0 && this.naturalHeight > 0) {
+                    console.log(`✅ Image successfully loaded for ${description} (${this.naturalWidth}x${this.naturalHeight})`);
+                    resolve(true);
+                } else {
+                    console.warn(`⚠️ Image loaded but has no dimensions for ${description}`);
+                    resolve(false);
+                }
+            };
+            
+            img.onerror = function() {
+                clearTimeout(timeout);
+                console.warn(`❌ Image failed to load for ${description}`);
+                resolve(false);
+            };
+            
+            // Set crossOrigin to handle CORS issues
+            img.crossOrigin = 'anonymous';
+            img.src = imageUrl;
+        });
+    }
+
     async generateAllSceneImages(progressCallback) {
         this.generatedImages = [];
         const totalScenes = this.scenes.length;
+        const maxScenesToGenerate = 10; // FULL MODE: Generate images for scenes 1-10
+        const scenesToProcess = Math.min(totalScenes, maxScenesToGenerate);
+        const maxRetries = 5; // Maximum retries per scene
 
-        for (let i = 0; i < totalScenes; i++) {
+        console.log(`🎬 FULL MODE: Generating images for Scenes 1-10 (${scenesToProcess} scenes out of ${totalScenes} total scenes)...`);
+
+        for (let i = 0; i < scenesToProcess; i++) {
             const scene = this.scenes[i];
-            try {
-                const imageData = await this.generateSceneImage(scene.number);
-                this.generatedImages.push(imageData);
-                
-                if (progressCallback) {
-                    progressCallback(i + 1, totalScenes);
+            let imageData = null;
+            let retryCount = 0;
+            
+            // Keep trying until we get a successful image or exhaust retries
+            while (!imageData && retryCount < maxRetries) {
+                try {
+                    console.log(`🎨 Generating image for scene ${scene.number} (attempt ${retryCount + 1}/${maxRetries})`);
+                    imageData = await this.generateSceneImage(scene.number);
+                    
+                    if (imageData && imageData.imageUrl) {
+                        console.log(`✅ Scene ${scene.number} image generated successfully`);
+                        this.generatedImages.push(imageData);
+                        break;
+                    } else {
+                        throw new Error('Invalid image data received');
+                    }
+                } catch (error) {
+                    retryCount++;
+                    console.error(`❌ Scene ${scene.number} attempt ${retryCount} failed:`, error);
+                    
+                    if (retryCount < maxRetries) {
+                        const waitTime = Math.min(2000 * retryCount, 10000); // Progressive backoff, max 10s
+                        console.log(`⏳ Waiting ${waitTime}ms before retry...`);
+                        await this.delay(waitTime);
+                    } else {
+                        // Last resort: create fallback image data
+                        console.warn(`⚠️ Scene ${scene.number} failed all ${maxRetries} attempts. Using fallback.`);
+                        const fallbackImageData = {
+                            sceneNumber: scene.number,
+                            prompt: `Fallback prompt for scene ${scene.number}: ${scene.narration}`,
+                            imageUrl: `https://image.pollinations.ai/prompt/storybook%20scene%20${scene.number}%20${encodeURIComponent(scene.narration.substring(0, 50))}?width=1920&height=1024&nologo=true`
+                        };
+                        this.generatedImages.push(fallbackImageData);
+                    }
                 }
-                
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            } catch (error) {
-                console.error(`Error generating image for scene ${scene.number}:`, error);
             }
+            
+            // Update progress callback
+            if (progressCallback) {
+                progressCallback(i + 1, scenesToProcess);
+            }
+
+            // Small delay between scenes to avoid overwhelming the API
+            await this.delay(1500);
         }
 
+        console.log(`🎬 Image generation complete! Generated ${this.generatedImages.length}/${scenesToProcess} images (Scenes 1-10)`);
         return this.generatedImages;
     }
 
@@ -683,4 +795,367 @@ Example:
     }
 }
 
+// Global variables for image generation (based on StoryGenerate script.js)
+let characterImageUrls = [];
+let sceneImageUrls = [];
+let characterImagePrompts = {};
+let pollinationsApiKey = '0JO6IwVdIwIG14_V'; // Updated from StoryGen
+
+// Generate images function - main entry point called from HTML button
+async function generateImages() {
+    console.log('🎨 Starting image generation process...');
+    
+    // Check if we have the necessary data
+    if (!window.storyGenerator || !window.storyGenerator.characters || window.storyGenerator.characters.length === 0) {
+        alert('❌ No story data found. Please generate a story first.');
+        return;
+    }
+
+    // Use the built-in API key (Updated from StoryGen)
+    if (!pollinationsApiKey) {
+        pollinationsApiKey = '0JO6IwVdIwIG14_V'; // StoryGen API key
+    }
+
+    try {
+        // Show progress elements
+        const progressBar = document.getElementById('image-progress');
+        const loadingDiv = document.getElementById('image-loading');
+        const generateButton = document.getElementById('generate-images-btn');
+        
+        if (progressBar) progressBar.style.display = 'block';
+        if (loadingDiv) loadingDiv.style.display = 'block';
+        if (generateButton) generateButton.disabled = true;
+
+        // Step 1: Generate character images
+        console.log('🎭 Step 1: Generating character images...');
+        await generateCharacterImages();
+        
+        // Step 2: Generate scene images with character context
+        console.log('🎬 Step 2: Generating scene images with character context...');
+        await generateSceneImagesWithContext();
+        
+        // Step 3: Display results
+        console.log('📋 Step 3: Displaying results...');
+        displayGeneratedImages();
+        
+        console.log('✅ Image generation completed successfully!');
+        
+    } catch (error) {
+        console.error('❌ Image generation failed:', error);
+        alert('Image generation failed: ' + error.message);
+    } finally {
+        // Hide progress elements
+        const progressBar = document.getElementById('image-progress');
+        const loadingDiv = document.getElementById('image-loading');
+        const generateButton = document.getElementById('generate-images-btn');
+        
+        if (progressBar) progressBar.style.display = 'none';
+        if (loadingDiv) loadingDiv.style.display = 'none';
+        if (generateButton) generateButton.disabled = false;
+    }
+}
+
+// Generate character images using Flux model (from StoryGenerate script.js)
+async function generateCharacterImages() {
+    characterImageUrls = [];
+    characterImagePrompts = {};
+    
+    const characters = window.storyGenerator.characters;
+    console.log(`🎭 Generating images for ${characters.length} characters...`);
+    
+    for (let i = 0; i < characters.length; i++) {
+        const character = characters[i];
+        console.log(`🎭 Processing character ${i + 1}/${characters.length}: ${character.name}`);
+        
+        try {
+            // Generate character image prompt
+            const imagePrompt = await generateCharacterImagePrompt(character);
+            characterImagePrompts[character.name] = imagePrompt;
+            
+            // Generate character image URL
+            const imageUrl = generateCharacterImageUrl(imagePrompt);
+            
+            // Validate image with retry logic
+            const isValid = await validateImageWithRetry(imageUrl, `Character ${character.name}`, 5);
+            if (isValid) {
+                characterImageUrls.push(imageUrl);
+                console.log(`✅ Character ${character.name} image generated successfully`);
+            } else {
+                throw new Error(`Failed to generate valid image for ${character.name}`);
+            }
+            
+            // Update progress
+            updateProgress(i + 1, characters.length, 'character');
+            
+            // Delay between requests
+            await delay(2000);
+            
+        } catch (error) {
+            console.error(`❌ Error generating image for ${character.name}:`, error);
+            // Use fallback image URL (Fixed to match StoryGen exactly)
+            const fallbackUrl = `https://image.pollinations.ai/prompt/cartoon%20character%20${encodeURIComponent(character.name)}?nologo=true`;
+            characterImageUrls.push(fallbackUrl);
+        }
+    }
+    
+    console.log(`🎭 Character image generation complete: ${characterImageUrls.length} images`);
+}
+
+// Generate scene images with character context using Kontext model
+async function generateSceneImagesWithContext() {
+    sceneImageUrls = [];
+    
+    const scenes = window.storyGenerator.scenes;
+    console.log(`🎬 Generating images for ${scenes.length} scenes with character context...`);
+    
+    for (let i = 0; i < scenes.length; i++) {
+        const scene = scenes[i];
+        console.log(`🎬 Processing scene ${i + 1}/${scenes.length}: Scene ${scene.number}`);
+        
+        try {
+            // Generate scene image prompt
+            const scenePrompt = await generateSceneImagePrompt(scene);
+            
+            // Generate scene image with character context (Fixed to match StoryGen - use first character image as context)
+            const contextImageUrl = characterImageUrls.length > 0 ? characterImageUrls[0] : null;
+            const imageUrl = await generateSceneImageWithContext(scenePrompt, contextImageUrl, pollinationsApiKey);
+            
+            // Validate image with retry logic
+            const isValid = await validateImageWithRetry(imageUrl, `Scene ${scene.number}`, 3);
+            if (isValid) {
+                sceneImageUrls.push(imageUrl);
+                console.log(`✅ Scene ${scene.number} image generated successfully`);
+            } else {
+                throw new Error(`Failed to generate valid image for Scene ${scene.number}`);
+            }
+            
+            // Update progress
+            updateProgress(i + 1, scenes.length, 'scene');
+            
+            // Delay between requests (15 seconds as per original)
+            await delay(15000);
+            
+        } catch (error) {
+            console.error(`❌ Error generating image for Scene ${scene.number}:`, error);
+            // Use fallback image URL (Updated from StoryGen)
+            const fallbackUrl = `https://image.pollinations.ai/prompt/storybook%20scene%20${scene.number}%20${encodeURIComponent(scene.narration.substring(0, 50))}?width=1920&height=1024&nologo=true`;
+            sceneImageUrls.push(fallbackUrl);
+        }
+    }
+    
+    console.log(`🎬 Scene image generation complete: ${sceneImageUrls.length} images`);
+}
+
+// Generate character image prompt (enhanced from StoryGenerate script.js)
+async function generateCharacterImagePrompt(character) {
+    const promptTemplate = `A 2D cartoon illustration of ${character.name}, a friendly children's storybook character. ${character.description || 'A kind and approachable character'}. Simple, clean art style suitable for children's books. Bright, cheerful colors. Full body view. Plain background. High quality digital art.`;
+    
+    return promptTemplate;
+}
+
+// Generate scene image prompt with character context
+async function generateSceneImagePrompt(scene) {
+    const characters = scene.characters || [];
+    const characterNames = characters.map(c => c.name).join(', ');
+    
+    const promptTemplate = `A 2D cartoon storybook illustration depicting: ${scene.narration}. Characters in scene: ${characterNames}. Bright, colorful children's book art style. Safe for children. High quality digital illustration. Scene number ${scene.number}.`;
+    
+    return promptTemplate;
+}
+
+// Generate character image URL (Fixed to match StoryGen exactly - no model=flux, no seed)
+function generateCharacterImageUrl(prompt) {
+    const encodedPrompt = encodeURIComponent(prompt);
+    const finalUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?nologo=true`;
+    console.log('🔍 STORYBOARD-GENERATOR CONTEXT URL:', finalUrl);
+    return finalUrl;
+}
+
+// Generate scene image with character context using Kontext model (Fixed to match StoryGen exactly)
+async function generateSceneImageWithContext(prompt, contextUrl, token) {
+    const encodedPrompt = encodeURIComponent(prompt);
+    
+    if (!token || token.trim() === '') {
+        console.warn('⚠️ No token provided - generating scene without character context');
+        return `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1920&height=1024&nologo=true`;
+    }
+    
+    if (!contextUrl) {
+        console.warn('⚠️ No context URL provided - generating scene without character context');
+        return `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1920&height=1024&nologo=true`;
+    }
+    
+    const sceneUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=kontext&token=${token}&image=${encodeURIComponent(contextUrl)}&width=1920&height=1024&nologo=true`;
+    
+    console.log('🔗 Generated scene URL with character context');
+    return sceneUrl;
+}
+
+// Validate image with retry logic
+async function validateImageWithRetry(imageUrl, imageName, maxRetries = 5) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        console.log(`🔍 Testing image accessibility for ${imageName} (attempt ${attempt}/${maxRetries})...`);
+        
+        const isLoaded = await testImageLoad(imageUrl, imageName, 15000);
+        
+        if (isLoaded) {
+            console.log(`✅ Image validation successful for ${imageName} on attempt ${attempt}`);
+            return true;
+        }
+        
+        if (attempt < maxRetries) {
+            const waitTime = Math.min(5000 * attempt, 20000);
+            console.log(`⏳ Waiting ${waitTime}ms before retry...`);
+            await delay(waitTime);
+        }
+    }
+    
+    console.warn(`⚠️ Image validation failed for ${imageName} after ${maxRetries} attempts`);
+    return false;
+}
+
+// Test image load
+async function testImageLoad(imageUrl, description, timeoutMs = 15000) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        const timeout = setTimeout(() => {
+            console.warn(`⏰ Image load timeout for ${description} after ${timeoutMs}ms`);
+            resolve(false);
+        }, timeoutMs);
+        
+        img.onload = function() {
+            clearTimeout(timeout);
+            if (this.naturalWidth > 0 && this.naturalHeight > 0) {
+                console.log(`✅ Image successfully loaded for ${description} (${this.naturalWidth}x${this.naturalHeight})`);
+                resolve(true);
+            } else {
+                console.warn(`⚠️ Image loaded but has no dimensions for ${description}`);
+                resolve(false);
+            }
+        };
+        
+        img.onerror = function() {
+            clearTimeout(timeout);
+            console.warn(`❌ Image failed to load for ${description}`);
+            resolve(false);
+        };
+        
+        img.src = imageUrl;
+    });
+}
+
+// Update progress display
+function updateProgress(current, total, type) {
+    const progressFill = document.getElementById('progress-fill');
+    const percentage = (current / total) * 100;
+    
+    if (progressFill) {
+        progressFill.style.width = `${percentage}%`;
+    }
+    
+    console.log(`📊 Progress: ${current}/${total} ${type} images (${percentage.toFixed(1)}%)`);
+}
+
+// Display generated images
+function displayGeneratedImages() {
+    console.log('📋 Displaying generated images...');
+    
+    // Create a results container or update existing one
+    let resultsContainer = document.getElementById('generated-images-results');
+    if (!resultsContainer) {
+        resultsContainer = document.createElement('div');
+        resultsContainer.id = 'generated-images-results';
+        resultsContainer.className = 'generated-images-container mt-4';
+        
+        // Insert after the generate button
+        const generateButton = document.getElementById('generate-images-btn');
+        if (generateButton && generateButton.parentNode) {
+            generateButton.parentNode.insertBefore(resultsContainer, generateButton.nextSibling);
+        }
+    }
+    
+    let html = `
+        <div class="card">
+            <div class="card-header">
+                <h5>🎨 Generated Images</h5>
+            </div>
+            <div class="card-body">
+    `;
+    
+    // Character images section
+    if (characterImageUrls.length > 0) {
+        html += `
+            <h6>🎭 Character Images (${characterImageUrls.length} characters)</h6>
+            <div class="row mb-4">
+        `;
+        
+        window.storyGenerator.characters.forEach((character, index) => {
+            const imageUrl = characterImageUrls[index];
+            if (imageUrl) {
+                html += `
+                    <div class="col-md-3 mb-3">
+                        <div class="card">
+                            <img src="${imageUrl}" class="card-img-top" alt="${character.name}" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h6 class="card-title">${character.name}</h6>
+                                <small class="text-muted">${character.description || 'Character'}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+        
+        html += `
+            </div>
+        `;
+    }
+    
+    // Scene images section
+    if (sceneImageUrls.length > 0) {
+        html += `
+            <h6>🎬 Scene Images (${sceneImageUrls.length} scenes)</h6>
+            <div class="row">
+        `;
+        
+        window.storyGenerator.scenes.forEach((scene, index) => {
+            const imageUrl = sceneImageUrls[index];
+            if (imageUrl) {
+                html += `
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <img src="${imageUrl}" class="card-img-top" alt="Scene ${scene.number}" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h6 class="card-title">Scene ${scene.number}</h6>
+                                <small class="text-muted">${scene.narration}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+        
+        html += `
+            </div>
+        `;
+    }
+    
+    html += `
+            </div>
+        </div>
+    `;
+    
+    resultsContainer.innerHTML = html;
+    resultsContainer.style.display = 'block';
+    
+    console.log('📋 Image display complete!');
+}
+
+// Utility function for delays
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Export StoryboardGenerator and key functions to global scope
 window.StoryboardGenerator = StoryboardGenerator;
+window.generateImages = generateImages;

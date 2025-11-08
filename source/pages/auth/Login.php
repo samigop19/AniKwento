@@ -47,16 +47,17 @@
                                 <div class="form-section p-4">
                                     <form id="loginForm" method="POST">
                                         <div class="mb-3">
-                                            <div class="input-group">
-                                                <input type="text" name="ub_id" id="ubId" class="form-control" 
-                                                    placeholder="UB ID" pattern="[0-9]{7,9}" 
-                                                    title="Please enter 7-9 numbers only" maxlength="9" required />
-                                                <span class="input-group-text">@ub.edu.ph</span>
-                                            </div>
+                                            <input type="text" name="email" id="emailInput" class="form-control"
+                                                placeholder="UB Mail"
+                                                style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0; margin-left: -1.5rem; width: calc(100% + 1.5rem);"
+                                                title="Enter your 7-digit student ID, email (firstname.lastname@ub.edu.ph), or ID (A-1234@ub.edu.ph)"
+                                                required />
                                         </div>
                                         <div class="mb-3">
-                                            <input type="password" name="password" class="form-control" 
-                                                placeholder="Password" required />
+                                            <input type="password" name="password" class="form-control"
+                                                placeholder="Password"
+                                                style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0; margin-left: -1.5rem; width: calc(100% + 1.5rem);"
+                                                required />
                                         </div>
                                         <div class="mb-3 text-end">
                                             <a href="ForgotPassword.php" class="forgot" style="
@@ -98,11 +99,29 @@
         <p class="mb-0">© 2025 AniKwento. All rights reserved.</p>
     </footer>
 <script>
-    document.getElementById('ubId').addEventListener('input', function(e) {
-        let value = e.target.value.replace(/[^0-9]/g, '');
-        if (value.length > 9) value = value.substring(0, 9);
-        e.target.value = value;
-    });
+    // Function to validate email format
+    function validateEmailFormat(email) {
+        // Pattern 1: 7-digit student ID (will be converted to email)
+        const studentIdPattern = /^\d{7}$/;
+        // Pattern 2: 7-digit student ID with @ub.edu.ph
+        const digitEmailPattern = /^\d{7}@ub\.edu\.ph$/;
+        // Pattern 3: firstname.lastname@ub.edu.ph
+        const nameEmailPattern = /^[a-zA-Z]+\.[a-zA-Z]+@ub\.edu\.ph$/;
+        // Pattern 4: A-#### format (A-1234@ub.edu.ph)
+        const aIdPattern = /^A-\d{4}@ub\.edu\.ph$/;
+
+        return studentIdPattern.test(email) || digitEmailPattern.test(email) || nameEmailPattern.test(email) || aIdPattern.test(email);
+    }
+
+    // Function to convert input to full email if needed
+    function convertToEmail(input) {
+        // If it's just 7 digits, append @ub.edu.ph
+        if (/^\d{7}$/.test(input)) {
+            return input + '@ub.edu.ph';
+        }
+        // Otherwise, return as-is (already a full email)
+        return input;
+    }
 
     // Notification function
     function showMessage(message, type = 'danger', duration = 5000) {
@@ -134,34 +153,35 @@
 
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        const ubIdInput = document.getElementById('ubId');
-        const ubId = ubIdInput.value.trim();
+
+        const emailInput = document.getElementById('emailInput');
+        const inputValue = emailInput.value.trim();
         const password = this.querySelector('input[name="password"]').value;
         const submitButton = this.querySelector('button[type="submit"]');
-        
+
         // Clear any existing messages
         document.getElementById('loginMessage').innerHTML = '';
-        
+
         // Client-side validation
-        if (!ubId.match(/^\d{7,9}$/)) {
-            showMessage('Please enter a valid UB ID (7-9 digits)', 'danger');
-            ubIdInput.focus();
+        if (!validateEmailFormat(inputValue)) {
+            showMessage('Please enter a valid format: 7-digit ID, firstname.lastname@ub.edu.ph, or A-1234@ub.edu.ph', 'danger');
+            emailInput.focus();
             return;
         }
-        
+
         if (!password) {
             showMessage('Please enter your password', 'danger');
             this.querySelector('input[name="password"]').focus();
             return;
         }
-        
+
         // Start loading state
         setButtonLoading(submitButton, true);
         showMessage('<span class="loading-spinner"></span>Logging in...', 'info', 0);
-        
-        const email = ubId + '@ub.edu.ph';
-        
+
+        // Convert to full email if needed
+        const email = convertToEmail(inputValue);
+
         const formData = new FormData();
         formData.append('email', email);
         formData.append('password', password);
@@ -180,14 +200,14 @@
                 
                 // Add a delay before redirect for better UX
                 setTimeout(() => {
-                    window.location.href = '../dashboard/StoryDashboard.html';
+                    window.location.href = '../dashboard/StoryDashboard.php';
                 }, 1500);
             } else {
                 document.getElementById('loginMessage').innerHTML = '';
                 showMessage(data.message, 'danger');
                 // Clear form on failed login
                 this.querySelector('input[name="password"]').value = '';
-                ubIdInput.focus();
+                emailInput.focus();
             }
         })
         .catch(error => {

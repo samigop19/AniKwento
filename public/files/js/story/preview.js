@@ -173,6 +173,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize storyboard generator
     storyboardGenerator = new StoryboardGenerator();
 
+    // Get references to player controls
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const muteBtn = document.getElementById('muteBtn');
   
     const previewImages = [
         '../images/Previews/animals.png',
@@ -267,7 +270,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
    
     function validateForm() {
-        const apiKey = document.getElementById('storyApiKey').value.trim();
         const voiceOption = document.getElementById('voiceOption').value;
         const musicOption = document.getElementById('musicOption').value;
         const questionTiming = document.querySelector('input[name="questionTiming"]:checked');
@@ -275,9 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let errors = [];
 
-        if (!apiKey) {
-            errors.push('Please enter your API key');
-        }
+        // API key validation removed - using built-in keys
 
         if (!voiceOption) {
             errors.push('Please select a voice option');
@@ -337,9 +337,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        const apiKey = document.getElementById('storyApiKey').value.trim();
-        const provider = document.getElementById('apiProvider').value;
-        storyboardGenerator.setApiKey(apiKey, provider);
+        // Using built-in API keys - no need to get from form
         
         progressModal.show();
         
@@ -403,15 +401,19 @@ document.addEventListener('DOMContentLoaded', function() {
     let isPlaying = false;
     let isMuted = false;
 
-    playPauseBtn.addEventListener('click', function() {
-        isPlaying = !isPlaying;
-        this.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
-    });
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', function() {
+            isPlaying = !isPlaying;
+            this.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+        });
+    }
 
-    muteBtn.addEventListener('click', function() {
-        isMuted = !isMuted;
-        this.innerHTML = isMuted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
-    });
+    if (muteBtn) {
+        muteBtn.addEventListener('click', function() {
+            isMuted = !isMuted;
+            this.innerHTML = isMuted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+        });
+    }
 
     generateAgainBtn.addEventListener('click', async function() {
         previewModal.hide();
@@ -428,9 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateProgress(0, 'Generating story elements...');
             
             try {
-                const apiKey = document.getElementById('storyApiKey').value.trim();
-                const provider = document.getElementById('apiProvider').value;
-                storyboardGenerator.setApiKey(apiKey, provider);
+                // Using built-in API keys - no need to get from form
                 
                 // Phase 1: Generate story
                 updateProgress(10, 'Generating story...');

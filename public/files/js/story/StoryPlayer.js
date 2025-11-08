@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function goBack() {
         sessionStorage.removeItem('storyImage');
         sessionStorage.removeItem('storyTitle');
-        window.location.href = 'StoryDashboard.html';
+        window.location.href = 'StoryDashboard.php';
     }
 
     

@@ -55,13 +55,14 @@ html {
 
 .header {
     width: 220px;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(180deg, #5D0F22 0%, #801B32 100%);
     color: var(--white);
     padding: 20px;
     position: fixed;
     top: 0;
     left: 0;
+    bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -79,8 +80,12 @@ html {
 .header-content h3 {
     color: var(--white);
     font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 1.5rem;
     margin-bottom: 2rem;
-    padding-left: 10px;
+    padding: 0 15px;
+    line-height: 1.4;
 }
 
 .nav-link {
@@ -153,7 +158,7 @@ html {
 
 .main {
     margin-left: 220px;
-    padding: 30px;
+    padding: 5px 30px 30px;
     animation: fadeInRight 0.5s ease-out;
 }
 
@@ -238,7 +243,7 @@ body.menu-open {
 
     .main {
         margin-left: 0;
-        padding-top: 70px;
+        padding: 70px 15px 30px;
     }
 }
 
@@ -247,7 +252,7 @@ body.menu-open {
     align-items: center;
     gap: 15px;
     color: var(--white);
-    margin-bottom: 30px;
+    margin-bottom: 0px;
 }
 
 .help-header i {
@@ -277,23 +282,24 @@ body.menu-open {
 .help-card {
     background: var(--card-gradient);
     border-radius: 25px;
-    padding: 35px;
+    padding: 25px;
     height: 100%;
     position: relative;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 2px solid var(--card-border);
     color: var(--primary-color);
     text-align: center;
-    box-shadow: 
+    box-shadow:
         0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -1px rgba(0, 0, 0, 0.06),
         0 20px 25px -5px rgba(128, 27, 50, 0.1);
-    min-height: 220px;
+    min-height: 280px;
+    max-height: 280px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 12px;
     margin: 10px 0;
     animation: fadeInUp 0.6s ease-out forwards;
     animation-delay: calc(var(--card-index, 0) * 0.1s);
@@ -328,19 +334,19 @@ body.menu-open {
 }
 
 .help-icon {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     background: linear-gradient(135deg, #FF4D4D 0%, #801B32 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     transition: transform 0.3s ease;
 }
 
 .help-icon i {
-    font-size: 2rem;
+    font-size: 1.4rem;
     color: var(--white);
     transition: transform 0.3s ease;
 }
@@ -355,31 +361,34 @@ body.menu-open {
 
 .help-card h3 {
     color: var(--primary-color);
-    font-size: 1.3rem;
-    margin-bottom: 8px;
+    font-size: 1.15rem;
+    margin-bottom: 6px;
     font-weight: 600;
     position: relative;
 }
 
 .help-card p {
     color: #666;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     margin: 0;
-    max-width: 200px;
-    line-height: 1.5;
+    max-width: 220px;
+    line-height: 1.4;
 }
 
 
 .container {
-    padding: 40px;
+    padding: 0px 40px 40px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 
 .row {
-    --bs-gutter-x: 40px;
-    --bs-gutter-y: 40px;
+    --bs-gutter-x: 20px;
+    --bs-gutter-y: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 
@@ -387,12 +396,19 @@ body.menu-open {
     --card-index: 0;
 }
 
-.row > *:nth-child(1) { --card-index: 1; }
-.row > *:nth-child(2) { --card-index: 2; }
-.row > *:nth-child(3) { --card-index: 3; }
-.row > *:nth-child(4) { --card-index: 4; }
-.row > *:nth-child(5) { --card-index: 5; }
-.row > *:nth-child(6) { --card-index: 6; }
+/* Ensure 2x2 grid layout at tablet/desktop sizes */
+@media (min-width: 768px) {
+    .row {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .col-md-6 {
+        flex: 0 0 calc(50% - 15px);
+        max-width: calc(50% - 15px);
+    }
+}
+
 
 
 .help-card:hover .help-icon i {
@@ -403,7 +419,7 @@ body.menu-open {
 
 @media (max-width: 768px) {
     .help-header {
-        margin-bottom: 20px;
+        margin-bottom: 8px;
     }
 
     .help-header h1 {
@@ -411,31 +427,37 @@ body.menu-open {
     }
 
     .help-card {
-        padding: 25px;
-        min-height: 180px;
+        padding: 20px;
+        min-height: 240px;
+        max-height: 240px;
         border-radius: 20px;
+        gap: 10px;
     }
 
     .help-icon {
-        width: 60px;
-        height: 60px;
+        width: 45px;
+        height: 45px;
     }
 
-    .help-card h3 {
+    .help-icon i {
         font-size: 1.2rem;
     }
 
+    .help-card h3 {
+        font-size: 1.1rem;
+    }
+
     .help-card p {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     .container {
-        padding: 20px;
+        padding: 0px 20px 20px;
     }
 
     .row {
-        --bs-gutter-x: 20px;
-        --bs-gutter-y: 20px;
+        --bs-gutter-x: 15px;
+        --bs-gutter-y: 15px;
     }
 }
 

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AniKwento Storyboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../public/files/css/storyboard/storyboard.css">
+</head>
+<body>
+    <!-- Header with Navigation -->
+    <!-- Header with Navigation -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <img src="../../../public/files/images/AKlogo.png" alt="AniKwento Logo" class="AK-logo-Header">
+            </div>
+            <div class="header-buttons">
+                <button onclick="goBackToDashboard()" class="btn btn-secondary">
+                    ← Back to Dashboard
+                </button>
+                <!-- After Story Quiz Button in Header -->
+                <button class="btn btn-primary" id="headerQuizBtn" onclick="goToAfterStoryQuiz()" style="display: none;">
+                    Take Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Title Section -->
+    <div class="story-title-section">
+        <h2 id="storyboardTitle" class="story-title">Your Educational Story</h2>
+    </div>
+
+ 
+    <div class="meteor-background" id="meteorBackground">
+        <div class="meteor" style="left: 8%; top: -5%; animation-duration: 6s; animation-delay: 0s;"></div>
+        <div class="meteor" style="left: 23%; top: -3%; animation-duration: 8s; animation-delay: 1.2s;"></div>
+        <div class="meteor" style="left: 47%; top: -8%; animation-duration: 7s; animation-delay: 0.5s;"></div>
+        <div class="meteor" style="left: 61%; top: -2%; animation-duration: 9s; animation-delay: 2.1s;"></div>
+        <div class="meteor" style="left: 75%; top: -6%; animation-duration: 6.5s; animation-delay: 0.8s;"></div>
+        <div class="meteor" style="left: 14%; top: -4%; animation-duration: 7.5s; animation-delay: 1.8s;"></div>
+        <div class="meteor" style="left: 32%; top: -7%; animation-duration: 8.5s; animation-delay: 0.3s;"></div>
+        <div class="meteor" style="left: 54%; top: -3%; animation-duration: 7.2s; animation-delay: 1.5s;"></div>
+        <div class="meteor" style="left: 68%; top: -5%; animation-duration: 6.8s; animation-delay: 2.4s;"></div>
+        <div class="meteor" style="left: 87%; top: -4%; animation-duration: 8.2s; animation-delay: 0.7s;"></div>
+        <div class="meteor" style="left: 5%; top: -6%; animation-duration: 9.5s; animation-delay: 1.9s;"></div>
+        <div class="meteor" style="left: 19%; top: -2%; animation-duration: 7.8s; animation-delay: 0.4s;"></div>
+        <div class="meteor" style="left: 38%; top: -5%; animation-duration: 6.3s; animation-delay: 2.2s;"></div>
+        <div class="meteor" style="left: 52%; top: -7%; animation-duration: 8.7s; animation-delay: 0.9s;"></div>
+        <div class="meteor" style="left: 72%; top: -3%; animation-duration: 7.1s; animation-delay: 1.6s;"></div>
+        <div class="meteor" style="left: 92%; top: -6%; animation-duration: 9.2s; animation-delay: 0.2s;"></div>
+        <div class="meteor" style="left: 11%; top: -4%; animation-duration: 6.9s; animation-delay: 2.5s;"></div>
+        <div class="meteor" style="left: 28%; top: -8%; animation-duration: 8.1s; animation-delay: 1.1s;"></div>
+        <div class="meteor" style="left: 43%; top: -2%; animation-duration: 7.4s; animation-delay: 0.6s;"></div>
+        <div class="meteor" style="left: 58%; top: -5%; animation-duration: 9.3s; animation-delay: 2.3s;"></div>
+        <div class="meteor" style="left: 79%; top: -7%; animation-duration: 6.6s; animation-delay: 1.4s;"></div>
+        <div class="meteor" style="left: 3%; top: -3%; animation-duration: 8.4s; animation-delay: 0.1s;"></div>
+        <div class="meteor" style="left: 36%; top: -6%; animation-duration: 7.6s; animation-delay: 2s;"></div>
+        <div class="meteor" style="left: 64%; top: -4%; animation-duration: 9.1s; animation-delay: 1.3s;"></div>
+        <div class="meteor" style="left: 84%; top: -8%; animation-duration: 6.7s; animation-delay: 0.5s;"></div>
+        <div class="meteor" style="left: 16%; top: -5%; animation-duration: 8.9s; animation-delay: 1.7s;"></div>
+        <div class="meteor" style="left: 41%; top: -3%; animation-duration: 7.3s; animation-delay: 2.6s;"></div>
+        <div class="meteor" style="left: 70%; top: -7%; animation-duration: 9.4s; animation-delay: 0.8s;"></div>
+        <div class="meteor" style="left: 95%; top: -2%; animation-duration: 6.4s; animation-delay: 1.2s;"></div>
+        <div class="meteor" style="left: 26%; top: -6%; animation-duration: 8.6s; animation-delay: 2.7s;"></div>
+        <!-- Additional meteors for bottom left coverage -->
+        <div class="meteor" style="left: -10%; top: 20%; animation-duration: 7s; animation-delay: 0.3s;"></div>
+        <div class="meteor" style="left: -8%; top: 35%; animation-duration: 8.5s; animation-delay: 1.5s;"></div>
+        <div class="meteor" style="left: -12%; top: 50%; animation-duration: 6.8s; animation-delay: 2.2s;"></div>
+        <div class="meteor" style="left: -6%; top: 65%; animation-duration: 7.8s; animation-delay: 0.9s;"></div>
+        <div class="meteor" style="left: -9%; top: 80%; animation-duration: 9s; animation-delay: 1.8s;"></div>
+        <div class="meteor" style="left: -11%; top: 25%; animation-duration: 7.3s; animation-delay: 2.5s;"></div>
+        <div class="meteor" style="left: -7%; top: 40%; animation-duration: 8.2s; animation-delay: 0.6s;"></div>
+        <div class="meteor" style="left: -13%; top: 55%; animation-duration: 6.5s; animation-delay: 1.2s;"></div>
+        <div class="meteor" style="left: -5%; top: 70%; animation-duration: 7.6s; animation-delay: 2.8s;"></div>
+        <div class="meteor" style="left: -10%; top: 30%; animation-duration: 8.8s; animation-delay: 0.4s;"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Main Storyboard Player -->
+        <div class="storyboard-player" id="storyboardPlayer">
+            <div class="player-container" id="playerContainer">
+                <!-- Content Wrapper for Blackboard and Teacher -->
+                <div class="content-wrapper">
+                    <!-- Blackboard Screen -->
+                    <div class="blackboard-container">
+                        <div class="wooden-frame">
+                            <div class="blackboard-screen">
+                                <!-- Story Image covering whole board -->
+                                <div class="story-image">
+                                    <div class="image-placeholder">
+                                        <p>Scene Image will be displayed here</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Narration Text overlay -->
+                                <div class="narration-text-overlay">
+                                    <span class="voice-indicator" id="voiceIndicator" style="display: none; position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); padding: 5px 10px; border-radius: 20px; font-size: 12px;">
+                                        🎤 <span id="voiceName">Voice Active</span>
+                                    </span>
+                                    Click the "Load Test Story Data" button above to load a sample story and test all the features!
+                                </div>
+
+                                <!-- Gamification Question Overlay -->
+                                <div class="gamification-overlay hidden" id="gamificationOverlay">
+                                    <div class="question-container">
+                                        <div class="question-text" id="questionText">
+                                            What color is the ball?
+                                        </div>
+                                        <div class="answer-choices" id="answerChoices">
+                                            <button class="choice-btn" data-choice="A">Red</button>
+                                            <button class="choice-btn" data-choice="B">Blue</button>
+                                            <button class="choice-btn" data-choice="C">Green</button>
+                                            <button class="choice-btn" data-choice="D">Yellow</button>
+                                        </div>
+                                        <div class="question-feedback hidden" id="questionFeedback">
+                                            <div class="feedback-text">Correct! Well done!</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Avatar (Outside blackboard, under it on left side) -->
+                    <div id="avatarContainer" class="teacher-avatar-external">
+                        <!-- This is where the 3D avatar will be rendered -->
+                        <div id="avatar-loading-indicator" class="avatar-loading-indicator">
+                            <div class="spinner"></div>
+                            <p>Loading Avatar...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Player Controls -->
+                <div class="player-controls" role="toolbar" aria-label="Story player controls">
+                    <!-- Top Controls: Play/Pause and Volume -->
+                    <div class="top-controls">
+                        <button class="control-btn play-pause-btn" id="playPauseBtn" 
+                                aria-label="Play story" 
+                                aria-pressed="false"
+                                title="Play/Pause">
+                            <svg width="24" height="24" viewBox="0 0 24 24" class="play-icon" aria-hidden="true">
+                                <polygon points="8,5 19,12 8,19" fill="currentColor"/>
+                            </svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24" class="pause-icon" style="display: none;" aria-hidden="true">
+                                <rect x="6" y="4" width="4" height="16" fill="currentColor"/>
+                                <rect x="14" y="4" width="4" height="16" fill="currentColor"/>
+                            </svg>
+                        </button>
+                        
+                        <button class="control-btn volume-btn" id="volumeBtn" 
+                                aria-label="Mute audio" 
+                                aria-pressed="false"
+                                title="Mute/Unmute (M)">
+                            <svg width="24" height="24" viewBox="0 0 24 24" class="volume-on-icon" aria-hidden="true">
+                                <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor"/>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" fill="none"/>
+                            </svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24" class="volume-off-icon" style="display: none;" aria-hidden="true">
+                                <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor"/>
+                                <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2"/>
+                                <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </button>
+                        
+                        <div class="volume-slider-container">
+                            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="20"
+                                   aria-label="Volume level" title="Adjust volume">
+                        </div>
+
+                        <div class="narration-volume-display" id="narrationVolumeDisplay">
+                            <span class="volume-label">Narration:</span>
+                            <span class="volume-value" id="narrationVolumeValue">50%</span>
+                        </div>
+
+                        <button class="control-btn minimize-btn" id="minimizeBtn" 
+                                aria-label="Enter fullscreen" 
+                                title="Enter fullscreen (F)">
+                            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="minimize-icon">
+                                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" fill="currentColor"/>
+                            </svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="maximize-icon" style="display: none;">
+                                <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" fill="currentColor"/>
+                            </svg>
+                        </button>
+                        
+                        <div class="time-display">
+                            <span class="current-time">00:00</span>
+                            <span class="separator">/</span>
+                            <span class="total-time">00:00</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-container">
+                        <div class="progress-bar" 
+                             role="slider" 
+                             aria-label="Story progress" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100" 
+                             aria-valuenow="32"
+                             title="Click to seek in story">
+                            <div class="progress-fill"></div>
+                            <div class="progress-handle" tabindex="0" aria-label="Drag to seek"></div>
+                        </div>
+                    </div>
+
+                    <!-- Scene Navigation -->
+                    <div class="scene-navigation" role="tablist" aria-label="Scene navigation">
+                        <div class="scene-label">Scenes:</div>
+                        <div class="timeline-dots" id="timelineDots">
+                            <button class="dot active" data-scene="1" role="tab" aria-selected="true" aria-controls="scene-1" title="Scene 1" tabindex="0"></button>
+                            <button class="dot" data-scene="2" role="tab" aria-selected="false" aria-controls="scene-2" title="Scene 2" tabindex="-1"></button>
+                            <button class="dot" data-scene="3" role="tab" aria-selected="false" aria-controls="scene-3" title="Scene 3" tabindex="-1"></button>
+                            <button class="dot" data-scene="4" role="tab" aria-selected="false" aria-controls="scene-4" title="Scene 4" tabindex="-1"></button>
+                            <button class="dot" data-scene="5" role="tab" aria-selected="false" aria-controls="scene-5" title="Scene 5" tabindex="-1"></button>
+                            <button class="dot" data-scene="6" role="tab" aria-selected="false" aria-controls="scene-6" title="Scene 6" tabindex="-1"></button>
+                            <button class="dot" data-scene="7" role="tab" aria-selected="false" aria-controls="scene-7" title="Scene 7" tabindex="-1"></button>
+                            <button class="dot" data-scene="8" role="tab" aria-selected="false" aria-controls="scene-8" title="Scene 8" tabindex="-1"></button>
+                            <button class="dot" data-scene="9" role="tab" aria-selected="false" aria-controls="scene-9" title="Scene 9" tabindex="-1"></button>
+                            <button class="dot" data-scene="10" role="tab" aria-selected="false" aria-controls="scene-10" title="Scene 10" tabindex="-1"></button>
+                        </div>
+                    </div>
+
+                    <!-- After Story Quiz Button (shown only when applicable) -->
+                    <div class="after-quiz-section" id="afterQuizSection" style="display: none; margin-top: 15px; text-align: center;">
+                        <button class="after-quiz-btn" id="afterQuizBtn" onclick="goToAfterStoryQuiz()" title="Take the after-story quiz">
+                            <svg width="20" height="20" viewBox="0 0 24 24" style="margin-right: 8px;">
+                                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                            </svg>
+                            Take Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio elements for gamification sound effects -->
+    <audio id="questionBgAudio" loop>
+        <source src="../../../public/files/music/storyboard/question_bg.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="correctAnswerAudio">
+        <source src="../../../public/files/music/storyboard/correct answer.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="wrongAnswerAudio">
+        <source src="../../../public/files/music/storyboard/wrong answer.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Modern ES6 module support for Three.js and ReadyPlayerMe Avatar -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+                "lil-gui": "https://cdn.jsdelivr.net/npm/lil-gui@0.19.2/dist/lil-gui.esm.min.js"
+            }
+        }
+    </script>
+
+    <!-- IMPORTANT: Load user default settings from Settings Dashboard -->
+    <script src="../../../public/files/js/story/load-default-settings.js"></script>
+
+    <!-- Main storyboard logic -->
+    <script src="../../../public/files/js/story/storyboard-audio-narration.js"></script>
+    <script src="script.js"></script>
+
+    <!-- ReadyPlayerMe Avatar Integration (must be a module) -->
+    <script type="module" src="../../../public/files/js/story/rpm-avatar-integration.js"></script>
+</body>
+</html>

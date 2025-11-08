@@ -60,13 +60,14 @@ html {
 /* Header Navigation */
 .header {
     width: 220px;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(180deg, #5D0F22 0%, #801B32 100%);
     color: var(--white);
     padding: 20px;
     position: fixed;
     top: 0;
     left: 0;
+    bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -84,8 +85,12 @@ html {
 .header-content h3 {
     color: var(--white);
     font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 1.5rem;
     margin-bottom: 2rem;
-    padding-left: 10px;
+    padding: 0 15px;
+    line-height: 1.4;
 }
 
 .nav-link {
@@ -156,7 +161,7 @@ html {
 /* Main Content */
 .main {
     margin-left: 220px;
-    padding: 30px;
+    padding: 20px;
     animation: fadeInRight 0.5s ease-out;
     min-height: 100vh;
     background: linear-gradient(135deg, #fefefe 0%, #f8f9fa 100%);
@@ -360,7 +365,7 @@ html {
 
 /* Content Grid Layout */
 .profile-content {
-    margin-top: 30px;
+    margin-top: 15px;
 }
 
 .content-grid {
@@ -1178,4 +1183,361 @@ body.menu-open {
 
 html {
     scroll-behavior: smooth;
+}
+
+/* Welcome Modal Styles */
+.welcome-modal-content {
+    border: none;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(128, 27, 50, 0.2);
+    background: linear-gradient(135deg, #ffffff 0%, #fef7f9 100%);
+}
+
+.welcome-modal-header {
+    background: linear-gradient(135deg, #801B32 0%, #972542 100%);
+    color: white;
+    padding: 50px 40px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-decoration-circles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.welcome-decoration-circles .circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+}
+
+.welcome-decoration-circles .circle-1 {
+    width: 200px;
+    height: 200px;
+    background: var(--secondary-color);
+    top: -100px;
+    right: -50px;
+    animation: float 8s ease-in-out infinite;
+}
+
+.welcome-decoration-circles .circle-2 {
+    width: 150px;
+    height: 150px;
+    background: white;
+    bottom: -75px;
+    left: -40px;
+    animation: float 10s ease-in-out infinite reverse;
+}
+
+.welcome-decoration-circles .circle-3 {
+    width: 100px;
+    height: 100px;
+    background: var(--secondary-color);
+    top: 50%;
+    left: 10%;
+    animation: float 12s ease-in-out infinite;
+}
+
+.welcome-icon-wrapper {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 20px;
+}
+
+.welcome-icon-wrapper i {
+    font-size: 4rem;
+    color: var(--secondary-color);
+    animation: wave 2s ease-in-out infinite;
+}
+
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-15deg); }
+    75% { transform: rotate(15deg); }
+}
+
+.welcome-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    font-family: 'Adlam', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.welcome-title .user-name {
+    color: var(--secondary-color);
+    font-weight: 800;
+}
+
+.welcome-subtitle {
+    font-size: 1.1rem;
+    margin: 0;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+    font-weight: 500;
+}
+
+.welcome-modal-body {
+    padding: 40px;
+}
+
+.profile-setup-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border: 2px solid rgba(255, 197, 83, 0.2);
+    position: relative;
+}
+
+.setup-icon-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.setup-icon-bg {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, rgba(255, 197, 83, 0.2) 0%, rgba(255, 197, 83, 0.1) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: pulse 3s ease-in-out infinite;
+}
+
+.setup-icon-bg::before {
+    content: '';
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    border: 2px solid var(--secondary-color);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: ripple 2s ease-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.3);
+        opacity: 0;
+    }
+}
+
+.setup-icon-bg i {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+}
+
+.setup-heading {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: 'Adlam', sans-serif;
+}
+
+.setup-description {
+    margin-bottom: 35px;
+}
+
+.description-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 18px;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(255, 197, 83, 0.08) 0%, rgba(255, 197, 83, 0.03) 100%);
+    border-radius: 12px;
+    border-left: 4px solid var(--secondary-color);
+    transition: all 0.3s ease;
+}
+
+.description-item:hover {
+    background: linear-gradient(135deg, rgba(255, 197, 83, 0.15) 0%, rgba(255, 197, 83, 0.08) 100%);
+    transform: translateX(5px);
+}
+
+.description-item:last-child {
+    margin-bottom: 0;
+}
+
+.description-item i {
+    color: var(--success-color);
+    font-size: 1.3rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.description-item p {
+    margin: 0;
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.btn-setup-profile {
+    width: 100%;
+    padding: 18px 30px;
+    background: linear-gradient(135deg, var(--success-color) 0%, #34ce57 100%);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-setup-profile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-setup-profile:hover::before {
+    left: 100%;
+}
+
+.btn-setup-profile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(40, 167, 69, 0.4);
+    background: linear-gradient(135deg, #34ce57 0%, var(--success-color) 100%);
+}
+
+.btn-setup-profile:active {
+    transform: translateY(-1px);
+}
+
+.btn-setup-profile .btn-icon {
+    font-size: 1.3rem;
+}
+
+.btn-setup-profile .btn-text {
+    flex: 1;
+}
+
+.btn-setup-profile .btn-arrow {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-setup-profile:hover .btn-arrow {
+    transform: translateX(5px);
+}
+
+.setup-note {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 0;
+    color: #666;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.setup-note i {
+    color: var(--secondary-color);
+    font-size: 1rem;
+}
+
+/* Responsive for Welcome Modal */
+@media (max-width: 768px) {
+    .welcome-modal-header {
+        padding: 40px 25px 30px;
+    }
+
+    .welcome-title {
+        font-size: 1.6rem;
+    }
+
+    .welcome-subtitle {
+        font-size: 1rem;
+    }
+
+    .welcome-modal-body {
+        padding: 25px;
+    }
+
+    .profile-setup-card {
+        padding: 30px 20px;
+    }
+
+    .setup-heading {
+        font-size: 1.3rem;
+    }
+
+    .description-item {
+        padding: 12px;
+    }
+
+    .description-item p {
+        font-size: 0.95rem;
+    }
+
+    .btn-setup-profile {
+        padding: 16px 25px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-icon-wrapper i {
+        font-size: 3rem;
+    }
+
+    .welcome-title {
+        font-size: 1.4rem;
+    }
+
+    .setup-icon-bg {
+        width: 80px;
+        height: 80px;
+    }
+
+    .setup-icon-bg i {
+        font-size: 2.5rem;
+    }
+
+    .setup-heading {
+        font-size: 1.2rem;
+    }
 }

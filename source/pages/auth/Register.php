@@ -44,30 +44,36 @@
                                 <div class="form-section p-4">
                      <form id="registerForm" method="POST">
                                         <div class="mb-3">
-                                            <input type="text" name="first_name" id="firstName" class="form-control" 
-                                                placeholder="First Name" pattern="[A-Za-zÀ-ÿĀ-žА-я\s\-ñÑ]{2,50}" 
+                                            <input type="text" name="first_name" id="firstName" class="form-control"
+                                                placeholder="First Name" pattern="[A-Za-zÀ-ÿĀ-žА-я\s\-ñÑ]{2,50}"
+                                                style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0; margin-left: -1.5rem; width: calc(100% + 1.5rem);"
                                                 title="First name should contain only letters (including ñ, é, etc.), spaces, and hyphens, 2-50 characters" required />
                                         </div>
                                         <div class="mb-3">
-                                            <input type="text" name="last_name" id="lastName" class="form-control" 
-                                                placeholder="Last Name" pattern="[A-Za-zÀ-ÿĀ-žА-я\s\-ñÑ]{2,50}" 
+                                            <input type="text" name="last_name" id="lastName" class="form-control"
+                                                placeholder="Last Name" pattern="[A-Za-zÀ-ÿĀ-žА-я\s\-ñÑ]{2,50}"
+                                                style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0; margin-left: -1.5rem; width: calc(100% + 1.5rem);"
                                                 title="Last name should contain only letters (including ñ, é, etc.), spaces, and hyphens, 2-50 characters" required />
                                         </div>
                                         <div class="mb-3">
-                                            <div class="input-group">
-                                                <input type="text" name="ub_id" id="ubIdReg" class="form-control" 
-                                                    placeholder="UB ID" pattern="[0-9]{7,9}" 
-                                                    title="Please enter 7-9 numbers only" maxlength="9" required />
-                                                <span class="input-group-text">@ub.edu.ph</span>
-                                            </div>
+                                            <input type="text" name="email" id="emailInput" class="form-control"
+                                                placeholder="UB Mail"
+                                                style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0; margin-left: -1.5rem; width: calc(100% + 1.5rem);"
+                                                title="Enter your 7-digit student ID, email (firstname.lastname@ub.edu.ph), or ID (A-1234@ub.edu.ph)"
+                                                required />
                                         </div>
                                         <div class="mb-3">
-                                            <input type="password" name="password" id="password" class="form-control" placeholder="Password" required />
+                                            <input type="password" name="password" id="password" class="form-control"
+                                                placeholder="Password"
+                                                style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0; margin-left: -1.5rem; width: calc(100% + 1.5rem);"
+                                                required />
                                         </div>
                                         <div class="mb-3">
-                                            <input type="password" name="confirm_password" id="confirmPassword" class="form-control" 
-                                                placeholder="Re-enter Password" required />
-                                            <div id="passwordMatch" class="form-text"></div>
+                                            <input type="password" name="confirm_password" id="confirmPassword" class="form-control"
+                                                placeholder="Re-enter Password"
+                                                style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0; margin-left: -1.5rem; width: calc(100% + 1.5rem);"
+                                                required />
+                                            <div id="passwordMatch" class="form-text" style="margin-left: 0;"></div>
                                         </div>
                                         <button type="submit" class="btn w-100">Register</button>
                                         <div id="registerMessage" class="mt-3 text-center"></div>
@@ -91,6 +97,30 @@ function validatePassword(password) {
 
 function validateName(name) {
     return name.length >= 2 && name.length <= 50 && /^[A-Za-zÀ-ÿĀ-žА-я\s\-ñÑ]+$/.test(name);
+}
+
+// Function to validate email format
+function validateEmailFormat(email) {
+    // Pattern 1: 7-digit student ID (will be converted to email)
+    const studentIdPattern = /^\d{7}$/;
+    // Pattern 2: 7-digit student ID with @ub.edu.ph
+    const digitEmailPattern = /^\d{7}@ub\.edu\.ph$/;
+    // Pattern 3: firstname.lastname@ub.edu.ph
+    const nameEmailPattern = /^[a-zA-Z]+\.[a-zA-Z]+@ub\.edu\.ph$/;
+    // Pattern 4: A-#### format (A-1234@ub.edu.ph)
+    const aIdPattern = /^A-\d{4}@ub\.edu\.ph$/;
+
+    return studentIdPattern.test(email) || digitEmailPattern.test(email) || nameEmailPattern.test(email) || aIdPattern.test(email);
+}
+
+// Function to convert input to full email if needed
+function convertToEmail(input) {
+    // If it's just 7 digits, append @ub.edu.ph
+    if (/^\d{7}$/.test(input)) {
+        return input + '@ub.edu.ph';
+    }
+    // Otherwise, return as-is (already a full email)
+    return input;
 }
 
 function checkPasswordMatch() {
@@ -152,12 +182,6 @@ document.getElementById('lastName').addEventListener('input', function(e) {
     e.target.value = value;
 });
 
-document.getElementById('ubIdReg').addEventListener('input', function(e) {
-    let value = e.target.value.replace(/[^0-9]/g, '');
-    if (value.length > 9) value = value.substring(0, 9);
-    e.target.value = value;
-});
-
 document.getElementById('password').addEventListener('input', function(e) {
     checkPasswordMatch();
 });
@@ -168,58 +192,60 @@ document.getElementById('confirmPassword').addEventListener('input', function(e)
 
 document.getElementById('registerForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    
+
     const firstName = document.getElementById('firstName').value.trim();
     const lastName = document.getElementById('lastName').value.trim();
-    const ubId = document.getElementById('ubIdReg').value;
+    const emailInput = document.getElementById('emailInput');
+    const inputValue = emailInput.value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     const submitButton = this.querySelector('button[type="submit"]');
-    
+
     // Clear any existing messages
     document.getElementById('registerMessage').innerHTML = '';
-    
+
     // Validate first name
     if (!validateName(firstName)) {
         showMessage('First name must be 2-50 characters and contain only letters (including ñ, é, etc.), spaces, and hyphens', 'danger');
         document.getElementById('firstName').focus();
         return;
     }
-    
+
     // Validate last name
     if (!validateName(lastName)) {
         showMessage('Last name must be 2-50 characters and contain only letters (including ñ, é, etc.), spaces, and hyphens', 'danger');
         document.getElementById('lastName').focus();
         return;
     }
-    
-    // Validate UB ID
-    if (!ubId.match(/^\d{7,9}$/)) {
-        showMessage('Please enter a valid UB ID (7-9 digits)', 'danger');
-        document.getElementById('ubIdReg').focus();
+
+    // Validate email format
+    if (!validateEmailFormat(inputValue)) {
+        showMessage('Please enter a valid format: 7-digit ID, firstname.lastname@ub.edu.ph, or A-1234@ub.edu.ph', 'danger');
+        emailInput.focus();
         return;
     }
-    
+
     // Validate password
     if (!validatePassword(password)) {
         showMessage('Password must be at least 6 characters long', 'danger');
         document.getElementById('password').focus();
         return;
     }
-    
+
     // Validate password match
     if (password !== confirmPassword) {
         showMessage('Passwords do not match', 'danger');
         document.getElementById('confirmPassword').focus();
         return;
     }
-    
+
     // Start loading state
     setRegisterButtonLoading(submitButton, true);
     showMessage('<span class="loading-spinner"></span>Creating your account...', 'info', 0);
-    
-    const email = ubId + '@ub.edu.ph';
-    
+
+    // Convert to full email if needed
+    const email = convertToEmail(inputValue);
+
     const formData = new FormData(this);
     formData.set('email', email);
     

@@ -20,30 +20,30 @@ try {
 
     $first_name = trim($_POST['first_name']);
     $last_name = trim($_POST['last_name']);
-    $ub_id = trim($_POST['ub_id']);
-    $email = $ub_id . '@ub.edu.ph';
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
-    
+
     // Validate names
     if (!preg_match('/^[A-Za-z\s]{2,50}$/', $first_name)) {
         throw new Exception("First name must be 2-50 characters and contain only letters and spaces");
     }
-    
+
     if (!preg_match('/^[A-Za-z\s]{2,50}$/', $last_name)) {
         throw new Exception("Last name must be 2-50 characters and contain only letters and spaces");
     }
-    
-    // Validate UB ID
-    if (!preg_match('/^\d{7,9}$/', $ub_id)) {
-        throw new Exception("UB ID must be 7-9 digits");
-    }
+
+    // Validate email format - accept three patterns:
+    // 1. 7-digit student ID format: 1234567@ub.edu.ph
+    // 2. firstname.lastname format: firstname.lastname@ub.edu.ph
+    // 3. A-#### format: A-1234@ub.edu.ph
+    $validEmailPattern = '/^(\d{7}|[a-zA-Z]+\.[a-zA-Z]+|A-\d{4})@ub\.edu\.ph$/';
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         throw new Exception("Invalid email format");
     }
 
-    if (!preg_match('/^\d{7,9}@ub\.edu\.ph$/', $email)) {
-        throw new Exception("Please use a valid UB email address");
+    if (!preg_match($validEmailPattern, $email)) {
+        throw new Exception("Please use a valid UB email address (7-digit ID, firstname.lastname, or A-1234 format)");
     }
 
     if (strlen($password) < 6) {

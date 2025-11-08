@@ -35,6 +35,7 @@ try {
         throw new Exception("Verification code has expired. Please register again.");
     }
 
+    // Create user account
     $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, password, created_at) VALUES (?, ?, ?, ?, NOW())");
     $stmt->execute([
         $pending_user['first_name'],
@@ -42,6 +43,13 @@ try {
         $pending_user['email'],
         $pending_user['password']
     ]);
+
+    // Get the newly created user ID
+    $new_user_id = $pdo->lastInsertId();
+
+    // Automatically create a new teacher profile for this user with empty/default fields
+    $stmt = $pdo->prepare("INSERT INTO teacher_profiles (user_id, full_name, position, degree, institution, year_graduated, experience_years, experience_desc, email, certifications, skills, photo) VALUES (?, '', '', '', '', 0, 0, '', ?, '[]', '[]', '')");
+    $stmt->execute([$new_user_id, $pending_user['email']]);
 
     $stmt = $pdo->prepare("DELETE FROM pending_users WHERE email = ?");
     $stmt->execute([$email]);
