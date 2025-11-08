@@ -63,13 +63,13 @@ $skills = is_array($skills) ? $skills : explode(',', $teacher['skills']);
           <div class="profile-picture-section">
             
             <div class="profile-picture-wrapper">
-              
+
               <img src="<?= $teacher['photo']
-                    ? '/source/uploads/' . safe($teacher['photo'])
+                    ? safe($teacher['photo'])
                     : '/public/files/images/teacher-placeholder.png' ?>"
                    alt="Profile Photo"
                    class="profile-picture">
-                   
+
             </div>
           </div>
           <div class="basic-info">
