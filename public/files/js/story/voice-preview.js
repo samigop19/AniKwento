@@ -175,7 +175,7 @@
             formData.append('voice_name', voiceName);
 
             // Send to server to save
-            await fetch('../../handlers/save_voice_preview.php', {
+            await fetch('/source/handlers/save_voice_preview.php', {
                 method: 'POST',
                 body: formData
             });

@@ -26,7 +26,7 @@
         try {
             console.log('📥 Loading user default settings...');
 
-            const response = await fetch('../../handlers/get_settings.php');
+            const response = await fetch('/source/handlers/get_settings.php');
             const data = await response.json();
 
             if (data.success && data.settings) {

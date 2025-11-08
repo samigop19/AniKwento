@@ -694,7 +694,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
     // share profile (uses api/generate_share_token.php)
     async function shareProfile() {
       try {
-        const res = await fetch('../../handlers/generate_share_token.php', { method: 'POST' });
+        const res = await fetch('/source/handlers/generate_share_token.php', { method: 'POST' });
         const data = await res.json();
 
         if (!data.success || !data.token) {

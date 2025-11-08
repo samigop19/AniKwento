@@ -26,7 +26,7 @@ async function loadUserStories() {
         showLoadingState(storyGrid);
 
         // Fetch stories from the backend
-        const response = await fetch('../../handlers/get_user_stories.php', {
+        const response = await fetch('/source/handlers/get_user_stories.php', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -335,7 +335,7 @@ async function deleteStory(storyId) {
     }
 
     try {
-        const response = await fetch('../../handlers/delete_story.php', {
+        const response = await fetch('/source/handlers/delete_story.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -408,7 +408,7 @@ async function shareStory(storyId) {
     console.log('🔗 Sharing story ID:', storyId);
 
     try {
-        const response = await fetch('../../handlers/generate_share_token.php', {
+        const response = await fetch('/source/handlers/generate_share_token.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

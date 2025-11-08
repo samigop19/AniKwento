@@ -3799,7 +3799,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 // Send to save_story.php
-                const response = await fetch('../../handlers/save_story.php', {
+                const response = await fetch('/source/handlers/save_story.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -4021,7 +4021,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 // Send to save_story.php
-                const response = await fetch('../../handlers/save_story.php', {
+                const response = await fetch('/source/handlers/save_story.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

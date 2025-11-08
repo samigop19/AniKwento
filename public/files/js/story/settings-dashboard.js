@@ -328,7 +328,7 @@
      */
     async function loadSettings() {
         try {
-            const response = await fetch('../../handlers/get_settings.php');
+            const response = await fetch('/source/handlers/get_settings.php');
             const data = await response.json();
 
             if (data.success) {
@@ -524,7 +524,7 @@
             formData.append('question_types', JSON.stringify(checkedTypes));
 
             // Send to server
-            const response = await fetch('../../handlers/save_settings.php', {
+            const response = await fetch('/source/handlers/save_settings.php', {
                 method: 'POST',
                 body: formData
             });

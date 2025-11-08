@@ -113,7 +113,7 @@
             formData.append('verification_code', code);
             formData.append('email', email);
             
-            fetch('../../handlers/verify_process.php', {
+            fetch('/source/handlers/verify_process.php', {
                 method: 'POST',
                 body: formData
             })
@@ -150,7 +150,7 @@
             this.textContent = 'Sending...';
             this.style.pointerEvents = 'none';
             
-            fetch('../../handlers/resend_code.php', {
+            fetch('/source/handlers/resend_code.php', {
                 method: 'POST',
                 body: formData
             })

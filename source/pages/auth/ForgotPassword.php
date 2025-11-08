@@ -387,7 +387,7 @@
             formData.append('action', 'send_reset_code');
             formData.append('email', email);
             
-            fetch('../../handlers/forgot_password_process.php', {
+            fetch('/source/handlers/forgot_password_process.php', {
                 method: 'POST',
                 body: formData
             })
@@ -450,7 +450,7 @@
             formData.append('email', email);
             formData.append('verification_code', code);
             
-            fetch('../../handlers/forgot_password_process.php', {
+            fetch('/source/handlers/forgot_password_process.php', {
                 method: 'POST',
                 body: formData
             })
@@ -542,7 +542,7 @@
             formData.append('new_password', newPassword);
             formData.append('confirm_password', confirmPassword);
             
-            fetch('../../handlers/forgot_password_process.php', {
+            fetch('/source/handlers/forgot_password_process.php', {
                 method: 'POST',
                 body: formData
             })
@@ -584,7 +584,7 @@
             formData.append('action', 'resend_reset_code');
             formData.append('email', email);
             
-            fetch('../../handlers/forgot_password_process.php', {
+            fetch('/source/handlers/forgot_password_process.php', {
                 method: 'POST',
                 body: formData
             })
