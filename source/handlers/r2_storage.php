@@ -17,15 +17,12 @@ class R2Storage {
     private $config;
 
     public function __construct() {
-        // Load configuration - use absolute path for reliability
-        $configFile = $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/r2_config.php';
+        // Load configuration - use __DIR__ for reliable path resolution
+        // This works on both localhost and Railway production
+        $configFile = __DIR__ . '/r2_config.php';
 
         if (!file_exists($configFile)) {
-            // Try relative path as fallback
-            $configFile = __DIR__ . '/r2_config.php';
-            if (!file_exists($configFile)) {
-                throw new Exception("R2 configuration file not found. Please create r2_config.php at " . $configFile);
-            }
+            throw new Exception("R2 configuration file not found. Please create r2_config.php at " . $configFile);
         }
 
         $this->config = require $configFile;
