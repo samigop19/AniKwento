@@ -85,4 +85,3 @@ class EnvLoader {
 
 // Auto-load environment variables
 EnvLoader::load();
-?>

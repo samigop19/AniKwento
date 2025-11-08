@@ -44,4 +44,3 @@ try {
     // Log error but continue with default name
     error_log("Error fetching user info: " . $e->getMessage());
 }
-?>
