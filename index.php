@@ -21,7 +21,28 @@ if (empty($requestPath) || $requestPath === 'index.php') {
     exit;
 }
 
-// Route to source/pages or public files
+// Route common paths first
+switch (true) {
+    case $requestPath === '':
+    case $requestPath === 'home':
+    case $requestPath === 'index':
+        require_once __DIR__ . '/source/pages/home.html';
+        exit;
+
+    case stripos($requestPath, 'login') !== false:
+        require_once __DIR__ . '/source/pages/auth/Login.php';
+        exit;
+
+    case stripos($requestPath, 'register') !== false:
+        require_once __DIR__ . '/source/pages/auth/Register.php';
+        exit;
+
+    case stripos($requestPath, 'dashboard') !== false:
+        require_once __DIR__ . '/source/pages/dashboard/StoryDashboard.php';
+        exit;
+}
+
+// Try to serve files directly (for source/ and public/ paths)
 if (file_exists(__DIR__ . '/' . $requestPath)) {
     // Check if it's a PHP file in source/
     if (strpos($requestPath, 'source/') === 0 && pathinfo($requestPath, PATHINFO_EXTENSION) === 'php') {
@@ -33,36 +54,11 @@ if (file_exists(__DIR__ . '/' . $requestPath)) {
     if (strpos($requestPath, 'public/') === 0) {
         return false; // Let PHP built-in server handle it
     }
+
+    // For other existing files
+    return false;
 }
 
-// Route common paths
-switch (true) {
-    case $requestPath === '':
-    case $requestPath === 'home':
-    case $requestPath === 'index':
-        require_once __DIR__ . '/source/pages/home.html';
-        break;
-
-    case strpos($requestPath, 'login') !== false:
-        require_once __DIR__ . '/source/pages/auth/Login.php';
-        break;
-
-    case strpos($requestPath, 'register') !== false:
-        require_once __DIR__ . '/source/pages/auth/Register.php';
-        break;
-
-    case strpos($requestPath, 'dashboard') !== false:
-        require_once __DIR__ . '/source/pages/dashboard/StoryDashboard.php';
-        break;
-
-    default:
-        // Try to serve the file directly
-        if (file_exists(__DIR__ . '/' . $requestPath)) {
-            return false; // Let PHP built-in server handle it
-        }
-
-        // 404 - Not Found
-        http_response_code(404);
-        echo "404 - Page not found";
-        break;
-}
+// 404 - Not Found
+http_response_code(404);
+echo "404 - Page not found: " . htmlspecialchars($requestPath);
