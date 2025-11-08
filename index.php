@@ -92,14 +92,14 @@ switch (true) {
         require_once __DIR__ . '/source/pages/auth/ForgotPassword.php';
         exit;
 
-    case stripos($requestPath, 'dashboard') !== false:
-        require_once __DIR__ . '/source/pages/dashboard/StoryDashboard.php';
+    case stripos($requestPath, 'public_profile') !== false:
+    case stripos($requestPath, 'public-profile') !== false:
+        // Allow public profile access without authentication (check BEFORE dashboard)
+        require_once __DIR__ . '/source/pages/dashboard/public_profile.php';
         exit;
 
-    case stripos($requestPath, 'profile') !== false:
-    case stripos($requestPath, 'public-profile') !== false:
-        // Allow public profile access without authentication
-        require_once __DIR__ . '/source/pages/dashboard/public_profile.php';
+    case stripos($requestPath, 'dashboard') !== false:
+        require_once __DIR__ . '/source/pages/dashboard/StoryDashboard.php';
         exit;
 }
 
