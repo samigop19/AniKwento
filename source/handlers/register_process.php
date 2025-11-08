@@ -71,14 +71,26 @@ try {
     $stmt->execute([$first_name, $last_name, $email, $hashed_password, $verification_code, $expires_at]);
 
     $mail = new PHPMailer(true);
-    
+
+    // Enable verbose debug output for troubleshooting
+    if (EnvLoader::get('APP_DEBUG', 'false') === 'true') {
+        $mail->SMTPDebug = 2;
+        $mail->Debugoutput = function($str, $level) {
+            error_log("PHPMailer Debug: $str");
+        };
+    }
+
     $mail->isSMTP();
     $mail->Host       = EnvLoader::get('SMTP_HOST', 'smtp.gmail.com');
     $mail->SMTPAuth   = true;
     $mail->Username   = EnvLoader::get('SMTP_USERNAME');
     $mail->Password   = EnvLoader::get('SMTP_PASSWORD');
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = EnvLoader::get('SMTP_PORT', 587);
+    $mail->Port       = (int)EnvLoader::get('SMTP_PORT', 587);
+    $mail->Timeout    = 30; // Increase timeout for Railway
+
+    // Log SMTP configuration (without password) for debugging
+    error_log("SMTP Config - Host: " . $mail->Host . ", Port: " . $mail->Port . ", Username: " . $mail->Username);
 
     $mail->setFrom(EnvLoader::get('SMTP_USERNAME'), EnvLoader::get('APP_NAME', 'AniKwento'));
     $mail->addAddress($email, $first_name . ' ' . $last_name);
@@ -154,9 +166,21 @@ try {
 
 } catch (Exception $e) {
     error_log("Registration Error: " . $e->getMessage());
+    error_log("Error trace: " . $e->getTraceAsString());
+
+    // Provide more user-friendly error messages
+    $userMessage = $e->getMessage();
+
+    // Check if it's a PHPMailer exception
+    if (strpos($e->getMessage(), 'SMTP') !== false || strpos($e->getMessage(), 'Mailer') !== false) {
+        error_log("Email sending failed: " . $e->getMessage());
+        $userMessage = "Failed to send verification email. Please try again later or contact support.";
+    }
+
     echo json_encode([
-        'success' => false, 
-        'message' => $e->getMessage()
+        'success' => false,
+        'message' => $userMessage,
+        'debug' => EnvLoader::get('APP_DEBUG', 'false') === 'true' ? $e->getMessage() : null
     ]);
 }
 ?>
