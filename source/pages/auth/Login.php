@@ -8,14 +8,14 @@
     <title>AniKwento Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link id="theme-style" rel="stylesheet" href="../../../public/files/css/Register.css">
+    <link id="theme-style" rel="stylesheet" href="/public/files/css/Register.css">
 </head>
 <body>
     <header>
       <nav class="navbar navbar-expand-md">
             <div class="container">
                 <a href="../home.html">
-                    <img src="../../../public/files/images/AKlogo.png" alt="AniKwento Logo" class="AK-logo-Header">
+                    <img src="/public/files/images/AKlogo.png" alt="AniKwento Logo" class="AK-logo-Header">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
@@ -39,7 +39,7 @@
                             <div class="col-md-6">
                                 <div class="welcome-section text-center p-4">
                                     <h1>WELCOME BACK</h1>
-                                    <img src="../../../public/files/images/AKlogo.png" alt="AniKwento Logo" class="AK-logo img-fluid my-3"> 
+                                    <img src="/public/files/images/AKlogo.png" alt="AniKwento Logo" class="AK-logo img-fluid my-3"> 
                                     <p>Magical AI stories for English learning fun!</p>
                                 </div>
                             </div>
@@ -186,7 +186,7 @@
         formData.append('email', email);
         formData.append('password', password);
         
-        fetch('../../handlers/login_process.php', {
+        fetch('/source/handlers/login_process.php', {
             method: 'POST',
             body: formData
         })
