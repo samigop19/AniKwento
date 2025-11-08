@@ -67,7 +67,19 @@ $photoUrl = null;
 
 if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
     try {
+        // Start fresh buffer before requiring R2 files to catch any output
+        ob_start();
+
         require_once __DIR__ . '/r2_storage.php';
+
+        // Capture any output from the require and discard it
+        $requireOutput = ob_get_clean();
+        if (!empty($requireOutput)) {
+            error_log("Unexpected output during R2 require: " . $requireOutput);
+        }
+
+        // Resume main buffer
+        ob_start();
 
         $tmpName = $_FILES['photo']['tmp_name'];
         $originalName = basename($_FILES['photo']['name']);
@@ -110,6 +122,13 @@ if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR
         error_log("File upload error in save_profile.php: " . $e->getMessage());
         ob_clean();
         echo json_encode(['success' => false, 'error' => 'File upload failed: ' . $e->getMessage()]);
+        ob_end_flush();
+        exit;
+    } catch (Throwable $t) {
+        // Catch any fatal errors or other throwables
+        error_log("Critical error in save_profile.php: " . $t->getMessage());
+        ob_clean();
+        echo json_encode(['success' => false, 'error' => 'Critical upload error: ' . $t->getMessage()]);
         ob_end_flush();
         exit;
     }

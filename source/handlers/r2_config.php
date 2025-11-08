@@ -22,7 +22,7 @@ $r2Config = [
 $requiredKeys = ['access_key', 'secret_key', 'endpoint', 'bucket', 'public_url'];
 foreach ($requiredKeys as $key) {
     if (empty($r2Config[$key])) {
-        error_log("❌ ERROR: R2_{$key} not set in environment");
+        error_log("ERROR: R2 configuration incomplete - {$key} is missing");
         throw new Exception("R2 configuration incomplete: {$key} is missing");
     }
 }
