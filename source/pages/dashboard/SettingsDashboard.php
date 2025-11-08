@@ -314,13 +314,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
   <script src="../../../public/files/js/story/settings-dashboard.js"></script>
 
   <script>
-    window.history.forward();
-    function preventBack() {
-        window.history.forward();
-    }
-    setTimeout("preventBack()", 0);
-    window.onunload = function () { null };
-
     // Initialize Bootstrap tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
