@@ -1,14 +1,23 @@
 <?php
-// JSON response headers
-header('Content-Type: application/json');
+// Start output buffering to prevent any premature output
+ob_start();
+
+// Suppress all error output (errors will be logged instead)
 error_reporting(0);
+ini_set('display_errors', '0');
 
 // Start session to get user_id
 session_start();
 
+// Clean any previous output and set JSON header
+ob_clean();
+header('Content-Type: application/json');
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
+    ob_clean();
     echo json_encode(['success' => false, 'error' => 'User not logged in']);
+    ob_end_flush();
     exit;
 }
 
@@ -18,7 +27,9 @@ require_once __DIR__ . '/db_connection.php';
 
 // Ensure DB connection
 if (!$conn) {
+    ob_clean();
     echo json_encode(['success' => false, 'error' => 'Database connection failed']);
+    ob_end_flush();
     exit;
 }
 
@@ -63,7 +74,9 @@ if (!empty($_FILES['photo']['name'])) {
     // Accept only certain types
     $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
     if (!in_array($ext, $allowed)) {
+        ob_clean();
         echo json_encode(['success' => false, 'error' => 'Invalid file type']);
+        ob_end_flush();
         exit;
     }
 
@@ -72,7 +85,9 @@ if (!empty($_FILES['photo']['name'])) {
     $destPath = $uploadDir . $photoFilename;
 
     if (!move_uploaded_file($tmpName, $destPath)) {
+        ob_clean();
         echo json_encode(['success' => false, 'error' => 'File upload failed']);
+        ob_end_flush();
         exit;
     }
 }
@@ -103,7 +118,9 @@ if ($profile_exists) {
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
+        ob_clean();
         echo json_encode(['success' => false, 'error' => 'Failed to prepare statement: ' . $conn->error]);
+        ob_end_flush();
         exit;
     }
 
@@ -152,7 +169,9 @@ if ($profile_exists) {
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
+        ob_clean();
         echo json_encode(['success' => false, 'error' => 'Failed to prepare statement: ' . $conn->error]);
+        ob_end_flush();
         exit;
     }
 
@@ -193,7 +212,9 @@ if ($profile_exists) {
 $ok = $stmt->execute();
 
 if (!$ok) {
+    ob_clean();
     echo json_encode(['success' => false, 'error' => 'Database operation failed: ' . $stmt->error]);
+    ob_end_flush();
     $stmt->close();
     $conn->close();
     exit;
@@ -202,6 +223,8 @@ if (!$ok) {
 $stmt->close();
 $conn->close();
 
+// Clean buffer and send JSON response
+ob_clean();
 echo json_encode(['success' => true]);
+ob_end_flush();
 exit;
-?>
