@@ -1,6 +1,6 @@
 <?php
 // Load user information from session
-require_once '../../handlers/get_user_info.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

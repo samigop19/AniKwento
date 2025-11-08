@@ -1,8 +1,8 @@
 <?php
 // Load user information from session
-require_once '../../handlers/get_user_info.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
 
-require_once '/Applications/MAMP/htdocs/AniKwento/source/handlers/db_connection.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/db_connection.php';
 
 // Load teacher profile for the current logged-in user
 $sql = "SELECT * FROM teacher_profiles WHERE user_id = ?";

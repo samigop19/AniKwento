@@ -1,6 +1,6 @@
 <?php
 // public_profile.php
-require_once __DIR__ . '/../../handlers/db_connection.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/db_connection.php';
 
 //Grab the token from URL
 $token = $_GET['token'] ?? '';
