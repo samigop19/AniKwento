@@ -80,12 +80,31 @@ switch (true) {
         exit;
 
     case stripos($requestPath, 'register') !== false:
-        require_once __DIR__ . '/source/pages/auth/Register.php';
+        if (stripos($requestPath, 'verify') !== false) {
+            require_once __DIR__ . '/source/pages/auth/register-verify.php';
+        } else {
+            require_once __DIR__ . '/source/pages/auth/Register.php';
+        }
+        exit;
+
+    case stripos($requestPath, 'forgot') !== false:
+    case stripos($requestPath, 'forgotpassword') !== false:
+        require_once __DIR__ . '/source/pages/auth/ForgotPassword.php';
         exit;
 
     case stripos($requestPath, 'dashboard') !== false:
         require_once __DIR__ . '/source/pages/dashboard/StoryDashboard.php';
         exit;
+}
+
+// Check if it's an auth page route
+if (preg_match('#^auth/(.+)\.php$#', $requestPath, $matches)) {
+    $authPage = $matches[1];
+    $authFilePath = __DIR__ . '/source/pages/auth/' . $authPage . '.php';
+    if (file_exists($authFilePath)) {
+        require_once $authFilePath;
+        exit;
+    }
 }
 
 // 404 - Not Found
