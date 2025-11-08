@@ -76,31 +76,31 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                 <nav>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a href="StoryDashboard.php" class="nav-link">
+                            <a href="/source/pages/dashboard/StoryDashboard.php" class="nav-link">
                                 <img src="../../../public/files/images/StoryIC.png" class="icon" alt="">
                                 <span>My Stories</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="TeacherProfile.php" class="nav-link active">
+                            <a href="/source/pages/dashboard/TeacherProfile.php" class="nav-link active">
                                 <i class="far fa-user-circle icon"></i>
                                 <span>My Profile</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="SettingsDashboard.php" class="nav-link">
+                            <a href="/source/pages/dashboard/SettingsDashboard.php" class="nav-link">
                                 <img src="../../../public/files/images/SettingIC.png" class="icon" alt="">
                                 <span>Settings</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="StoryHelp.php" class="nav-link">
+                            <a href="/source/pages/dashboard/StoryHelp.php" class="nav-link">
                                 <img src="../../../public/files/images/HelpIC.png" class="icon" alt="">
                                 <span>Help</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../../handlers/logout_process.php" class="nav-link">
+                            <a href="/source/handlers/logout_process.php" class="nav-link">
                                 <img src="../../../public/files/images/LogoutIC.png" class="icon" alt="">
                                 <span>Logout</span>
                             </a>
