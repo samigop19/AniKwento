@@ -35,6 +35,23 @@ try {
         throw new Exception("Verification code has expired. Please register again.");
     }
 
+    // Check if user already exists
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $existing_user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($existing_user) {
+        // User already exists, just clean up pending_users
+        $stmt = $pdo->prepare("DELETE FROM pending_users WHERE email = ?");
+        $stmt->execute([$email]);
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Account already verified! Redirecting to login...'
+        ]);
+        exit;
+    }
+
     // Create user account
     $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, password, created_at) VALUES (?, ?, ?, ?, NOW())");
     $stmt->execute([
