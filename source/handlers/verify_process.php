@@ -29,7 +29,7 @@ try {
         throw new Exception("Invalid verification code");
     }
 
-    if (new DateTime() > new DateTime($pending_user['expires_at'])) {
+    if (new DateTime() > new DateTime($pending_user['verification_code_expires'])) {
         $stmt = $pdo->prepare("DELETE FROM pending_users WHERE email = ?");
         $stmt->execute([$email]);
         throw new Exception("Verification code has expired. Please register again.");

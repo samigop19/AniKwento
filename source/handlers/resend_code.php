@@ -35,7 +35,7 @@ try {
     $verification_code = sprintf('%06d', mt_rand(0, 999999));
     $expires_at = date('Y-m-d H:i:s', strtotime('+15 minutes'));
 
-    $stmt = $pdo->prepare("UPDATE pending_users SET verification_code = ?, expires_at = ? WHERE email = ?");
+    $stmt = $pdo->prepare("UPDATE pending_users SET verification_code = ?, verification_code_expires = ? WHERE email = ?");
     $stmt->execute([$verification_code, $expires_at, $email]);
 
     $mail = new PHPMailer(true);
