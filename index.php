@@ -107,8 +107,8 @@ if (preg_match('#^auth/(.+)\.php$#', $requestPath, $matches)) {
     }
 }
 
-// Handle migration and sync scripts (run_*.php, sync_*.php, migrate_*.php files in root)
-if (preg_match('/^(run_|sync_|migrate_).+\.php$/', $requestPath)) {
+// Handle migration and sync scripts (run_*.php, sync_*.php, migrate_*.php, verify_*.php files in root)
+if (preg_match('/^(run_|sync_|migrate_|verify_).+\.php$/', $requestPath)) {
     $migrationFile = __DIR__ . '/' . $requestPath;
     if (file_exists($migrationFile)) {
         require_once $migrationFile;
