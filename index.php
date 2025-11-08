@@ -107,6 +107,15 @@ if (preg_match('#^auth/(.+)\.php$#', $requestPath, $matches)) {
     }
 }
 
+// Handle migration scripts (run_*.php files in root)
+if (preg_match('/^(run_|migrate_).+\.php$/', $requestPath)) {
+    $migrationFile = __DIR__ . '/' . $requestPath;
+    if (file_exists($migrationFile)) {
+        require_once $migrationFile;
+        exit;
+    }
+}
+
 // 404 - Not Found
 http_response_code(404);
 echo "404 - Page not found: " . htmlspecialchars($requestPath);
