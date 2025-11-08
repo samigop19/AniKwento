@@ -95,6 +95,12 @@ switch (true) {
     case stripos($requestPath, 'dashboard') !== false:
         require_once __DIR__ . '/source/pages/dashboard/StoryDashboard.php';
         exit;
+
+    case stripos($requestPath, 'profile') !== false:
+    case stripos($requestPath, 'public-profile') !== false:
+        // Allow public profile access without authentication
+        require_once __DIR__ . '/source/pages/dashboard/public_profile.php';
+        exit;
 }
 
 // Check if it's an auth page route
