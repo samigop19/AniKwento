@@ -119,7 +119,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                     <div class="profile-main-info">
                         <div class="profile-picture-section">
                             <div class="profile-picture-wrapper">
-                                <img src="<?= $teacher['photo'] ? safe('/source/uploads/' . $teacher['photo']) : 'images/teacher-placeholder.png' ?>" alt="Teacher Profile" class="profile-picture" id="profilePicture">
+                                <img src="<?= $teacher['photo'] ? safe($teacher['photo']) : 'images/teacher-placeholder.png' ?>" alt="Teacher Profile" class="profile-picture" id="profilePicture">
                                 <div class="picture-overlay" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                                     <button class="edit-picture-btn" type="button">
                                         <i class="fas fa-camera"></i>
@@ -361,7 +361,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                             <p class="section-description">Upload a professional photo that parents and students will see</p>
                             <div class="picture-edit-section">
                                 <div class="current-picture">
-                                    <img src="<?= $teacher['photo'] ? safe('/source/uploads/' . $teacher['photo']) : 'images/teacher-placeholder.png' ?>" id="editProfilePicture" class="edit-profile-img" alt="Profile">
+                                    <img src="<?= $teacher['photo'] ? safe($teacher['photo']) : 'images/teacher-placeholder.png' ?>" id="editProfilePicture" class="edit-profile-img" alt="Profile">
                                 </div>
                                 <div class="picture-controls">
                                     <input type="file" id="profilePictureInput" name="photo" accept="image/*" style="display:none" onchange="handleProfilePictureChange(event)">

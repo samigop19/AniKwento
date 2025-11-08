@@ -105,6 +105,60 @@ class R2Storage {
     }
 
     /**
+     * Upload image file from temporary file
+     * @param string $tmpFilePath - Temporary file path from $_FILES
+     * @param string $filename - Desired filename in bucket (e.g., "profiles/teacher_123.jpg")
+     * @param string $mimeType - MIME type (e.g., "image/jpeg")
+     * @return array - ['success' => true, 'url' => '...', 'key' => '...'] or ['success' => false, 'error' => '...']
+     */
+    public function uploadImage($tmpFilePath, $filename, $mimeType = 'image/jpeg') {
+        try {
+            // Read file content
+            $imageData = file_get_contents($tmpFilePath);
+
+            if ($imageData === false) {
+                throw new Exception("Failed to read uploaded file");
+            }
+
+            // Upload to R2
+            $result = $this->s3Client->putObject([
+                'Bucket' => $this->bucketName,
+                'Key'    => $filename,
+                'Body'   => $imageData,
+                'ContentType' => $mimeType,
+                'CacheControl' => 'public, max-age=31536000', // Cache for 1 year
+            ]);
+
+            // Build public URL
+            if ($this->config['use_proxy'] ?? false) {
+                $publicUrl = $this->publicUrl . $filename;
+            } else {
+                $publicUrl = $this->publicUrl . '/' . $filename;
+            }
+
+            return [
+                'success' => true,
+                'url' => $publicUrl,
+                'key' => $filename,
+                'size' => strlen($imageData)
+            ];
+
+        } catch (AwsException $e) {
+            error_log("R2 Image Upload Error: " . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
+        } catch (Exception $e) {
+            error_log("Image Upload Error: " . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
      * Test connection to R2
      * @return bool
      */

@@ -62,17 +62,12 @@ if (!json_decode($skills) && $skills !== '[]') {
     $skills = json_encode([]);
 }
 
-// ---- Handle file upload ----
-$photoFilename = null;
+// ---- Handle file upload to R2 ----
+$photoUrl = null;
 
 if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
     try {
-        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/source/uploads/';
-        if (!is_dir($uploadDir)) {
-            if (!mkdir($uploadDir, 0777, true)) {
-                throw new Exception('Failed to create upload directory');
-            }
-        }
+        require_once __DIR__ . '/r2_storage.php';
 
         $tmpName = $_FILES['photo']['tmp_name'];
         $originalName = basename($_FILES['photo']['name']);
@@ -82,18 +77,35 @@ if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR
         $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
         if (!in_array($ext, $allowed)) {
             ob_clean();
-            echo json_encode(['success' => false, 'error' => 'Invalid file type']);
+            echo json_encode(['success' => false, 'error' => 'Invalid file type. Allowed: jpg, jpeg, png, gif, webp']);
             ob_end_flush();
             exit;
         }
 
-        // Unique file name
-        $photoFilename = uniqid('teacher_', true) . '.' . $ext;
-        $destPath = $uploadDir . $photoFilename;
+        // Determine MIME type
+        $mimeTypes = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            'webp' => 'image/webp'
+        ];
+        $mimeType = $mimeTypes[$ext] ?? 'image/jpeg';
 
-        if (!move_uploaded_file($tmpName, $destPath)) {
-            throw new Exception('Failed to move uploaded file');
+        // Generate unique filename for R2
+        $r2Filename = 'profiles/teacher_' . $current_user_id . '_' . uniqid() . '.' . $ext;
+
+        // Upload to R2
+        $r2Storage = new R2Storage();
+        $uploadResult = $r2Storage->uploadImage($tmpName, $r2Filename, $mimeType);
+
+        if (!$uploadResult['success']) {
+            throw new Exception($uploadResult['error'] ?? 'R2 upload failed');
         }
+
+        $photoUrl = $uploadResult['url'];
+        error_log("Successfully uploaded profile picture to R2: " . $photoUrl);
+
     } catch (Exception $e) {
         error_log("File upload error in save_profile.php: " . $e->getMessage());
         ob_clean();
@@ -129,7 +141,7 @@ try {
 
 if ($profile_exists) {
     // Update existing profile
-    if ($photoFilename) {
+    if ($photoUrl) {
         $sql = "UPDATE teacher_profiles
                 SET full_name=?, position=?, degree=?, institution=?, year_graduated=?, experience_years=?,
                     experience_desc=?, email=?, certifications=?, skills=?, photo=?
@@ -150,7 +162,7 @@ if ($profile_exists) {
         exit;
     }
 
-    if ($photoFilename) {
+    if ($photoUrl) {
         $stmt->bind_param(
             "ssssiisssssi",
             $full_name,
@@ -163,7 +175,7 @@ if ($profile_exists) {
             $email,
             $certifications,
             $skills,
-            $photoFilename,
+            $photoUrl,
             $current_user_id
         );
     } else {
@@ -184,7 +196,7 @@ if ($profile_exists) {
     }
 } else {
     // Insert new profile (this handles cases where profile wasn't auto-created)
-    if ($photoFilename) {
+    if ($photoUrl) {
         $sql = "INSERT INTO teacher_profiles (user_id, full_name, position, degree, institution, year_graduated, experience_years, experience_desc, email, certifications, skills, photo)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     } else {
@@ -201,7 +213,7 @@ if ($profile_exists) {
         exit;
     }
 
-    if ($photoFilename) {
+    if ($photoUrl) {
         $stmt->bind_param(
             "issssiisssss",
             $current_user_id,
@@ -215,7 +227,7 @@ if ($profile_exists) {
             $email,
             $certifications,
             $skills,
-            $photoFilename
+            $photoUrl
         );
     } else {
         $stmt->bind_param(
