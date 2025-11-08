@@ -1,11 +1,34 @@
 <?php
 session_start();
-header('Content-Type: application/json');
+
+// Set headers for JSON response and CORS
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
+
+// Ensure vendor/autoload.php exists
+if (!file_exists(__DIR__ . '/../../vendor/autoload.php')) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Server configuration error: Composer dependencies not installed'
+    ]);
+    exit;
+}
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../config/env.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
+// Check if required POST data exists
+if (!isset($_POST['first_name']) || !isset($_POST['last_name']) || !isset($_POST['email']) || !isset($_POST['password'])) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Missing required fields'
+    ]);
+    exit;
+}
 
 try {
     $pdo = new PDO(
