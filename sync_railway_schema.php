@@ -15,8 +15,6 @@
  * - user_settings
  */
 
-require_once __DIR__ . '/source/config/database.php';
-
 // Use Railway database connection
 // Try both MYSQL_ and DB_ prefixes for compatibility
 $host = getenv('MYSQL_HOST') ?: getenv('DB_HOST');

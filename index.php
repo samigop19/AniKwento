@@ -107,11 +107,20 @@ if (preg_match('#^auth/(.+)\.php$#', $requestPath, $matches)) {
     }
 }
 
-// Handle migration scripts (run_*.php files in root)
-if (preg_match('/^(run_|migrate_).+\.php$/', $requestPath)) {
+// Handle migration and sync scripts (run_*.php, sync_*.php, migrate_*.php files in root)
+if (preg_match('/^(run_|sync_|migrate_).+\.php$/', $requestPath)) {
     $migrationFile = __DIR__ . '/' . $requestPath;
     if (file_exists($migrationFile)) {
         require_once $migrationFile;
+        exit;
+    }
+}
+
+// Also handle these specific scripts directly
+if ($requestPath === 'run_schema_sync.php' || $requestPath === 'sync_railway_schema.php') {
+    $scriptFile = __DIR__ . '/' . $requestPath;
+    if (file_exists($scriptFile)) {
+        require_once $scriptFile;
         exit;
     }
 }
