@@ -91,11 +91,11 @@ try {
     $stmt = $pdo->prepare("INSERT INTO pending_users (first_name, last_name, email, password, verification_code, verification_code_expires) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->execute([$first_name, $last_name, $email, $hashed_password, $verification_code, $expires_at]);
 
-    // Use Resend API for email sending (works better on Railway than SMTP)
-    $resendApiKey = EnvLoader::get('RESEND_API_KEY');
+    // Use SendGrid API for email sending (works on Railway with HTTP API)
+    $sendgridApiKey = EnvLoader::get('SENDGRID_API_KEY');
 
-    if (!$resendApiKey) {
-        throw new Exception("RESEND_API_KEY not configured");
+    if (!$sendgridApiKey) {
+        throw new Exception("SENDGRID_API_KEY not configured");
     }
 
     $emailHtml = "
@@ -156,19 +156,34 @@ try {
     </body>
     </html>";
 
-    // Send email via Resend API
+    // Send email via SendGrid API
+    $fromEmail = EnvLoader::get('SENDGRID_FROM_EMAIL', 'noreply@anikwento.com');
+    $fromName = EnvLoader::get('SENDGRID_FROM_NAME', 'AniKwento');
+
     $data = [
-        'from' => 'AniKwento <onboarding@resend.dev>',
-        'to' => [$email],
-        'subject' => 'AniKwento - Email Verification Code',
-        'html' => $emailHtml
+        'personalizations' => [
+            [
+                'to' => [['email' => $email]],
+                'subject' => 'AniKwento - Email Verification Code'
+            ]
+        ],
+        'from' => [
+            'email' => $fromEmail,
+            'name' => $fromName
+        ],
+        'content' => [
+            [
+                'type' => 'text/html',
+                'value' => $emailHtml
+            ]
+        ]
     ];
 
-    $ch = curl_init('https://api.resend.com/emails');
+    $ch = curl_init('https://api.sendgrid.com/v3/mail/send');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Authorization: Bearer ' . $resendApiKey,
+        'Authorization: Bearer ' . $sendgridApiKey,
         'Content-Type: application/json'
     ]);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
@@ -180,12 +195,18 @@ try {
     curl_close($ch);
 
     // Log for debugging
-    error_log("Resend API Response Code: " . $httpCode);
-    error_log("Resend API Response: " . $response);
+    error_log("SendGrid API Response Code: " . $httpCode);
+    error_log("SendGrid API Response: " . $response);
 
-    if ($httpCode !== 200) {
+    // SendGrid returns 202 for successful acceptance
+    if ($httpCode !== 202) {
         $errorData = json_decode($response, true);
-        $errorMessage = $errorData['message'] ?? 'Unknown error';
+        $errorMessage = 'Unknown error';
+
+        if (isset($errorData['errors']) && is_array($errorData['errors']) && count($errorData['errors']) > 0) {
+            $errorMessage = $errorData['errors'][0]['message'] ?? $errorMessage;
+        }
+
         throw new Exception("Failed to send email: " . $errorMessage);
     }
 
