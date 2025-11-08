@@ -43,7 +43,7 @@ async function loadQuizData() {
             console.log('🔄 Fetching fresh quiz data from database for story ID:', storyId);
 
             try {
-                const response = await fetch(`../../../source/handlers/get_story_detail.php?story_id=${storyId}`);
+                const response = await fetch(`/source/handlers/get_story_detail.php?story_id=${storyId}`);
                 const result = await response.json();
 
                 if (result.success && result.story.afterStoryQuestions) {

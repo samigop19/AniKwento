@@ -4,7 +4,7 @@
  */
 
 const TTSIntegration = {
-    apiEndpoint: '../../handlers/elevenlabs_tts.php',
+    apiEndpoint: '/source/handlers/elevenlabs_tts.php',
     audioCache: new Map(), // Cache generated audio to avoid duplicate API calls
     visemeCache: new Map(), // Cache viseme data for lip sync
 

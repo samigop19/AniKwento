@@ -272,7 +272,7 @@ async function playStoryById(storyId) {
 
     try {
         // Fetch full story details
-        const response = await fetch(`../../handlers/get_story_detail.php?story_id=${storyId}`);
+        const response = await fetch(`/source/handlers/get_story_detail.php?story_id=${storyId}`);
 
         if (!response.ok) {
             throw new Error('Failed to load story details');

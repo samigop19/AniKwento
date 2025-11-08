@@ -54,7 +54,7 @@ header('Content-Type: application/json');
 // Start session to get user_id
 session_start();
 
-require_once 'db_connection.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/db_connection.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {

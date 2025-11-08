@@ -69,8 +69,8 @@ ob_start();
 // Set JSON header
 header('Content-Type: application/json');
 
-require_once 'db_connection.php';
-require_once 'r2_storage.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/db_connection.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/r2_storage.php';
 
 // Check for database connection error
 if (isset($db_error)) {
