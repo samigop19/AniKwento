@@ -1,0 +1,52 @@
+# Railway Deployment - Ignore Files
+# Similar to .gitignore but for Railway deployments
+
+# Environment files (Railway provides environment variables)
+.env
+.env.*
+
+# Local development files
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# Documentation and guides (not needed in production)
+SETUP.md
+RAILWAY_DEPLOYMENT_GUIDE.md
+DEPLOYMENT_SUMMARY.md
+DEPLOY_CHECKLIST.md
+README.md
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# Local MAMP/development files
+/Applications/
+
+# Composer dev dependencies (already excluded by composer install --no-dev)
+vendor/*/test/
+vendor/*/tests/
+
+# Database files (Railway uses its own MySQL)
+*.sql.gz
+*.dump
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Temporary files
+tmp/
+temp/
+cache/
