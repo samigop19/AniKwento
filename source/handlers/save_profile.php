@@ -51,7 +51,7 @@ if (!json_decode($skills) && $skills !== '[]') {
 $photoFilename = null;
 
 if (!empty($_FILES['photo']['name'])) {
-    $uploadDir = '../uploads/';
+    $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/source/uploads/';
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }
