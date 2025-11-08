@@ -2,16 +2,17 @@
 // Start output buffering to prevent any premature output
 ob_start();
 
-// Suppress all error output (errors will be logged instead)
-error_reporting(0);
+// Enable error logging but suppress display
+error_reporting(E_ALL);
 ini_set('display_errors', '0');
+ini_set('log_errors', '1');
 
 // Start session to get user_id
 session_start();
 
 // Clean any previous output and set JSON header
 ob_clean();
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -23,12 +24,15 @@ if (!isset($_SESSION['user_id'])) {
 
 $current_user_id = $_SESSION['user_id'];
 
-require_once __DIR__ . '/db_connection.php';
+// Use absolute path for Railway compatibility
+require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/db_connection.php';
 
-// Ensure DB connection
-if (!$conn) {
+// Ensure DB connection exists and is valid
+if (!isset($conn) || $conn->connect_error) {
     ob_clean();
-    echo json_encode(['success' => false, 'error' => 'Database connection failed']);
+    $error_msg = isset($conn) ? $conn->connect_error : 'Database connection object not initialized';
+    error_log("DB Connection Error in save_profile.php: " . $error_msg);
+    echo json_encode(['success' => false, 'error' => 'Database connection failed: ' . $error_msg]);
     ob_end_flush();
     exit;
 }
@@ -61,45 +65,67 @@ if (!json_decode($skills) && $skills !== '[]') {
 // ---- Handle file upload ----
 $photoFilename = null;
 
-if (!empty($_FILES['photo']['name'])) {
-    $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/source/uploads/';
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
-    }
+if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+    try {
+        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/source/uploads/';
+        if (!is_dir($uploadDir)) {
+            if (!mkdir($uploadDir, 0777, true)) {
+                throw new Exception('Failed to create upload directory');
+            }
+        }
 
-    $tmpName = $_FILES['photo']['tmp_name'];
-    $originalName = basename($_FILES['photo']['name']);
-    $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+        $tmpName = $_FILES['photo']['tmp_name'];
+        $originalName = basename($_FILES['photo']['name']);
+        $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
 
-    // Accept only certain types
-    $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-    if (!in_array($ext, $allowed)) {
+        // Accept only certain types
+        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        if (!in_array($ext, $allowed)) {
+            ob_clean();
+            echo json_encode(['success' => false, 'error' => 'Invalid file type']);
+            ob_end_flush();
+            exit;
+        }
+
+        // Unique file name
+        $photoFilename = uniqid('teacher_', true) . '.' . $ext;
+        $destPath = $uploadDir . $photoFilename;
+
+        if (!move_uploaded_file($tmpName, $destPath)) {
+            throw new Exception('Failed to move uploaded file');
+        }
+    } catch (Exception $e) {
+        error_log("File upload error in save_profile.php: " . $e->getMessage());
         ob_clean();
-        echo json_encode(['success' => false, 'error' => 'Invalid file type']);
+        echo json_encode(['success' => false, 'error' => 'File upload failed: ' . $e->getMessage()]);
         ob_end_flush();
         exit;
     }
-
-    // Unique file name
-    $photoFilename = uniqid('teacher_', true) . '.' . $ext;
-    $destPath = $uploadDir . $photoFilename;
-
-    if (!move_uploaded_file($tmpName, $destPath)) {
-        ob_clean();
-        echo json_encode(['success' => false, 'error' => 'File upload failed']);
-        ob_end_flush();
-        exit;
-    }
+} elseif (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] !== UPLOAD_ERR_OK) {
+    error_log("File upload error code: " . $_FILES['photo']['error']);
 }
 
 // ---- Update or Insert teacher row for the current user ----
-// First check if profile exists for this user
-$check_stmt = $conn->prepare("SELECT id FROM teacher_profiles WHERE user_id = ?");
-$check_stmt->bind_param("i", $current_user_id);
-$check_stmt->execute();
-$check_result = $check_stmt->get_result();
-$profile_exists = $check_result->num_rows > 0;
-$check_stmt->close();
+try {
+    // First check if profile exists for this user
+    $check_stmt = $conn->prepare("SELECT id FROM teacher_profiles WHERE user_id = ?");
+    if (!$check_stmt) {
+        throw new Exception("Failed to prepare check statement: " . $conn->error);
+    }
+    $check_stmt->bind_param("i", $current_user_id);
+    if (!$check_stmt->execute()) {
+        throw new Exception("Failed to execute check statement: " . $check_stmt->error);
+    }
+    $check_result = $check_stmt->get_result();
+    $profile_exists = $check_result->num_rows > 0;
+    $check_stmt->close();
+} catch (Exception $e) {
+    error_log("Database check error in save_profile.php: " . $e->getMessage());
+    ob_clean();
+    echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
+    ob_end_flush();
+    exit;
+}
 
 if ($profile_exists) {
     // Update existing profile
@@ -209,22 +235,26 @@ if ($profile_exists) {
     }
 }
 
-$ok = $stmt->execute();
+try {
+    $ok = $stmt->execute();
 
-if (!$ok) {
-    ob_clean();
-    echo json_encode(['success' => false, 'error' => 'Database operation failed: ' . $stmt->error]);
-    ob_end_flush();
+    if (!$ok) {
+        throw new Exception('Database operation failed: ' . $stmt->error);
+    }
+
     $stmt->close();
     $conn->close();
-    exit;
+
+    // Clean buffer and send JSON response
+    ob_clean();
+    echo json_encode(['success' => true]);
+    ob_end_flush();
+} catch (Exception $e) {
+    error_log("Database operation error in save_profile.php: " . $e->getMessage());
+    ob_clean();
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    ob_end_flush();
+    if (isset($stmt)) $stmt->close();
+    if (isset($conn)) $conn->close();
 }
-
-$stmt->close();
-$conn->close();
-
-// Clean buffer and send JSON response
-ob_clean();
-echo json_encode(['success' => true]);
-ob_end_flush();
 exit;
