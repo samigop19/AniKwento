@@ -90,7 +90,7 @@ try {
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $expires_at = date('Y-m-d H:i:s', strtotime('+15 minutes'));
 
-    $stmt = $pdo->prepare("INSERT INTO pending_users (first_name, last_name, email, password, verification_code, expires_at) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO pending_users (first_name, last_name, email, password, verification_code, verification_code_expires) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->execute([$first_name, $last_name, $email, $hashed_password, $verification_code, $expires_at]);
 
     $mail = new PHPMailer(true);
