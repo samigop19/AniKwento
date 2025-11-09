@@ -186,7 +186,7 @@
     /**
      * Handle saving custom voice from modal
      */
-    function handleSaveCustomVoice() {
+    async function handleSaveCustomVoice() {
         const form = document.getElementById('addVoiceForm');
 
         // Validate form
@@ -210,6 +210,29 @@
             value: 'custom_' + Date.now() // Unique identifier
         };
 
+        // Disable save button and show loading
+        saveVoiceBtn.disabled = true;
+        saveVoiceBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Preview...';
+
+        try {
+            // Generate voice preview
+            const previewResult = await generateCustomVoicePreview(voiceId, customVoice.value);
+
+            if (previewResult.success) {
+                // Store the preview URL in the custom voice object
+                customVoice.previewUrl = previewResult.preview_url;
+
+                showToast('Voice preview generated successfully!', 'success');
+            } else {
+                // Continue even if preview generation fails
+                console.warn('Preview generation failed:', previewResult.error);
+                showToast('Voice added but preview generation failed', 'warning');
+            }
+        } catch (error) {
+            console.error('Error generating preview:', error);
+            showToast('Voice added but preview generation failed', 'warning');
+        }
+
         // Add to custom voices array
         customVoices.push(customVoice);
 
@@ -220,6 +243,9 @@
         newOption.textContent = name;
         newOption.dataset.voiceId = voiceId;
         newOption.dataset.avatarUrl = avatarUrl;
+        if (customVoice.previewUrl) {
+            newOption.dataset.previewUrl = customVoice.previewUrl;
+        }
         voiceSelector.insertBefore(newOption, addVoiceOption);
 
         // Select the new voice
@@ -232,6 +258,10 @@
         // Close modal
         addVoiceModal.hide();
 
+        // Re-enable save button
+        saveVoiceBtn.disabled = false;
+        saveVoiceBtn.innerHTML = '<i class="fas fa-save"></i> Save Voice';
+
         // Update preview
         updatePreviewPanel();
         updateDeleteButtonVisibility();
@@ -241,6 +271,31 @@
 
         // Save settings to database immediately
         saveSettings();
+    }
+
+    /**
+     * Generate preview for custom voice
+     */
+    async function generateCustomVoicePreview(voiceId, customVoiceKey) {
+        try {
+            const formData = new FormData();
+            formData.append('voice_id', voiceId);
+            formData.append('custom_voice_key', customVoiceKey);
+
+            const response = await fetch('/source/handlers/generate_custom_voice_preview.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error generating custom voice preview:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     /**
@@ -366,6 +421,9 @@
                     // Ensure avatar URL has lip sync support
                     const enhancedAvatarUrl = ensureLipSyncSupport(settings.custom_avatar_url || '');
 
+                    // Build preview URL for custom voice
+                    const previewUrl = `https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/${voiceValue}-preview.mp3`;
+
                     // Create and add the custom voice option
                     const addVoiceOption = document.getElementById('addVoiceOption');
                     const newOption = document.createElement('option');
@@ -373,6 +431,7 @@
                     newOption.textContent = settings.custom_voice_name;
                     newOption.dataset.voiceId = settings.custom_voice_id;
                     newOption.dataset.avatarUrl = enhancedAvatarUrl;
+                    newOption.dataset.previewUrl = previewUrl;
                     voiceSelector.insertBefore(newOption, addVoiceOption);
 
                     // Add to custom voices array
@@ -380,7 +439,8 @@
                         name: settings.custom_voice_name,
                         voiceId: settings.custom_voice_id,
                         avatarUrl: enhancedAvatarUrl,
-                        value: voiceValue
+                        value: voiceValue,
+                        previewUrl: previewUrl
                     });
                 }
             }
@@ -760,11 +820,22 @@
             return;
         }
 
-        const voicePreviewPath = VOICE_PREVIEW_PATHS[selectedVoice];
+        // Check for default voice preview
+        let voicePreviewPath = VOICE_PREVIEW_PATHS[selectedVoice];
+
+        // Check for custom voice preview
+        if (!voicePreviewPath && selectedVoice.startsWith('custom_')) {
+            const selectedOption = voiceSelector.options[voiceSelector.selectedIndex];
+            voicePreviewPath = selectedOption.dataset.previewUrl;
+
+            if (!voicePreviewPath) {
+                showToast('Preview not available for this custom voice', 'info');
+                return;
+            }
+        }
 
         if (!voicePreviewPath) {
-            // For custom voices
-            showToast('Preview not available for custom voices', 'info');
+            showToast('Preview not available', 'info');
             return;
         }
 
