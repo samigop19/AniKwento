@@ -80,12 +80,14 @@ if (!$storyId) {
 
 try {
     // ============================================
-    // 1. Get story metadata
+    // 1. Get story metadata with avatar from custom_voices
     // ============================================
     $storyQuery = "
         SELECT
-            s.*
+            s.*,
+            cv.avatar_url as custom_voice_avatar_url
         FROM stories s
+        LEFT JOIN custom_voices cv ON s.selected_voice = cv.voice_key
         WHERE s.id = ? AND s.user_id = ?
     ";
 
@@ -253,7 +255,7 @@ try {
         'selectedVoice' => $storyRow['selected_voice'],
         'voiceId' => $storyRow['voice_id'],
         'voiceNameForTTS' => $storyRow['voice_name_for_tts'],
-        'avatarUrl' => $storyRow['avatar_url'],
+        'avatarUrl' => $storyRow['custom_voice_avatar_url'] ?: $storyRow['avatar_url'],
         'music' => [
             'enabled' => !empty($storyRow['music_file']),
             'name' => $storyRow['music_name'],
