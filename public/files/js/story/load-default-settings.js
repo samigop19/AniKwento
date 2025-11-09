@@ -178,6 +178,12 @@
                     const enhancedAvatarUrl = ensureLipSyncSupport(voice.avatar_url);
                     customOption.setAttribute('data-avatar-url', enhancedAvatarUrl);
                 }
+
+                // Add preview URL if available
+                if (voice.preview_url) {
+                    customOption.setAttribute('data-preview-url', voice.preview_url);
+                }
+
                 voiceSelect.appendChild(customOption);
             });
         }

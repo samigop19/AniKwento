@@ -62,6 +62,7 @@
         const previewBtn = document.getElementById('voicePreviewBtn');
         const previewIcon = document.getElementById('voicePreviewIcon');
         const previewText = document.getElementById('voicePreviewText');
+        const voiceSelect = document.getElementById('voiceOption');
 
         try {
             // Update button to loading state
@@ -77,35 +78,51 @@
 
             console.log(`🎤 Loading preview for ${voiceName} voice...`);
 
-            // Try to load from R2 CDN first
-            const cacheFile = VOICE_CACHE_FILES[voiceName];
             let audioSource = null;
 
-            if (cacheFile) {
-                // Use R2 CDN URL for voice previews
-                const r2Url = R2_VOICE_PREVIEW_BASE + cacheFile;
+            // Check if this is a custom voice (starts with 'custom_')
+            if (voiceName.startsWith('custom_')) {
+                // Get the selected option to access preview URL
+                const selectedOption = voiceSelect.options[voiceSelect.selectedIndex];
+                const customPreviewUrl = selectedOption ? selectedOption.dataset.previewUrl : null;
 
-                try {
-                    // Check if cached file exists on R2
-                    const response = await fetch(r2Url);
-
-                    if (response.ok) {
-                        console.log(`✅ Loading cached preview for ${voiceName} from R2`);
-                        audioSource = r2Url;
-                    } else {
-                        console.log(`⚠️ Cached file not found on R2, generating new preview...`);
-                        audioSource = await generateAndCachePreview(voiceName, cacheFile);
-                    }
-                } catch (fetchError) {
-                    console.log(`⚠️ R2 fetch failed, generating new preview...`);
-                    audioSource = await generateAndCachePreview(voiceName, cacheFile);
+                if (customPreviewUrl) {
+                    console.log(`✅ Using custom voice preview URL`);
+                    audioSource = customPreviewUrl;
+                } else {
+                    console.log(`⚠️ No preview URL found for custom voice`);
+                    throw new Error('Preview not available for this custom voice');
                 }
             } else {
-                // No cache file defined, generate on-the-fly
-                if (typeof TTSIntegration === 'undefined') {
-                    throw new Error('TTS Integration not loaded');
+                // Handle default voices
+                const cacheFile = VOICE_CACHE_FILES[voiceName];
+
+                if (cacheFile) {
+                    // Use R2 CDN URL for voice previews
+                    const r2Url = R2_VOICE_PREVIEW_BASE + cacheFile;
+
+                    try {
+                        // Check if cached file exists on R2
+                        const response = await fetch(r2Url);
+
+                        if (response.ok) {
+                            console.log(`✅ Loading cached preview for ${voiceName} from R2`);
+                            audioSource = r2Url;
+                        } else {
+                            console.log(`⚠️ Cached file not found on R2, generating new preview...`);
+                            audioSource = await generateAndCachePreview(voiceName, cacheFile);
+                        }
+                    } catch (fetchError) {
+                        console.log(`⚠️ R2 fetch failed, generating new preview...`);
+                        audioSource = await generateAndCachePreview(voiceName, cacheFile);
+                    }
+                } else {
+                    // No cache file defined, generate on-the-fly
+                    if (typeof TTSIntegration === 'undefined') {
+                        throw new Error('TTS Integration not loaded');
+                    }
+                    audioSource = await TTSIntegration.generateSpeech(PREVIEW_TEXT, voiceName);
                 }
-                audioSource = await TTSIntegration.generateSpeech(PREVIEW_TEXT, voiceName);
             }
 
             // Create and play audio
