@@ -43,11 +43,14 @@
         // Initialize question timing state (call this before loading settings)
         handleQuestionTimingChange();
 
-        // Load existing settings
-        loadSettings();
+        // Load custom voices first, then settings
+        loadCustomVoices().then(() => {
+            // Load existing settings
+            loadSettings();
 
-        // Initialize preview panel
-        updatePreviewPanel();
+            // Initialize preview panel
+            updatePreviewPanel();
+        });
     });
 
     /**
@@ -108,6 +111,47 @@
     }
 
     /**
+     * Load custom voices from database
+     */
+    async function loadCustomVoices() {
+        try {
+            const response = await fetch('/source/handlers/get_custom_voices.php');
+            const data = await response.json();
+
+            if (data.success) {
+                customVoices = data.custom_voices || [];
+                console.log('Loaded custom voices:', customVoices);
+
+                // Add custom voices to the dropdown
+                const addVoiceOption = document.getElementById('addVoiceOption');
+
+                // Remove any existing custom voice options first
+                const existingCustomOptions = voiceSelector.querySelectorAll('option[value^="custom_"]');
+                existingCustomOptions.forEach(opt => opt.remove());
+
+                // Add each custom voice to the dropdown
+                customVoices.forEach(voice => {
+                    const newOption = document.createElement('option');
+                    newOption.value = voice.voice_key;
+                    newOption.textContent = voice.voice_name;
+                    newOption.dataset.voiceId = voice.voice_id;
+                    newOption.dataset.avatarUrl = voice.avatar_url || '';
+                    newOption.dataset.previewUrl = voice.preview_url || '';
+                    voiceSelector.insertBefore(newOption, addVoiceOption);
+                });
+
+                return true;
+            } else {
+                console.warn('Failed to load custom voices:', data.error);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error loading custom voices:', error);
+            return false;
+        }
+    }
+
+    /**
      * Handle voice selector change - show modal for "Add Voice"
      */
     function handleVoiceSelectorChange() {
@@ -145,7 +189,7 @@
     /**
      * Handle deleting a custom voice
      */
-    function handleDeleteCustomVoice() {
+    async function handleDeleteCustomVoice() {
         const selectedValue = voiceSelector.value;
 
         // Only allow deleting custom voices
@@ -162,25 +206,45 @@
             return;
         }
 
-        // Remove from custom voices array
-        customVoices = customVoices.filter(v => v.value !== selectedValue);
+        try {
+            // Delete from database
+            const formData = new FormData();
+            formData.append('voice_key', selectedValue);
 
-        // Remove option from dropdown
-        selectedOption.remove();
+            const response = await fetch('/source/handlers/delete_custom_voice.php', {
+                method: 'POST',
+                body: formData
+            });
 
-        // Select default voice
-        voiceSelector.value = 'Rachel';
-        voiceSelector.dataset.previousValue = 'Rachel';
+            const data = await response.json();
 
-        // Update UI
-        updatePreviewPanel();
-        updateDeleteButtonVisibility();
+            if (data.success) {
+                // Remove from custom voices array
+                customVoices = customVoices.filter(v => v.voice_key !== selectedValue);
 
-        // Show success message
-        showToast('Custom voice deleted successfully!', 'success');
+                // Remove option from dropdown
+                selectedOption.remove();
 
-        // Save settings to clear from database
-        saveSettings();
+                // Select default voice
+                voiceSelector.value = 'Rachel';
+                voiceSelector.dataset.previousValue = 'Rachel';
+
+                // Update UI
+                updatePreviewPanel();
+                updateDeleteButtonVisibility();
+
+                // Show success message
+                showToast('Custom voice deleted successfully!', 'success');
+
+                // Save settings to update selected voice if needed
+                saveSettings();
+            } else {
+                showToast('Failed to delete custom voice: ' + data.error, 'error');
+            }
+        } catch (error) {
+            console.error('Error deleting custom voice:', error);
+            showToast('Error deleting custom voice', 'error');
+        }
     }
 
     /**
@@ -233,44 +297,72 @@
             showToast('Voice added but preview generation failed', 'warning');
         }
 
-        // Add to custom voices array
-        customVoices.push(customVoice);
+        // Save custom voice to database
+        try {
+            const saveFormData = new FormData();
+            saveFormData.append('voice_key', customVoice.value);
+            saveFormData.append('voice_name', name);
+            saveFormData.append('voice_id', voiceId);
+            saveFormData.append('avatar_url', avatarUrl);
+            saveFormData.append('preview_url', customVoice.previewUrl || '');
 
-        // Add option to dropdown (before "Add Voice" option)
-        const addVoiceOption = document.getElementById('addVoiceOption');
-        const newOption = document.createElement('option');
-        newOption.value = customVoice.value;
-        newOption.textContent = name;
-        newOption.dataset.voiceId = voiceId;
-        newOption.dataset.avatarUrl = avatarUrl;
-        if (customVoice.previewUrl) {
-            newOption.dataset.previewUrl = customVoice.previewUrl;
+            const saveResponse = await fetch('/source/handlers/save_custom_voice.php', {
+                method: 'POST',
+                body: saveFormData
+            });
+
+            const saveData = await saveResponse.json();
+
+            if (saveData.success) {
+                // Add to custom voices array
+                customVoices.push(customVoice);
+
+                // Add option to dropdown (before "Add Voice" option)
+                const addVoiceOption = document.getElementById('addVoiceOption');
+                const newOption = document.createElement('option');
+                newOption.value = customVoice.value;
+                newOption.textContent = name;
+                newOption.dataset.voiceId = voiceId;
+                newOption.dataset.avatarUrl = avatarUrl;
+                if (customVoice.previewUrl) {
+                    newOption.dataset.previewUrl = customVoice.previewUrl;
+                }
+                voiceSelector.insertBefore(newOption, addVoiceOption);
+
+                // Select the new voice
+                voiceSelector.value = customVoice.value;
+                voiceSelector.dataset.previousValue = customVoice.value;
+
+                // Clear form
+                form.reset();
+
+                // Close modal
+                addVoiceModal.hide();
+
+                // Re-enable save button
+                saveVoiceBtn.disabled = false;
+                saveVoiceBtn.innerHTML = '<i class="fas fa-save"></i> Save Voice';
+
+                // Update preview
+                updatePreviewPanel();
+                updateDeleteButtonVisibility();
+
+                // Show success message
+                showToast('Custom voice added successfully!', 'success');
+
+                // Save settings to database immediately to update selected voice
+                saveSettings();
+            } else {
+                throw new Error(saveData.error || 'Failed to save custom voice');
+            }
+        } catch (error) {
+            console.error('Error saving custom voice:', error);
+            showToast('Error saving custom voice: ' + error.message, 'error');
+
+            // Re-enable save button
+            saveVoiceBtn.disabled = false;
+            saveVoiceBtn.innerHTML = '<i class="fas fa-save"></i> Save Voice';
         }
-        voiceSelector.insertBefore(newOption, addVoiceOption);
-
-        // Select the new voice
-        voiceSelector.value = customVoice.value;
-        voiceSelector.dataset.previousValue = customVoice.value;
-
-        // Clear form
-        form.reset();
-
-        // Close modal
-        addVoiceModal.hide();
-
-        // Re-enable save button
-        saveVoiceBtn.disabled = false;
-        saveVoiceBtn.innerHTML = '<i class="fas fa-save"></i> Save Voice';
-
-        // Update preview
-        updatePreviewPanel();
-        updateDeleteButtonVisibility();
-
-        // Show success message
-        showToast('Custom voice added successfully!', 'success');
-
-        // Save settings to database immediately
-        saveSettings();
     }
 
     /**
@@ -412,40 +504,8 @@
                 voiceValue = 'Rachel';
             }
 
-            // Check if it's a custom voice
-            if (voiceValue.startsWith('custom_') && settings.custom_voice_id && settings.custom_voice_name) {
-                // Add the custom voice to the dropdown if it doesn't exist
-                let existingOption = voiceSelector.querySelector(`option[value="${voiceValue}"]`);
-
-                if (!existingOption) {
-                    // Ensure avatar URL has lip sync support
-                    const enhancedAvatarUrl = ensureLipSyncSupport(settings.custom_avatar_url || '');
-
-                    // Use preview URL from database, or fallback to constructed URL
-                    const previewUrl = settings.custom_voice_preview_url ||
-                                     `https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/${voiceValue}-preview.mp3`;
-
-                    // Create and add the custom voice option
-                    const addVoiceOption = document.getElementById('addVoiceOption');
-                    const newOption = document.createElement('option');
-                    newOption.value = voiceValue;
-                    newOption.textContent = settings.custom_voice_name;
-                    newOption.dataset.voiceId = settings.custom_voice_id;
-                    newOption.dataset.avatarUrl = enhancedAvatarUrl;
-                    newOption.dataset.previewUrl = previewUrl;
-                    voiceSelector.insertBefore(newOption, addVoiceOption);
-
-                    // Add to custom voices array
-                    customVoices.push({
-                        name: settings.custom_voice_name,
-                        voiceId: settings.custom_voice_id,
-                        avatarUrl: enhancedAvatarUrl,
-                        value: voiceValue,
-                        previewUrl: previewUrl
-                    });
-                }
-            }
-
+            // Custom voices are already loaded from the custom_voices table
+            // Just select the saved voice
             voiceSelector.value = voiceValue;
             voiceSelector.dataset.previousValue = voiceValue;
         }

@@ -19,12 +19,42 @@
         question_types: []
     };
 
+    // Global storage for custom voices
+    window.customVoices = [];
+
+    /**
+     * Load custom voices from server
+     */
+    async function loadCustomVoices() {
+        try {
+            console.log('📥 Loading custom voices...');
+
+            const response = await fetch('/source/handlers/get_custom_voices.php');
+            const data = await response.json();
+
+            if (data.success) {
+                window.customVoices = data.custom_voices || [];
+                console.log('✅ Custom voices loaded:', window.customVoices);
+                return true;
+            } else {
+                console.warn('⚠️ No custom voices found');
+                return false;
+            }
+        } catch (error) {
+            console.error('❌ Error loading custom voices:', error);
+            return false;
+        }
+    }
+
     /**
      * Load user settings from server
      */
     async function loadUserSettings() {
         try {
             console.log('📥 Loading user default settings...');
+
+            // Load custom voices first
+            await loadCustomVoices();
 
             const response = await fetch('/source/handlers/get_settings.php');
             const data = await response.json();
@@ -131,32 +161,43 @@
             return;
         }
 
-        // Check if custom voice is configured
-        if (window.userSettings.custom_voice_id && window.userSettings.custom_voice_name) {
-            // Add custom voice option if it doesn't exist
-            let customOption = voiceSelect.querySelector('option[value="custom"]');
-            if (!customOption) {
-                customOption = document.createElement('option');
-                customOption.value = 'custom';
-                customOption.setAttribute('data-voice-id', window.userSettings.custom_voice_id);
+        // Remove any existing custom voice options first
+        const existingCustomOptions = voiceSelect.querySelectorAll('option[value^="custom_"]');
+        existingCustomOptions.forEach(opt => opt.remove());
+
+        // Add all custom voices from the custom_voices table
+        if (window.customVoices && window.customVoices.length > 0) {
+            window.customVoices.forEach(voice => {
+                const customOption = document.createElement('option');
+                customOption.value = voice.voice_key;
+                customOption.textContent = voice.voice_name + ' - Custom Storyteller';
+                customOption.setAttribute('data-voice-id', voice.voice_id);
 
                 // Ensure avatar URL has lip sync support
-                if (window.userSettings.custom_avatar_url) {
-                    const enhancedAvatarUrl = ensureLipSyncSupport(window.userSettings.custom_avatar_url);
+                if (voice.avatar_url) {
+                    const enhancedAvatarUrl = ensureLipSyncSupport(voice.avatar_url);
                     customOption.setAttribute('data-avatar-url', enhancedAvatarUrl);
                 }
                 voiceSelect.appendChild(customOption);
+            });
+        }
+
+        // Select the saved voice mode
+        const voiceValue = mapVoiceMode(window.userSettings.voice_mode);
+
+        // Check if it's a custom voice
+        if (voiceValue.startsWith('custom_')) {
+            // Try to select the custom voice
+            if (voiceSelect.querySelector(`option[value="${voiceValue}"]`)) {
+                voiceSelect.value = voiceValue;
+                console.log('✅ Custom voice applied:', voiceValue);
+            } else {
+                // Custom voice not found, fallback to default
+                voiceSelect.value = 'Rachel';
+                console.warn('⚠️ Custom voice not found, using default');
             }
-
-            // Update custom option text
-            customOption.textContent = window.userSettings.custom_voice_name + ' - Custom Storyteller';
-
-            // Select custom voice
-            voiceSelect.value = 'custom';
-            console.log('✅ Custom voice applied:', window.userSettings.custom_voice_name);
         } else {
             // Select default voice
-            const voiceValue = mapVoiceMode(window.userSettings.voice_mode);
             if (voiceSelect.querySelector(`option[value="${voiceValue}"]`)) {
                 voiceSelect.value = voiceValue;
                 console.log('✅ Default voice applied:', voiceValue);
