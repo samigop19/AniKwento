@@ -105,12 +105,14 @@ try {
             s.total_scenes,
             s.thumbnail_url,
             s.selected_voice,
+            cv.voice_name as custom_voice_name,
             s.gamification_enabled,
             s.status,
             s.created_at,
             s.updated_at,
             (SELECT COUNT(*) FROM story_gamification WHERE story_id = s.id) as question_count
         FROM stories s
+        LEFT JOIN custom_voices cv ON s.selected_voice = cv.voice_key
         $whereClause
         $orderByClause
         LIMIT ? OFFSET ?
@@ -126,13 +128,16 @@ try {
 
     $stories = [];
     while ($row = $result->fetch_assoc()) {
+        // For custom voices, use the custom_voice_name if available
+        $displayVoice = $row['custom_voice_name'] ?? $row['selected_voice'];
+
         $stories[] = [
             'id' => intval($row['id']),
             'title' => $row['title'],
             'theme' => $row['theme'],
             'total_scenes' => intval($row['total_scenes']),
             'thumbnail_url' => $row['thumbnail_url'],
-            'selected_voice' => $row['selected_voice'],
+            'selected_voice' => $displayVoice,
             'has_gamification' => boolval($row['gamification_enabled']),
             'question_count' => intval($row['question_count']),
             'status' => $row['status'],

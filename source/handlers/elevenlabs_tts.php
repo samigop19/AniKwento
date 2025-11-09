@@ -85,17 +85,42 @@ $voiceName = $input['voice'];
 error_log("Text: " . substr($text, 0, 100) . (strlen($text) > 100 ? '...' : ''));
 error_log("Voice: " . $voiceName);
 
-// Determine voice ID - handle both preset voices and custom voice IDs
+// Determine voice ID - handle preset voices, custom voice keys, and direct ElevenLabs voice IDs
 if (isset(VOICE_IDS[$voiceName])) {
     // Standard preset voice
     $voiceId = VOICE_IDS[$voiceName];
     error_log("✅ Using preset voice: " . $voiceName . " (ID: " . $voiceId . ")");
+} elseif (strpos($voiceName, 'custom_') === 0) {
+    // Custom voice - need to look up the voice_id from database
+    error_log("🔍 Looking up custom voice: " . $voiceName);
+
+    require_once __DIR__ . '/db_connection.php';
+
+    $stmt = $conn->prepare("SELECT voice_id, voice_name FROM custom_voices WHERE voice_key = ?");
+    $stmt->bind_param("s", $voiceName);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $customVoice = $result->fetch_assoc();
+        $voiceId = $customVoice['voice_id'];
+        $customVoiceName = $customVoice['voice_name'];
+        error_log("✅ Found custom voice: " . $customVoiceName . " (Key: " . $voiceName . ", ID: " . $voiceId . ")");
+        $stmt->close();
+        $conn->close();
+    } else {
+        error_log("❌ ERROR: Custom voice not found: " . $voiceName);
+        $stmt->close();
+        $conn->close();
+        http_response_code(400);
+        echo json_encode(['error' => 'Custom voice not found: ' . $voiceName]);
+        exit();
+    }
 } else {
-    // Assume it's a custom voice ID (ElevenLabs voice IDs are alphanumeric strings)
-    // ElevenLabs voice IDs are typically 20-character alphanumeric strings
+    // Assume it's a direct ElevenLabs voice ID (alphanumeric strings, typically 20 characters)
     if (preg_match('/^[a-zA-Z0-9]{15,30}$/', $voiceName)) {
         $voiceId = $voiceName;
-        error_log("✅ Using custom voice ID: " . $voiceId);
+        error_log("✅ Using direct ElevenLabs voice ID: " . $voiceId);
     } else {
         error_log("❌ ERROR: Invalid voice name or ID: " . $voiceName);
         http_response_code(400);
