@@ -86,33 +86,31 @@ CRITICAL Requirements:
 
 Session: ${Date.now()}`;
 
-        const messages = [{ role: 'user', content: promptForAI }];
-        
-        // Use the same API key and endpoint as other functions
-        const API_KEY = window.OPENROUTER_API_KEY || 'REDACTED_API_KEY';
-        
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        // Use backend handler for secure API calls
+        const response = await fetch('/source/handlers/openrouter_completion.php', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${API_KEY}`,
-                'Content-Type': 'application/json',
-                'X-Title': 'AniKwento Story Prompts'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                prompt: promptForAI,
                 model: 'openai/gpt-4o-mini',
-                messages: messages,
                 max_tokens: 200,
-                temperature: 0.9,
-                top_p: 0.9
+                temperature: 0.9
             })
         });
         
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        const aiResponse = data.choices[0].message.content;
+
+        if (!data.success || !data.content) {
+            throw new Error('Invalid response from backend');
+        }
+
+        const aiResponse = data.content;
         
         // Parse the AI response into individual prompts
         const lines = aiResponse.split('\n').filter(line => {
