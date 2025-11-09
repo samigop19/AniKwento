@@ -175,9 +175,7 @@
                                                 <input type="text" name="email" id="emailInput" class="form-control"
                                                     placeholder="UB Mail"
                                                     style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0;"
-                                                    title="Enter your 7-digit student ID, email (firstname.lastname@ub.edu.ph), or ID (A-1234@ub.edu.ph)"
                                                     required />
-                                                <small class="text-muted">Enter your 7-digit ID, firstname.lastname@ub.edu.ph, or A-1234@ub.edu.ph</small>
                                             </div>
                                             <button type="submit" class="btn" style="max-width: 200px; margin: 1rem auto; font-size: 0.95rem;">Send Reset Code</button>
                                             <div id="step1Message" class="mt-3 text-center"></div>

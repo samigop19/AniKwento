@@ -134,15 +134,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                     <h6 class="mt-4 mb-3"><i class="fas fa-star me-2 text-warning"></i>Every Story Includes:</h6>
                     <ul>
                         <li><strong>10 Colorful Scenes</strong> with beautiful images</li>
-                        <li><strong>Voice Narration</strong> - Choose from 5 friendly voices</li>
-                        <li><strong>Student Names</strong> - Add up to 2 students as characters</li>
-                        <li><strong>Learning Questions</strong> about colors, shapes, numbers, or emotions</li>
-                        <li><strong>Background Music</strong> for a calming atmosphere</li>
+                        <li><strong>Voice Narration with 3D Avatar</strong> - Choose from 3 friendly storyteller voices (Rachel, Amara, and Lily) or upload your own custom voice with ReadyPlayerMe avatar</li>
+                        <li><strong>Student Names</strong> - Add up to 2 students as main characters in the story</li>
+                        <li><strong>Learning Questions</strong> about colors, shapes, numbers, or emotions to reinforce understanding</li>
+                        <li><strong>Background Music</strong> for a calming and engaging atmosphere</li>
                         <li><strong>Save & Replay</strong> anytime you need</li>
                     </ul>
 
-                    <h6 class="mt-4 mb-3"><i class="fas fa-book me-2 text-info"></i>Popular Story Topics:</h6>
-                    <p class="mb-2">Colors & Shapes • Counting & Numbers • Friendship & Kindness • Emotions • Nature & Animals • Family • Teamwork & Sharing</p>
+                    <h6 class="mt-4 mb-3"><i class="fas fa-book me-2 text-info"></i>Story Features:</h6>
+                    <p class="mb-2">Create stories on any topic suitable for young learners, including colors, shapes, counting, friendship, kindness, emotions, nature, animals, family, teamwork, and sharing!</p>
 
                     <div class="mt-4 bg-light p-3 rounded">
                         <p class="small mb-0"><i class="fas fa-heart me-2 text-danger"></i><strong>Perfect for circle time, morning lessons, and keeping students engaged!</strong> Children love seeing their names in stories and learning through colorful visuals and interactive questions.</p>
@@ -168,8 +168,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                         <label class="form-label">UB Email Address</label>
                         <input type="text" class="form-control" id="ubEmail" placeholder="UB Mail"
                             style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0;"
-                            title="Enter your 7-digit student ID, email (firstname.lastname@ub.edu.ph), or ID (A-1234@ub.edu.ph)" required>
-                        <small class="text-muted mt-2 d-block">Enter your 7-digit ID, firstname.lastname@ub.edu.ph, or A-1234@ub.edu.ph</small>
+                            required>
                         <button class="btn btn-primary mt-3" type="button" id="sendCodeBtn" style="width: 100%;">
                             Send Code <i class="fas fa-paper-plane ms-1"></i>
                         </button>
@@ -300,7 +299,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                                                 <br><small class="text-muted">Select boy or girl for each</small>
                                             </li>
                                             <li class="mb-2"><strong>Pick a Voice</strong>
-                                                <br><small class="text-muted">Preview Rachel, Amara, Lily, Rod, or Aaron</small>
+                                                <br><small class="text-muted">Choose from Rachel, Amara, or Lily (or use a custom voice)</small>
                                             </li>
                                             <li class="mb-2"><strong>Add Questions</strong> (optional)
                                                 <br><small class="text-muted">Colors, shapes, numbers, or emotions</small>
