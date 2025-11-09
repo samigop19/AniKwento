@@ -16,7 +16,11 @@ $requestPath = parse_url($requestUri, PHP_URL_PATH);
 $requestPath = ltrim($requestPath, '/');
 
 // FIRST: Check for static files (CSS, JS, images) and serve with proper MIME types
-if (strpos($requestPath, 'public/') === 0) {
+// Handle files from public/ or static files (non-PHP) from source/
+$isPublicPath = strpos($requestPath, 'public/') === 0;
+$isSourceStaticPath = strpos($requestPath, 'source/') === 0 && pathinfo($requestPath, PATHINFO_EXTENSION) !== 'php';
+
+if ($isPublicPath || $isSourceStaticPath) {
     $filePath = __DIR__ . '/' . $requestPath;
     if (file_exists($filePath)) {
         // Get file extension and set appropriate MIME type
