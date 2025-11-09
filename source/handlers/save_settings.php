@@ -28,6 +28,7 @@ $voice_mode = trim($_POST['voice_mode'] ?? 'Rachel');
 $custom_voice_id = trim($_POST['custom_voice_id'] ?? '');
 $custom_voice_name = trim($_POST['custom_voice_name'] ?? '');
 $custom_avatar_url = trim($_POST['custom_avatar_url'] ?? '');
+$custom_voice_preview_url = trim($_POST['custom_voice_preview_url'] ?? '');
 $narration_volume = floatval($_POST['narration_volume'] ?? 1.0);
 $background_music = trim($_POST['background_music'] ?? '');
 $music_volume = floatval($_POST['music_volume'] ?? 0.5);
@@ -42,6 +43,7 @@ $music_volume = max(0, min(1, $music_volume));
 $custom_voice_id = empty($custom_voice_id) ? null : $custom_voice_id;
 $custom_voice_name = empty($custom_voice_name) ? null : $custom_voice_name;
 $custom_avatar_url = empty($custom_avatar_url) ? null : $custom_avatar_url;
+$custom_voice_preview_url = empty($custom_voice_preview_url) ? null : $custom_voice_preview_url;
 
 // Validate JSON for question_types
 $decoded = json_decode($question_types);
@@ -65,6 +67,7 @@ if ($settings_exist) {
             custom_voice_id = ?,
             custom_voice_name = ?,
             custom_avatar_url = ?,
+            custom_voice_preview_url = ?,
             narration_volume = ?,
             background_music = ?,
             music_volume = ?,
@@ -80,11 +83,12 @@ if ($settings_exist) {
     }
 
     $stmt->bind_param(
-        "ssssdsdssi",
+        "sssssdsdssi",
         $voice_mode,
         $custom_voice_id,
         $custom_voice_name,
         $custom_avatar_url,
+        $custom_voice_preview_url,
         $narration_volume,
         $background_music,
         $music_volume,
@@ -96,9 +100,9 @@ if ($settings_exist) {
     // Insert new settings
     $sql = "INSERT INTO user_settings (
                 user_id, voice_mode, custom_voice_id, custom_voice_name,
-                custom_avatar_url, narration_volume, background_music,
+                custom_avatar_url, custom_voice_preview_url, narration_volume, background_music,
                 music_volume, question_timing, question_types
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
 
@@ -108,12 +112,13 @@ if ($settings_exist) {
     }
 
     $stmt->bind_param(
-        "issssdsdss",
+        "isssssdsdss",
         $user_id,
         $voice_mode,
         $custom_voice_id,
         $custom_voice_name,
         $custom_avatar_url,
+        $custom_voice_preview_url,
         $narration_volume,
         $background_music,
         $music_volume,
@@ -142,6 +147,7 @@ echo json_encode([
         'custom_voice_id' => $custom_voice_id,
         'custom_voice_name' => $custom_voice_name,
         'custom_avatar_url' => $custom_avatar_url,
+        'custom_voice_preview_url' => $custom_voice_preview_url,
         'narration_volume' => $narration_volume,
         'background_music' => $background_music,
         'music_volume' => $music_volume,

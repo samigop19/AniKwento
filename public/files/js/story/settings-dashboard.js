@@ -421,8 +421,9 @@
                     // Ensure avatar URL has lip sync support
                     const enhancedAvatarUrl = ensureLipSyncSupport(settings.custom_avatar_url || '');
 
-                    // Build preview URL for custom voice
-                    const previewUrl = `https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/${voiceValue}-preview.mp3`;
+                    // Use preview URL from database, or fallback to constructed URL
+                    const previewUrl = settings.custom_voice_preview_url ||
+                                     `https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/${voiceValue}-preview.mp3`;
 
                     // Create and add the custom voice option
                     const addVoiceOption = document.getElementById('addVoiceOption');
@@ -552,11 +553,13 @@
                 formData.append('custom_voice_name', selectedOption.textContent);
                 formData.append('custom_voice_id', selectedOption.dataset.voiceId || '');
                 formData.append('custom_avatar_url', selectedOption.dataset.avatarUrl || '');
+                formData.append('custom_voice_preview_url', selectedOption.dataset.previewUrl || '');
             } else {
                 // Clear custom voice fields for non-custom voices
                 formData.append('custom_voice_name', '');
                 formData.append('custom_voice_id', '');
                 formData.append('custom_avatar_url', '');
+                formData.append('custom_voice_preview_url', '');
             }
 
             // Volume settings (convert percentage to 0-1 range)
