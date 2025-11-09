@@ -4,7 +4,7 @@
  */
 
 // API endpoint for Fal.ai image generation
-const FAL_API_ENDPOINT = '/AniKwento/source/handlers/fal_image_generation.php';
+const FAL_API_ENDPOINT = '/source/handlers/fal_image_generation.php';
 
 // Request timeout in milliseconds (130 seconds to allow PHP's 120s timeout)
 const REQUEST_TIMEOUT = 130000;
