@@ -2,10 +2,16 @@
 nixPkgs = ['php83', 'php83Packages.composer']
 
 [phases.install]
-cmds = ['composer install --no-dev --optimize-autoloader']
+cmds = [
+    'composer install --no-dev --optimize-autoloader --classmap-authoritative --no-progress --no-interaction --prefer-dist'
+]
 
 [phases.build]
 cmds = []
 
 [start]
 cmd = 'php -S 0.0.0.0:$PORT -t . index.php'
+
+# Enable caching for faster subsequent deployments
+[phases.install.cacheDirectories]
+paths = ['vendor', '~/.composer/cache']

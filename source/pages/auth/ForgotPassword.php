@@ -164,21 +164,20 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-section p-4">
-                                    <!-- Step 1: Enter UB ID -->
+                                    <!-- Step 1: Enter UB Mail -->
                                     <div class="form-step active" id="form-step-1">
                                         <a href="Login.php" class="back-link">
                                             <i class="fas fa-arrow-left"></i> Back to Login
                                         </a>
-                                        <h4 class="mb-3 text-center" style="color: #801B32; font-weight: 600;">Enter Your UB ID</h4>
+                                        <h4 class="mb-3 text-center" style="color: #801B32; font-weight: 600;">Enter Your UB Mail</h4>
                                         <form id="requestResetForm">
                                             <div class="mb-3">
-                                                <div class="input-group">
-                                                    <input type="text" name="ub_id" id="ubId" class="form-control" 
-                                                        placeholder="UB ID" pattern="[0-9]{7,9}" 
-                                                        title="Please enter 7-9 numbers only" maxlength="9" required />
-                                                    <span class="input-group-text">@ub.edu.ph</span>
-                                                </div>
-                                                <small class="text-muted">We'll send a verification code to your UB email</small>
+                                                <input type="text" name="email" id="emailInput" class="form-control"
+                                                    placeholder="UB Mail"
+                                                    style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0;"
+                                                    title="Enter your 7-digit student ID, email (firstname.lastname@ub.edu.ph), or ID (A-1234@ub.edu.ph)"
+                                                    required />
+                                                <small class="text-muted">Enter your 7-digit ID, firstname.lastname@ub.edu.ph, or A-1234@ub.edu.ph</small>
                                             </div>
                                             <button type="submit" class="btn" style="max-width: 200px; margin: 1rem auto; font-size: 0.95rem;">Send Reset Code</button>
                                             <div id="step1Message" class="mt-3 text-center"></div>
@@ -282,12 +281,29 @@
             document.getElementById(`step${step}Message`).innerHTML = '';
         }
 
-        // UB ID input validation
-        document.getElementById('ubId').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/[^0-9]/g, '');
-            if (value.length > 9) value = value.substring(0, 9);
-            e.target.value = value;
-        });
+        // Email validation function (matches login/register)
+        function validateEmailFormat(email) {
+            // Pattern 1: 7-digit student ID (will be converted to email)
+            const studentIdPattern = /^\d{7}$/;
+            // Pattern 2: 7-digit student ID with @ub.edu.ph
+            const digitEmailPattern = /^\d{7}@ub\.edu\.ph$/;
+            // Pattern 3: firstname.lastname@ub.edu.ph
+            const nameEmailPattern = /^[a-zA-Z]+\.[a-zA-Z]+@ub\.edu\.ph$/;
+            // Pattern 4: A-#### format (A-1234@ub.edu.ph)
+            const aIdPattern = /^A-\d{4}@ub\.edu\.ph$/;
+
+            return studentIdPattern.test(email) || digitEmailPattern.test(email) || nameEmailPattern.test(email) || aIdPattern.test(email);
+        }
+
+        // Function to convert input to full email if needed
+        function convertToEmail(input) {
+            // If it's just 7 digits, append @ub.edu.ph
+            if (/^\d{7}$/.test(input)) {
+                return input + '@ub.edu.ph';
+            }
+            // Otherwise, return as-is (already a full email)
+            return input;
+        }
 
         // Verification code input validation
         document.getElementById('verificationCode').addEventListener('input', function(e) {
@@ -361,27 +377,30 @@
         // Step 1: Request reset code
         document.getElementById('requestResetForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const ubIdInput = document.getElementById('ubId');
-            const ubId = ubIdInput.value.trim();
+
+            const emailInput = document.getElementById('emailInput');
+            const inputValue = emailInput.value.trim();
             const submitButton = this.querySelector('button[type="submit"]');
-            
+
             // Clear any existing messages
             document.getElementById('step1Message').innerHTML = '';
-            
+
             // Client-side validation
-            if (!ubId.match(/^\d{7,9}$/)) {
-                showMessage('Please enter a valid UB ID (7-9 digits)', 'danger', 5000, 1);
-                ubIdInput.focus();
+            if (!validateEmailFormat(inputValue)) {
+                showMessage('Please enter a valid format: 7-digit ID, firstname.lastname@ub.edu.ph, or A-1234@ub.edu.ph', 'danger', 5000, 1);
+                emailInput.focus();
                 return;
             }
-            
+
             // Start loading state
             setButtonLoading(submitButton, true);
             showMessage('<span class="loading-spinner"></span>Sending reset code...', 'info', 0, 1);
-            
-            const email = ubId + '@ub.edu.ph';
-            userUbId = ubId;
+
+            // Convert to full email if needed
+            const email = convertToEmail(inputValue);
+
+            // Extract the ID part (before @ub.edu.ph) for storage
+            userUbId = email.replace('@ub.edu.ph', '');
             
             const formData = new FormData();
             formData.append('action', 'send_reset_code');

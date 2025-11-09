@@ -166,13 +166,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                     <h6 class="mb-4">Step 1: Verify Your Email</h6>
                     <div class="mb-4">
                         <label class="form-label">UB Email Address</label>
-                        <div class="input-group">
-                            <input type="email" class="form-control" id="ubEmail" placeholder="Enter your UB email" required>
-                            <button class="btn btn-primary" type="button" id="sendCodeBtn">
-                                Send Code <i class="fas fa-paper-plane ms-1"></i>
-                            </button>
-                        </div>
-                        <small class="text-muted mt-2 d-block">We'll send a verification code to your UB email</small>
+                        <input type="text" class="form-control" id="ubEmail" placeholder="UB Mail"
+                            style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0;"
+                            title="Enter your 7-digit student ID, email (firstname.lastname@ub.edu.ph), or ID (A-1234@ub.edu.ph)" required>
+                        <small class="text-muted mt-2 d-block">Enter your 7-digit ID, firstname.lastname@ub.edu.ph, or A-1234@ub.edu.ph</small>
+                        <button class="btn btn-primary mt-3" type="button" id="sendCodeBtn" style="width: 100%;">
+                            Send Code <i class="fas fa-paper-plane ms-1"></i>
+                        </button>
                     </div>
                 </div>
 

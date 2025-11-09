@@ -13,15 +13,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let userEmail = '';
 
+    // Email validation function (matches login/register)
+    function validateEmailFormat(email) {
+        // Pattern 1: 7-digit student ID (will be converted to email)
+        const studentIdPattern = /^\d{7}$/;
+        // Pattern 2: 7-digit student ID with @ub.edu.ph
+        const digitEmailPattern = /^\d{7}@ub\.edu\.ph$/;
+        // Pattern 3: firstname.lastname@ub.edu.ph
+        const nameEmailPattern = /^[a-zA-Z]+\.[a-zA-Z]+@ub\.edu\.ph$/;
+        // Pattern 4: A-#### format (A-1234@ub.edu.ph)
+        const aIdPattern = /^A-\d{4}@ub\.edu\.ph$/;
+
+        return studentIdPattern.test(email) || digitEmailPattern.test(email) || nameEmailPattern.test(email) || aIdPattern.test(email);
+    }
+
+    // Function to convert input to full email if needed
+    function convertToEmail(input) {
+        // If it's just 7 digits, append @ub.edu.ph
+        if (/^\d{7}$/.test(input)) {
+            return input + '@ub.edu.ph';
+        }
+        // Otherwise, return as-is (already a full email)
+        return input;
+    }
+
     // Send verification code
     sendCodeBtn.addEventListener('click', function() {
-        const email = ubEmail.value.trim();
+        const emailInput = ubEmail.value.trim();
 
         // Validation
-        if (!email.endsWith('@ub.edu.ph')) {
-            showAlert('Please enter a valid UB email address', 'danger');
+        if (!validateEmailFormat(emailInput)) {
+            showAlert('Please enter a valid format: 7-digit ID, firstname.lastname@ub.edu.ph, or A-1234@ub.edu.ph', 'danger');
             return;
         }
+
+        // Convert to full email if needed
+        const email = convertToEmail(emailInput);
 
         // Loading state
         this.disabled = true;
