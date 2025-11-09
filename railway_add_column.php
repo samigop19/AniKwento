@@ -1,67 +1,81 @@
 <?php
-// Get database credentials from environment
-$host = getenv('DB_HOST');
-$port = getenv('DB_PORT') ?: '3306';
-$database = getenv('DB_NAME');
-$username = getenv('DB_USERNAME');
-$password = getenv('DB_PASSWORD');
+/**
+ * Migration script to add custom_voice_preview_url column to user_settings table
+ * Run this once on Railway
+ */
 
-echo "Connecting to: $host:$port/$database\n";
+require_once __DIR__ . '/source/config/env.php';
 
 try {
-    $dsn = "mysql:host=$host;port=$port;dbname=$database;charset=utf8mb4";
-    $pdo = new PDO($dsn, $username, $password, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
+    echo "Connecting to database...\n";
 
-    echo "Connected successfully!\n\n";
+    $pdo = new PDO(
+        "mysql:host=" . EnvLoader::get('DB_HOST', 'localhost') . ";dbname=" . EnvLoader::get('DB_NAME', 'railway') . ";charset=utf8mb4",
+        EnvLoader::get('DB_USERNAME', 'root'),
+        EnvLoader::get('DB_PASSWORD', ''),
+        array(
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
+        )
+    );
 
-    // Check if user_settings table exists
-    echo "Checking for user_settings table...\n";
-    $stmt = $pdo->query("SHOW TABLES LIKE 'user_settings'");
-    $hasTable = $stmt->fetch();
+    echo "Connected successfully!\n";
+    echo "Database: " . EnvLoader::get('DB_NAME', 'railway') . "\n";
+    echo "Host: " . EnvLoader::get('DB_HOST', 'localhost') . "\n\n";
 
-    if ($hasTable) {
-        echo "✓ user_settings table found\n";
+    // Check if column exists
+    echo "Checking if custom_voice_preview_url column exists...\n";
+    $stmt = $pdo->prepare("
+        SELECT COUNT(*) as col_exists
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE table_schema = DATABASE()
+        AND table_name = 'user_settings'
+        AND column_name = 'custom_voice_preview_url'
+    ");
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Count rows
-        $stmt = $pdo->query("SELECT COUNT(*) as count FROM user_settings");
-        $result = $stmt->fetch();
-        echo "  Rows: {$result['count']}\n\n";
-
-        // Check if column exists
-        $stmt = $pdo->query("SHOW COLUMNS FROM user_settings LIKE 'custom_voice_preview_url'");
-        $columnExists = $stmt->fetch();
-
-        if ($columnExists) {
-            echo "✓ Column 'custom_voice_preview_url' already exists\n";
-        } else {
-            echo "Adding 'custom_voice_preview_url' column...\n";
-            $pdo->exec("ALTER TABLE user_settings ADD COLUMN custom_voice_preview_url VARCHAR(500) NULL");
-            echo "✓ Column added successfully!\n";
-        }
-
-        // Show all columns
-        echo "\nAll columns in user_settings:\n";
-        $stmt = $pdo->query("SHOW COLUMNS FROM user_settings");
-        $columns = $stmt->fetchAll();
-        foreach ($columns as $col) {
-            echo "  - {$col['Field']} ({$col['Type']})\n";
-        }
-
+    if ($result['col_exists'] > 0) {
+        echo "✓ Column 'custom_voice_preview_url' already exists in user_settings table.\n";
+        echo "No migration needed.\n";
     } else {
-        echo "✗ user_settings table NOT found in this database\n";
-        echo "\nAvailable tables:\n";
-        $stmt = $pdo->query("SHOW TABLES");
-        $tables = $stmt->fetchAll();
-        foreach ($tables as $table) {
-            $tableName = array_values($table)[0];
-            echo "  - $tableName\n";
-        }
+        echo "✗ Column 'custom_voice_preview_url' does not exist.\n";
+        echo "Adding custom_voice_preview_url column to user_settings table...\n";
+
+        $pdo->exec("
+            ALTER TABLE user_settings
+            ADD COLUMN custom_voice_preview_url VARCHAR(500) NULL
+            AFTER voice_provider
+        ");
+
+        echo "✓ Successfully added custom_voice_preview_url column!\n";
     }
+
+    // Verify the table structure
+    echo "\nCurrent user_settings table structure:\n";
+    echo "----------------------------------------\n";
+    $stmt = $pdo->query("DESCRIBE user_settings");
+    $columns = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($columns as $column) {
+        echo sprintf(
+            "%-30s %-20s %-10s %-10s\n",
+            $column['Field'],
+            $column['Type'],
+            $column['Null'],
+            $column['Key']
+        );
+    }
+
+    // Show row count
+    $stmt = $pdo->query("SELECT COUNT(*) as count FROM user_settings");
+    $count = $stmt->fetch(PDO::FETCH_ASSOC);
+    echo "\nTotal rows in user_settings: {$count['count']}\n";
+
+    echo "\nMigration completed successfully!\n";
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage() . "\n";
+    echo "Stack trace:\n" . $e->getTraceAsString() . "\n";
     exit(1);
 }
