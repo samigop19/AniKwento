@@ -188,9 +188,9 @@ function changePassword($pdo) {
     $stmt = $pdo->prepare("UPDATE users SET password = ?, verification_code = NULL, verification_code_expires = NULL WHERE id = ?");
     $stmt->execute([$hashed_password, $_SESSION['user_id']]);
 
-    // Clear session data after successful password update
-    unset($_SESSION['password_change_verified']);
-    unset($_SESSION['password_change_time']);
+    // Clear all session data and destroy session (force re-login with new password)
+    session_unset();
+    session_destroy();
 
     echo json_encode([
         'success' => true,

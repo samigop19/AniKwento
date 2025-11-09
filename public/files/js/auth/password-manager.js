@@ -170,16 +170,12 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showAlert('Password changed successfully!', 'success');
+                showAlert('Password changed successfully! Redirecting to login...', 'success');
 
-                // Close modal after success
+                // Redirect to login page after success
                 setTimeout(() => {
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('accountModal'));
-                    modal.hide();
-
-                    // Reset form
-                    resetPasswordModal();
-                }, 1500);
+                    window.location.href = '/source/pages/auth/Login.php';
+                }, 2000);
             } else {
                 showAlert(data.message || 'Failed to change password', 'danger');
                 submitBtn.disabled = false;
