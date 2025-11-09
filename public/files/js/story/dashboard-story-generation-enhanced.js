@@ -287,9 +287,8 @@ function getCustomInputs() {
 }
 
 // API Configuration
-const OPENROUTER_API_KEY = 'REDACTED_API_KEY';
-// Removed POLLINATIONS_API_KEY - now using Fal.ai through backend handler
-let CURRENT_MODEL = 'openai/gpt-4.1-mini';
+// OpenRouter API key is now handled securely on the backend
+let CURRENT_MODEL = 'google/gemini-2.0-flash-exp:free';
 
 // Global variables
 let currentStory = {};
@@ -948,7 +947,7 @@ function updateProgress(percentage, message) {
     logToConsole(`Progress: ${percentage}% - ${message}`, 'info');
 }
 
-// OpenRouter API call with timeout
+// OpenRouter API call with timeout - using secure backend handler
 async function callOpenRouterAPI(prompt) {
     const loadingMsg = 'Calling OpenRouter API...';
     logToConsole(loadingMsg, 'info');
@@ -961,26 +960,15 @@ async function callOpenRouterAPI(prompt) {
     }, 60000); // 60 second timeout
 
     try {
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        // Call our backend handler instead of OpenRouter directly
+        const response = await fetch('/source/handlers/openrouter_completion.php', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-                'Content-Type': 'application/json',
-                'HTTP-Referer': 'https://localhost:3000',
-                'X-Title': 'AniKwento Story Generator'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                prompt: prompt,
                 model: CURRENT_MODEL,
-                messages: [
-                    {
-                        role: 'system',
-                        content: 'You are a helpful assistant specialized in creating children\'s stories and educational content. IMPORTANT: You must NEVER generate any adult content, sexual themes, violence, or inappropriate material. All content must be 100% child-safe, educational, and suitable for ages 3-10. Focus on positive values like friendship, learning, and kindness.'
-                    },
-                    {
-                        role: 'user',
-                        content: prompt
-                    }
-                ],
                 max_tokens: 4000,
                 temperature: 0.7
             }),
@@ -991,15 +979,15 @@ async function callOpenRouterAPI(prompt) {
         clearTimeout(timeoutId);
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`HTTP error! status: ${response.status}${errorData.error ? ' - ' + errorData.error : ''}`);
         }
 
         const data = await response.json();
 
-        if (data.choices && data.choices.length > 0) {
-            const content = data.choices[0].message.content;
+        if (data.success && data.content) {
             logToConsole('OpenRouter API call successful', 'success');
-            return content;
+            return data.content;
         } else {
             logToConsole('OpenRouter API connection successful but unexpected response', 'warning');
             return null;
