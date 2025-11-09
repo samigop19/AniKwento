@@ -4,8 +4,6 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../config/env.php';
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
 try {
     $pdo = new PDO(
@@ -231,29 +229,19 @@ function resendResetCode($pdo) {
 }
 
 function sendResetEmail($email, $first_name, $verification_code, $isResend = false) {
-    $mail = new PHPMailer(true);
-    
-    $mail->isSMTP();
-    $mail->Host       = EnvLoader::get('SMTP_HOST', 'smtp.gmail.com');
-    $mail->SMTPAuth   = true;
-    $mail->Username   = EnvLoader::get('SMTP_USERNAME');
-    $mail->Password   = EnvLoader::get('SMTP_PASSWORD');
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = EnvLoader::get('SMTP_PORT', 587);
+    $sendgridApiKey = EnvLoader::get('SENDGRID_API_KEY');
 
-    $mail->setFrom(EnvLoader::get('SMTP_USERNAME'), EnvLoader::get('APP_NAME', 'AniKwento'));
-    $mail->addAddress($email, $first_name);
+    if (!$sendgridApiKey) {
+        throw new Exception("SENDGRID_API_KEY not configured");
+    }
 
-    $mail->isHTML(true);
     $subject = $isResend ? 'AniKwento - New Password Reset Code' : 'AniKwento - Password Reset Code';
-    $title = $isResend ? 'New Password Reset Code' : 'Password Reset Request';
     $emoji = $isResend ? '🔄' : '🔐';
-    $message = $isResend ? 
-        "We've generated a new password reset code for your AniKwento account." : 
+    $message = $isResend ?
+        "We've generated a new password reset code for your AniKwento account." :
         "We received a request to reset your AniKwento password.";
-    
-    $mail->Subject = $subject;
-    $mail->Body    = "
+
+    $emailHtml = "
     <!DOCTYPE html>
     <html lang='en'>
     <head>
@@ -268,19 +256,19 @@ function sendResetEmail($email, $first_name, $verification_code, $isResend = fal
                 <h1 style='color: #ffffff; margin: 0; font-size: 28px; font-weight: 600; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);'>AniKwento</h1>
                 <p style='color: #FFC553; margin: 8px 0 0 0; font-size: 14px; font-weight: 500;'>Empowering UB educators with AI-generated stories!</p>
             </div>
-            
+
             <!-- Content -->
             <div style='padding: 40px;'>
                 <h2 style='color: #801B32; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;'>Hi {$first_name}! {$emoji}</h2>
-                
+
                 <p style='color: #555555; line-height: 1.6; margin: 0 0 25px 0; font-size: 16px;'>
                     {$message}
                 </p>
-                
+
                 <p style='color: #555555; line-height: 1.6; margin: 0 0 30px 0; font-size: 16px;'>
                     Please use this verification code to reset your password:
                 </p>
-                
+
                 <!-- Verification Code Box -->
                 <div style='background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); border: 3px solid #801B32; border-radius: 16px; padding: 30px; text-align: center; margin: 30px 0; box-shadow: 0 8px 25px rgba(128, 27, 50, 0.15);'>
                     <p style='color: #666666; font-size: 14px; margin: 0 0 15px 0; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;'>Password Reset Code</p>
@@ -288,20 +276,20 @@ function sendResetEmail($email, $first_name, $verification_code, $isResend = fal
                         <h1 style='color: #801B32; font-size: 42px; font-weight: bold; margin: 0; letter-spacing: 8px; font-family: \"Courier New\", monospace; text-shadow: 0 2px 4px rgba(128, 27, 50, 0.2);'>{$verification_code}</h1>
                     </div>
                 </div>
-                
+
                 <div style='background-color: #FFF8E1; border-left: 4px solid #FFC553; padding: 16px; border-radius: 8px; margin: 25px 0;'>
                     <p style='color: #E65100; margin: 0; font-size: 14px; font-weight: 500;'>
                         ⏰ This code will expire in <strong>15 minutes</strong>. Please reset your password as soon as possible.
                     </p>
                 </div>
-                
+
                 <div style='background-color: #fee2e2; border-left: 4px solid #ef4444; padding: 16px; border-radius: 8px; margin: 25px 0;'>
                     <p style='color: #dc2626; margin: 0; font-size: 14px; font-weight: 500;'>
                         🛡️ If you didn't request a password reset, please ignore this email and contact support if you have concerns.
                     </p>
                 </div>
             </div>
-            
+
             <!-- Footer -->
             <div style='background-color: #f8f9fa; padding: 25px 40px; text-align: center; border-top: 1px solid #e9ecef;'>
                 <p style='color: #666666; margin: 0; font-size: 12px; line-height: 1.5;'>
@@ -313,6 +301,54 @@ function sendResetEmail($email, $first_name, $verification_code, $isResend = fal
     </body>
     </html>";
 
-    $mail->send();
+    // Send email via SendGrid API
+    $fromEmail = EnvLoader::get('SENDGRID_FROM_EMAIL', 'noreply@anikwento.com');
+    $fromName = EnvLoader::get('SENDGRID_FROM_NAME', 'AniKwento');
+
+    $data = [
+        'personalizations' => [
+            [
+                'to' => [['email' => $email]],
+                'subject' => $subject
+            ]
+        ],
+        'from' => [
+            'email' => $fromEmail,
+            'name' => $fromName
+        ],
+        'content' => [
+            [
+                'type' => 'text/html',
+                'value' => $emailHtml
+            ]
+        ]
+    ];
+
+    $ch = curl_init('https://api.sendgrid.com/v3/mail/send');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Authorization: Bearer ' . $sendgridApiKey,
+        'Content-Type: application/json'
+    ]);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+
+    // Log for debugging
+    error_log("SendGrid API Response Code: " . $httpCode);
+    if ($curlError) {
+        error_log("SendGrid cURL Error: " . $curlError);
+    }
+
+    // SendGrid returns 202 for successful email acceptance
+    if ($httpCode !== 202) {
+        error_log("SendGrid API Error Response: " . $response);
+        throw new Exception("Failed to send verification email. Please try again later.");
+    }
 }
 ?>

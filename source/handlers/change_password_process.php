@@ -4,8 +4,6 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../config/env.php';
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
 try {
     $pdo = new PDO(
@@ -239,29 +237,19 @@ function resendCode($pdo) {
 }
 
 function sendVerificationEmail($email, $first_name, $verification_code, $isResend = false) {
-    $mail = new PHPMailer(true);
+    $sendgridApiKey = EnvLoader::get('SENDGRID_API_KEY');
 
-    $mail->isSMTP();
-    $mail->Host       = EnvLoader::get('SMTP_HOST', 'smtp.gmail.com');
-    $mail->SMTPAuth   = true;
-    $mail->Username   = EnvLoader::get('SMTP_USERNAME');
-    $mail->Password   = EnvLoader::get('SMTP_PASSWORD');
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = EnvLoader::get('SMTP_PORT', 587);
+    if (!$sendgridApiKey) {
+        throw new Exception("SENDGRID_API_KEY not configured");
+    }
 
-    $mail->setFrom(EnvLoader::get('SMTP_USERNAME'), EnvLoader::get('APP_NAME', 'AniKwento'));
-    $mail->addAddress($email, $first_name);
-
-    $mail->isHTML(true);
     $subject = $isResend ? 'AniKwento - New Password Change Verification Code' : 'AniKwento - Password Change Verification Code';
-    $title = $isResend ? 'New Verification Code' : 'Password Change Request';
     $emoji = $isResend ? '🔄' : '🔐';
     $message = $isResend ?
         "We've generated a new verification code for your password change request." :
         "We received a request to change your AniKwento password.";
 
-    $mail->Subject = $subject;
-    $mail->Body    = "
+    $emailHtml = "
     <!DOCTYPE html>
     <html lang='en'>
     <head>
@@ -321,6 +309,54 @@ function sendVerificationEmail($email, $first_name, $verification_code, $isResen
     </body>
     </html>";
 
-    $mail->send();
+    // Send email via SendGrid API
+    $fromEmail = EnvLoader::get('SENDGRID_FROM_EMAIL', 'noreply@anikwento.com');
+    $fromName = EnvLoader::get('SENDGRID_FROM_NAME', 'AniKwento');
+
+    $data = [
+        'personalizations' => [
+            [
+                'to' => [['email' => $email]],
+                'subject' => $subject
+            ]
+        ],
+        'from' => [
+            'email' => $fromEmail,
+            'name' => $fromName
+        ],
+        'content' => [
+            [
+                'type' => 'text/html',
+                'value' => $emailHtml
+            ]
+        ]
+    ];
+
+    $ch = curl_init('https://api.sendgrid.com/v3/mail/send');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Authorization: Bearer ' . $sendgridApiKey,
+        'Content-Type: application/json'
+    ]);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+
+    // Log for debugging
+    error_log("SendGrid API Response Code: " . $httpCode);
+    if ($curlError) {
+        error_log("SendGrid cURL Error: " . $curlError);
+    }
+
+    // SendGrid returns 202 for successful email acceptance
+    if ($httpCode !== 202) {
+        error_log("SendGrid API Error Response: " . $response);
+        throw new Exception("Failed to send verification email. Please try again later.");
+    }
 }
 ?>
