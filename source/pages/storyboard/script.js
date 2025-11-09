@@ -1040,7 +1040,7 @@ function goBackToDashboard() {
         console.warn('⚠️ Error clearing sessionStorage:', e);
     }
 
-    window.location.href = '/AniKwento/source/pages/dashboard/StoryDashboard.php';
+    window.location.href = '/dashboard';
 }
 
 
