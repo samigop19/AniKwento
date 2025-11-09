@@ -59,7 +59,17 @@
       "Bash(railway init:*)",
       "Bash(railway add:*)",
       "Bash(railway up:*)",
-      "Bash(railway open:*)"
+      "Bash(railway open:*)",
+      "Bash(brew install:*)",
+      "Bash(tar:*)",
+      "Bash(railway run:*)",
+      "Bash(railway logs:*)",
+      "Bash(git push:*)",
+      "Bash(/Applications/MAMP/htdocs/AniKwento/.gitignore)",
+      "Bash(composer require:*)",
+      "Bash(then echo \"$file has closing tag\")",
+      "Bash(railway shell:*)",
+      "Bash(/Applications/MAMP/Library/bin/mysql80/bin/mysqlbinlog:*)"
     ],
     "deny": []
   }
