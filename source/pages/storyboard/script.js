@@ -250,6 +250,20 @@ async function loadStoredStory() {
                 console.log('✅ Story loaded from sessionStorage (dashboard playback)');
                 console.log('🔍 Story has scenes:', storyData.scenes?.length);
                 console.log('🔍 First scene has audioUrls:', storyData.scenes?.[0]?.audioUrls?.length || 0);
+                console.log('🔍 First scene has imageUrl:', !!storyData.scenes?.[0]?.imageUrl);
+                console.log('🔍 Story data structure:', {
+                    id: storyData.id,
+                    title: storyData.title,
+                    scenesCount: storyData.scenes?.length,
+                    firstScene: {
+                        number: storyData.scenes?.[0]?.number,
+                        hasImageUrl: !!storyData.scenes?.[0]?.imageUrl,
+                        imageUrlPreview: storyData.scenes?.[0]?.imageUrl?.substring(0, 60),
+                        hasAudioUrls: !!storyData.scenes?.[0]?.audioUrls,
+                        audioUrlsCount: storyData.scenes?.[0]?.audioUrls?.length,
+                        audioUrlPreview: storyData.scenes?.[0]?.audioUrls?.[0]?.substring(0, 60)
+                    }
+                });
             } else {
                 console.log('⚠️ No story in sessionStorage');
             }
@@ -337,7 +351,12 @@ async function loadStoredStory() {
 
 // Update storyboard with loaded story data (UPDATE STORYGEN method)
 function updateStoryboardWithData(storyData) {
-    console.log('Updating storyboard with data:', storyData);
+    console.log('📊 Updating storyboard with data:', storyData);
+    console.log('📊 Scene data check:', {
+        totalScenes: storyData.scenes?.length || 0,
+        scenesWithImages: storyData.scenes?.filter(s => s.imageUrl).length || 0,
+        scenesWithAudio: storyData.scenes?.filter(s => s.audioUrls?.length > 0).length || 0
+    });
 
     // Update story title
     const storyboardTitle = document.getElementById('storyboardTitle');
@@ -483,6 +502,12 @@ function loadStoryboardScene(scenes, sceneNumber, elapsedTimeMs = 0) {
 
         setTimeout(() => {
             // Update content after fade out
+            console.log('🖼️ Loading scene image:', {
+                sceneNumber,
+                hasImageUrl: !!scene.imageUrl,
+                imageUrl: scene.imageUrl
+            });
+
             if (scene.imageUrl) {
                 // Show loading state
                 storyImage.innerHTML = `<div class="image-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;"><p>Loading ${scene.title || `Scene ${sceneNumber}`}...</p></div>`;
@@ -490,13 +515,16 @@ function loadStoryboardScene(scenes, sceneNumber, elapsedTimeMs = 0) {
                 // Create image with loading and error handling
                 const img = new Image();
                 img.onload = function() {
+                    console.log('✅ Image loaded successfully:', scene.imageUrl);
                     storyImage.innerHTML = `<img src="${scene.imageUrl}" alt="${scene.title}" class="actual-story-image">`;
                 };
                 img.onerror = function() {
+                    console.error('❌ Image failed to load:', scene.imageUrl);
                     storyImage.innerHTML = `<div class="image-placeholder"><p>${scene.title || `Scene ${sceneNumber}`}</p></div>`;
                 };
                 img.src = scene.imageUrl;
             } else {
+                console.warn('⚠️ No imageUrl for scene', sceneNumber);
                 storyImage.innerHTML = `<div class="image-placeholder"><p>${scene.title || `Scene ${sceneNumber}`}</p></div>`;
             }
 
