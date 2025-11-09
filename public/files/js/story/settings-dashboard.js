@@ -730,13 +730,11 @@
     let isVoicePlaying = false;
     let isMusicPlaying = false;
 
-    // Voice preview file paths
+    // Voice preview file paths (using R2 CDN)
     const VOICE_PREVIEW_PATHS = {
-        'Rachel': '../../../public/files/voice-previews/rachel-preview.mp3',
-        'Amara': '../../../public/files/voice-previews/amara-preview.mp3',
-        'Lily': '../../../public/files/voice-previews/lily-preview.mp3',
-        'Rod': '../../../public/files/voice-previews/rod-preview.mp3',
-        'Aaron': '../../../public/files/voice-previews/aaron-preview.mp3'
+        'Rachel': 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/rachel-preview.mp3',
+        'Amara': 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/amara-preview.mp3',
+        'Lily': 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/lily-preview.mp3'
     };
 
     // Music preview file paths

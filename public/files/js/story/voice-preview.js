@@ -10,16 +10,14 @@
     // Sample text for voice preview
     const PREVIEW_TEXT = "Once upon a time, in a magical land filled with wonder, two curious children discovered an amazing adventure waiting just for them.";
 
-    // Cache configuration
-    const CACHE_FOLDER = '../../../public/files/voice-previews/';
+    // R2 CDN base URL for voice previews
+    const R2_VOICE_PREVIEW_BASE = 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/';
 
     // Voice ID to filename mapping
     const VOICE_CACHE_FILES = {
         'Rachel': 'rachel-preview.mp3',
         'Amara': 'amara-preview.mp3',
-        'Lily': 'lily-preview.mp3',
-        'Rod': 'rod-preview.mp3',
-        'Aaron': 'aaron-preview.mp3'
+        'Lily': 'lily-preview.mp3'
     };
 
     // Voice preview functionality
@@ -79,27 +77,28 @@
 
             console.log(`🎤 Loading preview for ${voiceName} voice...`);
 
-            // Try to load from cache first
+            // Try to load from R2 CDN first
             const cacheFile = VOICE_CACHE_FILES[voiceName];
             let audioSource = null;
 
             if (cacheFile) {
-                const cachePath = CACHE_FOLDER + cacheFile;
+                // Use R2 CDN URL for voice previews
+                const r2Url = R2_VOICE_PREVIEW_BASE + cacheFile;
 
                 try {
-                    // Check if cached file exists by trying to load it
-                    const response = await fetch(cachePath);
+                    // Check if cached file exists on R2
+                    const response = await fetch(r2Url);
 
                     if (response.ok) {
-                        console.log(`✅ Loading cached preview for ${voiceName}`);
-                        audioSource = cachePath;
+                        console.log(`✅ Loading cached preview for ${voiceName} from R2`);
+                        audioSource = r2Url;
                     } else {
-                        console.log(`⚠️ Cached file not found, generating new preview...`);
-                        audioSource = await generateAndCachePreview(voiceName, cachePath);
+                        console.log(`⚠️ Cached file not found on R2, generating new preview...`);
+                        audioSource = await generateAndCachePreview(voiceName, cacheFile);
                     }
                 } catch (fetchError) {
-                    console.log(`⚠️ Cache check failed, generating new preview...`);
-                    audioSource = await generateAndCachePreview(voiceName, cachePath);
+                    console.log(`⚠️ R2 fetch failed, generating new preview...`);
+                    audioSource = await generateAndCachePreview(voiceName, cacheFile);
                 }
             } else {
                 // No cache file defined, generate on-the-fly

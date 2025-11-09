@@ -17,8 +17,8 @@ if (!file_exists($cacheDir)) {
 // Allowed voice files for security
 $allowedFiles = [
     'Rachel' => 'rachel-preview.mp3',
-    'Drew' => 'drew-preview.mp3',
-    'Clyde' => 'clyde-preview.mp3'
+    'Amara' => 'amara-preview.mp3',
+    'Lily' => 'lily-preview.mp3'
 ];
 
 try {
