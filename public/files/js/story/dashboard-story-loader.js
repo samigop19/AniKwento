@@ -286,7 +286,7 @@ async function playStoryById(storyId) {
 
         // Store in sessionStorage and redirect to player
         sessionStorage.setItem('currentStory', JSON.stringify(data.story));
-        window.location.href = '../storyboard/storyboard.html';
+        window.location.href = '/storyboard';
 
     } catch (error) {
         console.error('❌ Error playing story:', error);

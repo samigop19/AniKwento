@@ -101,6 +101,15 @@ switch (true) {
     case stripos($requestPath, 'dashboard') !== false:
         require_once __DIR__ . '/source/pages/dashboard/StoryDashboard.php';
         exit;
+
+    case stripos($requestPath, 'storyboard') !== false:
+        require_once __DIR__ . '/source/pages/storyboard/storyboard.html';
+        exit;
+
+    case stripos($requestPath, 'afterstoryquiz') !== false:
+    case stripos($requestPath, 'after-story-quiz') !== false:
+        require_once __DIR__ . '/source/pages/storyboard/AfterStoryQuiz.html';
+        exit;
 }
 
 // Check if it's an auth page route

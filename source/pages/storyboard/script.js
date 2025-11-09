@@ -3710,7 +3710,7 @@ function goToAfterStoryQuiz() {
     }
 
     // Navigate to quiz page
-    window.location.href = 'AfterStoryQuiz.html';
+    window.location.href = '/afterstoryquiz';
 }
 
 // ============================================================================

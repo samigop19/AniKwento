@@ -3838,7 +3838,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Redirect to separate storyboard page
                 setTimeout(() => {
-                    window.location.href = '/AniKwento/source/pages/storyboard/storyboard.html';
+                    window.location.href = '/storyboard';
                 }, 1000);
 
             } catch (error) {
