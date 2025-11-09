@@ -69,7 +69,8 @@
       "Bash(composer require:*)",
       "Bash(then echo \"$file has closing tag\")",
       "Bash(railway shell:*)",
-      "Bash(/Applications/MAMP/Library/bin/mysql80/bin/mysqlbinlog:*)"
+      "Bash(/Applications/MAMP/Library/bin/mysql80/bin/mysqlbinlog:*)",
+      "Bash(git log:*)"
     ],
     "deny": []
   }
