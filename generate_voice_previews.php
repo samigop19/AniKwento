@@ -4,8 +4,15 @@
  * Downloads preview audio for all storyteller voices
  */
 
-// ElevenLabs API Configuration
-const ELEVENLABS_API_KEY = 'REDACTED_ELEVENLABS_KEY';
+// Load environment variables
+require_once __DIR__ . '/source/config/env.php';
+EnvLoader::load();
+
+// ElevenLabs API Configuration - Load from environment
+$ELEVENLABS_API_KEY = EnvLoader::get('ELEVENLABS_API_KEY');
+if (!$ELEVENLABS_API_KEY) {
+    die("❌ ERROR: ELEVENLABS_API_KEY not set in environment\n");
+}
 const ELEVENLABS_API_URL = 'https://api.elevenlabs.io/v1/text-to-speech/';
 
 // Voice configurations
@@ -77,7 +84,7 @@ foreach ($voices as $key => $voice) {
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
         CURLOPT_HTTPHEADER => [
-            'xi-api-key: ' . ELEVENLABS_API_KEY,
+            'xi-api-key: ' . $ELEVENLABS_API_KEY,
             'Content-Type: application/json',
             'Accept: audio/mpeg'
         ],

@@ -24,8 +24,17 @@ if (!isset($_SESSION['user_id'])) {
 
 require_once __DIR__ . '/r2_storage.php';
 
-// ElevenLabs API Configuration
-const ELEVENLABS_API_KEY = 'REDACTED_ELEVENLABS_KEY';
+// Load environment variables
+require_once __DIR__ . '/../config/env.php';
+EnvLoader::load();
+
+// ElevenLabs API Configuration - Load from environment
+$ELEVENLABS_API_KEY = EnvLoader::get('ELEVENLABS_API_KEY');
+if (!$ELEVENLABS_API_KEY) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => 'ELEVENLABS_API_KEY not configured']);
+    exit();
+}
 const ELEVENLABS_API_URL = 'https://api.elevenlabs.io/v1/text-to-speech/';
 
 // Standard preview text (same as generate_voice_previews.php)
@@ -70,7 +79,7 @@ try {
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
         CURLOPT_HTTPHEADER => [
-            'xi-api-key: ' . ELEVENLABS_API_KEY,
+            'xi-api-key: ' . $ELEVENLABS_API_KEY,
             'Content-Type: application/json',
             'Accept: audio/mpeg'
         ],
