@@ -81,7 +81,7 @@ try {
           `id` int NOT NULL AUTO_INCREMENT,
           `user_id` int NOT NULL,
           `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-          `theme` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+          `theme` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
           `total_scenes` int NOT NULL DEFAULT '10',
           `thumbnail_url` text COLLATE utf8mb4_unicode_ci COMMENT 'R2 public URL for story thumbnail',
           `context_image_url` text COLLATE utf8mb4_unicode_ci COMMENT 'R2 public URL for context image',

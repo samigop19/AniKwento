@@ -190,11 +190,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                             <div class="story-prompt-section">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <label for="storyPrompt" class="form-label mb-0">Story Prompt (Optional)</label>
-                                    <button type="button" class="btn btn-sm btn-new-ideas" onclick="refreshPromptSuggestions()">
-                                        <i class="fas fa-sync-alt"></i> New Ideas
-                                    </button>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <span id="themeCharCounter" class="text-muted small">0/500</span>
+                                        <button type="button" class="btn btn-sm btn-new-ideas" onclick="refreshPromptSuggestions()">
+                                            <i class="fas fa-sync-alt"></i> New Ideas
+                                        </button>
+                                    </div>
                                 </div>
-                                <textarea class="form-control" id="storyPrompt" placeholder="Leave blank to generate a random story, or describe what you'd like the story to be about..." autocomplete="off"></textarea>
+                                <textarea class="form-control" id="storyPrompt" placeholder="Leave blank to generate a random story, or describe what you'd like the story to be about..." autocomplete="off" maxlength="500"></textarea>
                                 <div class="story-suggestions">
                                     <p class="suggestions-title">
                                         <i class="fas fa-sparkles" style="color: #FFD700; margin-right: 5px;"></i>
@@ -527,6 +530,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
 
     <!-- IMPORTANT: Clear form fields on page load - must load early -->
     <script src="../../../public/files/js/story/clear-form-on-load.js"></script>
+
+    <!-- Theme character counter -->
+    <script src="../../../public/files/js/story/theme-character-counter.js"></script>
 
     <!-- IMPORTANT: Load user default settings from Settings Dashboard -->
     <script src="../../../public/files/js/story/load-default-settings.js"></script>
