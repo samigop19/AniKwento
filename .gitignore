@@ -40,7 +40,6 @@ Thumbs.db
 # PHP
 vendor/
 composer.phar
-composer.lock
 
 # Sensitive files
 phpinfo.php
