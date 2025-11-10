@@ -11,7 +11,7 @@ cmds = [
     'ls -la vendor/',
     'test -f vendor/autoload.php && echo "✓ vendor/autoload.php exists" || echo "✗ vendor/autoload.php missing"'
 ]
-cacheDirectories = ['vendor', '~/.composer/cache']
+cacheDirectories = ['~/.composer/cache']
 
 [phases.build]
 cmds = []
