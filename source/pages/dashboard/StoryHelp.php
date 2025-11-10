@@ -135,9 +135,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                     <ul>
                         <li><strong>10 Colorful Scenes</strong> with beautiful images</li>
                         <li><strong>Voice Narration with 3D Avatar</strong> - Choose from 3 friendly storyteller voices (Rachel, Amara, and Lily) or upload your own custom voice with ReadyPlayerMe avatar</li>
-                        <li><strong>Student Names</strong> - Add up to 2 students as main characters in the story</li>
+                        <li><strong>Characters</strong> - Add up to 5 students or pets as main characters in the story</li>
                         <li><strong>Learning Questions</strong> about colors, shapes, numbers, or emotions to reinforce understanding</li>
-                        <li><strong>Background Music</strong> for a calming and engaging atmosphere</li>
+                        <li><strong>Background Music</strong> (required) for a calming and engaging atmosphere</li>
                         <li><strong>Save & Replay</strong> anytime you need</li>
                     </ul>
 
@@ -295,8 +295,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                                             <li class="mb-2"><strong>Enter a Story Topic</strong> (optional)
                                                 <br><small class="text-muted">Example: "counting butterflies" or "learning colors"</small>
                                             </li>
-                                            <li class="mb-2"><strong>Add Student Names</strong> (optional, up to 2)
-                                                <br><small class="text-muted">Select boy or girl for each</small>
+                                            <li class="mb-2"><strong>Add Characters</strong> (optional, up to 5)
+                                                <br><small class="text-muted">Add students or pets, and select boy or girl for each student</small>
                                             </li>
                                             <li class="mb-2"><strong>Pick a Voice</strong>
                                                 <br><small class="text-muted">Choose from Rachel, Amara, or Lily (or use a custom voice)</small>
@@ -304,7 +304,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                                             <li class="mb-2"><strong>Add Questions</strong> (optional)
                                                 <br><small class="text-muted">Colors, shapes, numbers, or emotions</small>
                                             </li>
-                                            <li class="mb-2"><strong>Click "Generate Story"</strong> - Wait 2-3 minutes</li>
+                                            <li class="mb-2"><strong>Click "Generate Story"</strong> - Wait 7-10 minutes</li>
                                             <li class="mb-0"><strong>Preview and Play!</strong></li>
                                         </ol>
                                     </div>
@@ -328,10 +328,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
 
                                     <ul class="mb-4">
                                         <li><strong>10 Colorful Scenes</strong> with beautiful illustrations</li>
-                                        <li><strong>2 Main Characters</strong> - Your students become the heroes!</li>
+                                        <li><strong>Up to 5 Main Characters</strong> - Your students or pets become the heroes!</li>
                                         <li><strong>Voice Narration</strong> with clear pronunciation</li>
                                         <li><strong>Interactive Questions</strong> to check understanding</li>
-                                        <li><strong>Background Music</strong> (optional)</li>
+                                        <li><strong>Background Music</strong> (required)</li>
                                     </ul>
 
                                     <h6 class="mt-4 mb-2 text-primary"><i class="fas fa-graduation-cap me-2"></i>Question Types:</h6>
@@ -364,10 +364,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                                     <div class="mb-4">
                                         <h6 class="text-primary"><i class="fas fa-clock me-2"></i>Before Class:</h6>
                                         <ul class="small">
-                                            <li>Create story ahead of time (2-3 minutes)</li>
+                                            <li>Create story ahead of time (7-10 minutes)</li>
                                             <li>Preview to match your lesson</li>
                                             <li>Test audio and projector</li>
-                                            <li>Choose music on/off</li>
+                                            <li>Select background music (required)</li>
                                         </ul>
                                     </div>
 
