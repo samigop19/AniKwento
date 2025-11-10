@@ -11,7 +11,7 @@
     <header>
         <nav class="navbar navbar-expand-md">
             <div class="container">
-                <a href="../home.html">
+                <a href="/index.php">
                     <img src="../../../public/files/images/AKlogo.png" alt="AniKwento Logo" class="AK-logo-Header">
                 </a>
             </div>
