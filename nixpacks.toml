@@ -3,7 +3,13 @@ nixPkgs = ['php83', 'php83Packages.composer']
 
 [phases.install]
 cmds = [
-    'composer install --no-dev --optimize-autoloader --classmap-authoritative --no-progress --no-interaction --prefer-dist'
+    'echo "=== Starting Composer Install ==="',
+    'pwd',
+    'ls -la',
+    'composer install --no-dev --optimize-autoloader --classmap-authoritative --no-interaction --prefer-dist --verbose',
+    'echo "=== Composer Install Complete ==="',
+    'ls -la vendor/',
+    'test -f vendor/autoload.php && echo "✓ vendor/autoload.php exists" || echo "✗ vendor/autoload.php missing"'
 ]
 cacheDirectories = ['vendor', '~/.composer/cache']
 
