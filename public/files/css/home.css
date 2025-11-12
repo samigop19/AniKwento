@@ -317,14 +317,21 @@ header {
     animation: slideInFromBottom 0.7s ease-out 0.2s forwards;
     z-index: 3;
     position: relative;
+    background: transparent;
 }
 
-.hero-image img {
+.hero-image img,
+.hero-image video {
     max-width: 100%;
     height: auto;
     object-fit: contain;
     transform: scale(1.2);
     animation: floatAnimation 3s ease-in-out infinite;
+    background: transparent;
+}
+
+.hero-image video {
+    mix-blend-mode: normal;
 }
 
 /* Section 2 Styles */
@@ -854,9 +861,11 @@ footer {
         margin-left: 0;
     }
 
-    .hero-image img {
+    .hero-image img,
+    .hero-image video {
         max-width: 100%;
         transform: scale(1);
+        background: transparent;
     }
 }
 @media (min-width: 769px) {
@@ -899,9 +908,11 @@ footer {
         max-width: 90%;
         font-family: 'Segoe UI', sans-serif;
     }
-        .hero-image img {
+        .hero-image img,
+        .hero-image video {
         max-width: 70%;
             margin-left: 100px;
+        background: transparent;
     }
 
     .journey-btn {
@@ -991,9 +1002,11 @@ footer {
 
     }
 
-    .hero-image img {
+    .hero-image img,
+    .hero-image video {
         max-width: 100%;
         transform: scale(1);
+        background: transparent;
     }
     .AK-logo-Header {
         width: 150px;
@@ -1028,9 +1041,11 @@ footer {
         font-size: 16px;
         margin: 5px auto;
     }
-  .hero-image img {
+  .hero-image img,
+  .hero-image video {
         max-width: 100%;
         margin: 0 auto;
+        background: transparent;
     }
     .hero-content h1 {
         font-size: 2rem;
