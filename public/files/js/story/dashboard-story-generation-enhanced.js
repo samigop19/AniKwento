@@ -2639,13 +2639,13 @@ Please add gamification questions following the EXACT pattern specified above fo
             'Aaron': 'BVirrGoC94ipnqfb5ewn'
         };
 
-        
+        // Avatar URL mapping for characters
         const avatarUrlMap = {
-            'Rachel': 'https:
-            'Amara': 'https:
-            'Lily': 'https:
-            'Rod': 'https:
-            'Aaron': 'https:
+            'Rachel': 'https://models.readyplayer.me/68ef4192e831796787c84586.glb?morphTargets=ARKit,Oculus Visemes', // Rachel avatar
+            'Amara': 'https://models.readyplayer.me/68f4cee330d2941a6e0ca93a.glb?morphTargets=ARKit,Oculus Visemes', // Amara avatar
+            'Lily': 'https://models.readyplayer.me/68f4d3134d43cdede1a35f04.glb?morphTargets=ARKit,Oculus Visemes', // Lily avatar
+            'Rod': 'https://models.readyplayer.me/6900c7a0f2f24d4396aff789.glb?morphTargets=ARKit,Oculus Visemes', // Rod avatar
+            'Aaron': 'https://models.readyplayer.me/6900cb7e032c83e9bdece86f.glb?morphTargets=ARKit,Oculus Visemes' // Aaron avatar
         };
 
         
@@ -4151,7 +4151,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const sampleStoryData = {
                 title: "The Magical Forest Adventure",
                 theme: "Friendship and Discovery",
-                thumbnailUrl: "https:
+                thumbnailUrl: "https://image.pollinations.ai/prompt/The%20Magical%20Forest%20Adventure?width=1024&height=1024&nologo=true",
                 thumbnailPrompt: "The Magical Forest Adventure, featuring two young adventurers discovering an enchanted forest filled with wonder, 2D illustration, Disney animation style, soft pastel colors with warm glow, cinematic lighting creating a magical atmosphere, painterly texture, aesthetic composition with detailed background showing glowing mushrooms, sparkling fireflies, and ancient trees with friendly faces, characters in excited exploring poses with backpacks and maps, fantasy setting with mystical fog and golden sunbeams filtering through the canopy.",
                 scenes: []
             };

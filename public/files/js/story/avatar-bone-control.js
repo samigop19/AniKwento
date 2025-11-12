@@ -13,7 +13,7 @@ const AvatarBoneControl = {
 
         if (typeof GUI === 'undefined') {
             console.error('❌ Cannot enable bone control: lil-gui library not loaded');
-            console.log('   Add to HTML: <script src="https:
+            console.log('   Add to HTML: <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.19"></script>');
             return;
         }
 

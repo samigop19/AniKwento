@@ -7,8 +7,8 @@
     
     const PREVIEW_TEXT = "Once upon a time, in a magical land filled with wonder, two curious children discovered an amazing adventure waiting just for them.";
 
-    
-    const R2_VOICE_PREVIEW_BASE = 'https:
+    // R2 CDN base URL for voice previews
+    const R2_VOICE_PREVIEW_BASE = 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/';
 
     
     const VOICE_CACHE_FILES = {

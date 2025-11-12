@@ -810,11 +810,11 @@
     let isVoicePlaying = false;
     let isMusicPlaying = false;
 
-    
+    // Voice preview file paths (using R2 CDN)
     const VOICE_PREVIEW_PATHS = {
-        'Rachel': 'https:
-        'Amara': 'https:
-        'Lily': 'https:
+        'Rachel': 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/rachel-preview.mp3',
+        'Amara': 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/amara-preview.mp3',
+        'Lily': 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/lily-preview.mp3'
     };
 
     

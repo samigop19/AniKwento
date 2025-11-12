@@ -96,7 +96,7 @@ Reminder:
                 try {
                     console.log(`${operation} - Attempt ${attempt}/${maxRetries} with model ${model}`);
                     
-                    const response = await fetch('https:
+                    const response = await fetch('https://api.openai.com/v1/chat/completions'
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -192,7 +192,7 @@ Reminder:
                 try {
                     console.log(`${operation} - Attempt ${attempt}/${maxRetries} with model ${model}`);
                     
-                    const response = await fetch(`https:
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.apiKey}`
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -656,7 +656,7 @@ Example:
             try {
                 const currentPrompt = fallbackStrategies[attempt];
                 const encodedPrompt = encodeURIComponent(currentPrompt);
-                const imageUrl = `https:
+                const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1920&height=1024&nologo=true`;
                 
                 
                 const isValid = await this.testImageLoad(imageUrl, `Scene ${sceneNumber} attempt ${attempt + 1}`, 15000);
@@ -681,7 +681,7 @@ Example:
         console.warn(`⚠️ Scene ${sceneNumber} all ${maxRetries} attempts failed, using basic fallback`);
         const basicPrompt = `storybook illustration scene ${sceneNumber}`;
         const encodedBasic = encodeURIComponent(basicPrompt);
-        return `https:
+        return `https://image.pollinations.ai/prompt/${encodedBasic}?width=1920&height=1024&nologo=true`;
     }
 
     async testImageLoad(imageUrl, description, timeoutMs = 15000) {
@@ -757,7 +757,7 @@ Example:
                         const fallbackImageData = {
                             sceneNumber: scene.number,
                             prompt: `Fallback prompt for scene ${scene.number}: ${scene.narration}`,
-                            imageUrl: `https:
+                            imageUrl: `https://image.pollinations.ai/prompt/storybook%20scene%20${scene.number}%20${encodeURIComponent(scene.narration.substring(0, 50))}?width=1920&height=1024&nologo=true`
                         };
                         this.generatedImages.push(fallbackImageData);
                     }
@@ -892,8 +892,8 @@ async function generateCharacterImages() {
             
         } catch (error) {
             console.error(`❌ Error generating image for ${character.name}:`, error);
-            
-            const fallbackUrl = `https:
+            // Use fallback image URL (Fixed to match StoryGen exactly)
+            const fallbackUrl = `https://image.pollinations.ai/prompt/cartoon%20character%20${encodeURIComponent(character.name)}?nologo=true`;
             characterImageUrls.push(fallbackUrl);
         }
     }
@@ -937,8 +937,8 @@ async function generateSceneImagesWithContext() {
             
         } catch (error) {
             console.error(`❌ Error generating image for Scene ${scene.number}:`, error);
-            
-            const fallbackUrl = `https:
+            // Use fallback image URL (Updated from StoryGen)
+            const fallbackUrl = `https://image.pollinations.ai/prompt/storybook%20scene%20${scene.number}%20${encodeURIComponent(scene.narration.substring(0, 50))}?width=1920&height=1024&nologo=true`;
             sceneImageUrls.push(fallbackUrl);
         }
     }
@@ -966,7 +966,7 @@ async function generateSceneImagePrompt(scene) {
 
 function generateCharacterImageUrl(prompt) {
     const encodedPrompt = encodeURIComponent(prompt);
-    const finalUrl = `https:
+    const finalUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?nologo=true`;
     console.log('🔍 STORYBOARD-GENERATOR CONTEXT URL:', finalUrl);
     return finalUrl;
 }
@@ -977,15 +977,15 @@ async function generateSceneImageWithContext(prompt, contextUrl, token) {
     
     if (!token || token.trim() === '') {
         console.warn('⚠️ No token provided - generating scene without character context');
-        return `https:
+        return `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1920&height=1024&nologo=true`;
     }
     
     if (!contextUrl) {
         console.warn('⚠️ No context URL provided - generating scene without character context');
-        return `https:
+        return `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1920&height=1024&nologo=true`;
     }
     
-    const sceneUrl = `https:
+    const sceneUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=kontext&token=${token}&image=${encodeURIComponent(contextUrl)}&width=1920&height=1024&nologo=true`;
     
     console.log('🔗 Generated scene URL with character context');
     return sceneUrl;

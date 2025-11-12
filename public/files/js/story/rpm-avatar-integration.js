@@ -233,7 +233,7 @@ const RPMAvatar = {
     useAudioAnalyzer: true,
 
 
-    avatarUrl: 'https://models.readyplayer.me/67380bb6bf02ee5c7e92df20.glb?morphTargets=ARKit,Oculus%20Visemes',
+    avatarUrl: 'https://models.readyplayer.me/68ef4192e831796787c84586.glb?morphTargets=ARKit,Oculus%20Visemes',
     avatarGender: null, 
 
     
