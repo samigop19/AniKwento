@@ -424,9 +424,11 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                                     <label class="form-label fw-bold">Year Graduated <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="editYear" name="year_graduated"
                                            value="<?= safe($teacher['year_graduated']) ?>"
-                                           min="1900" max="2099"
+                                           min="1950" max="<?= date('Y') ?>"
                                            placeholder="e.g., 2015"
+                                           oninput="validateYear(this)"
                                            required>
+                                    <small class="form-text text-muted">Enter a year between 1950 and <?= date('Y') ?></small>
                                 </div>
                             </div>
                         </div>
@@ -440,10 +442,11 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                                     <label class="form-label fw-bold">Years of Teaching Experience <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="editExperienceYears" name="experience_years"
                                            value="<?= safe($teacher['experience_years']) ?>"
-                                           min="0"
+                                           min="0" max="60"
                                            placeholder="e.g., 5"
+                                           oninput="validateExperience(this)"
                                            required>
-                                    <small class="form-text text-muted">Enter the total number of years you've been teaching</small>
+                                    <small class="form-text text-muted">Enter the total number of years you've been teaching (0-60 years)</small>
                                 </div>
                                 <div class="col-md-12">
                                     <label class="form-label fw-bold">About Your Teaching Experience <span class="text-danger">*</span></label>
@@ -534,6 +537,31 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
         document.body.appendChild(n);
         setTimeout(() => n.classList.add('show'), 50);
         setTimeout(() => { n.classList.remove('show'); setTimeout(() => n.remove(), 300); }, 3000);
+    }
+
+    // Validate year graduated
+    function validateYear(input) {
+        const currentYear = new Date().getFullYear();
+        const minYear = 1950;
+        const value = parseInt(input.value);
+
+        if (value < minYear) {
+            input.value = minYear;
+        } else if (value > currentYear) {
+            input.value = currentYear;
+        }
+    }
+
+    // Validate teaching experience years
+    function validateExperience(input) {
+        const maxYears = 60;
+        const value = parseInt(input.value);
+
+        if (value < 0) {
+            input.value = 0;
+        } else if (value > maxYears) {
+            input.value = maxYears;
+        }
     }
 
     // preview chosen image
@@ -639,14 +667,26 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
         });
         if (!ok) { showNotification('Please fill required fields', 'error'); return; }
 
+        // Show loading animation
+        const saveBtn = document.querySelector('.modal-footer .btn-success');
+        const originalBtnContent = saveBtn.innerHTML;
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Saving...';
+
         // call server
         let result;
         try {
             result = await saveProfileToServer();
         } catch (err) {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = originalBtnContent;
             showNotification('Network error. Could not save.', 'error');
             return;
         }
+
+        // Hide loading animation
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = originalBtnContent;
 
         if (!result || !result.success) {
             showNotification('Error saving profile: ' + (result?.error || 'Unknown'), 'error');
