@@ -230,10 +230,10 @@ const RPMAvatar = {
     audioListener: null,
     threeAudio: null,
     jawBone: null,
-    useAudioAnalyzer: true, 
+    useAudioAnalyzer: true,
 
-    
-    avatarUrl: 'https:
+
+    avatarUrl: 'https://models.readyplayer.me/67380bb6bf02ee5c7e92df20.glb?morphTargets=ARKit,Oculus%20Visemes',
     avatarGender: null, 
 
     
@@ -4251,47 +4251,72 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     let storyAvatarUrl = null;
 
-    
+
     try {
-        
+
         try {
             const sessionStoryJson = sessionStorage.getItem('currentStory');
             if (sessionStoryJson) {
                 const storyData = JSON.parse(sessionStoryJson);
+                console.log('🔍 Story data from sessionStorage:', {
+                    hasAvatarUrl: !!storyData?.avatarUrl,
+                    avatarUrl: storyData?.avatarUrl,
+                    storyKeys: storyData ? Object.keys(storyData) : []
+                });
                 if (storyData && storyData.avatarUrl) {
                     storyAvatarUrl = storyData.avatarUrl;
                     console.log('🎭 Found avatar URL from sessionStorage (dashboard playback):', storyAvatarUrl);
                 }
+            } else {
+                console.log('ℹ️ No currentStory in sessionStorage');
             }
         } catch (sessionError) {
             console.warn('⚠️ sessionStorage load failed:', sessionError);
         }
 
-        
+
         if (!storyAvatarUrl && typeof loadStoryFromIndexedDB === 'function') {
             const storyData = await loadStoryFromIndexedDB();
+            console.log('🔍 Story data from IndexedDB:', {
+                hasData: !!storyData,
+                hasAvatarUrl: !!storyData?.avatarUrl,
+                avatarUrl: storyData?.avatarUrl,
+                storyKeys: storyData ? Object.keys(storyData) : []
+            });
             if (storyData && storyData.avatarUrl) {
                 storyAvatarUrl = storyData.avatarUrl;
                 console.log('🎭 Found avatar URL from IndexedDB:', storyAvatarUrl);
             }
         }
 
-        
+
         if (!storyAvatarUrl) {
             const storyDataJson = localStorage.getItem('generatedStoryData');
             if (storyDataJson) {
                 const storyData = JSON.parse(storyDataJson);
+                console.log('🔍 Story data from localStorage:', {
+                    hasAvatarUrl: !!storyData?.avatarUrl,
+                    avatarUrl: storyData?.avatarUrl,
+                    storyKeys: storyData ? Object.keys(storyData) : []
+                });
                 if (storyData && storyData.avatarUrl) {
                     storyAvatarUrl = storyData.avatarUrl;
                     console.log('🎭 Found avatar URL from localStorage:', storyAvatarUrl);
                 }
+            } else {
+                console.log('ℹ️ No generatedStoryData in localStorage');
             }
         }
 
-        
+
         if (!storyAvatarUrl && window.userSettings && window.userSettings.custom_avatar_url) {
             storyAvatarUrl = window.userSettings.custom_avatar_url;
             console.log('🎭 Using custom avatar from user settings:', storyAvatarUrl);
+        }
+
+        if (!storyAvatarUrl) {
+            console.log('🎭 No avatar URL found in story data, using default avatar');
+            storyAvatarUrl = RPMAvatar.avatarUrl;
         }
     } catch (error) {
         console.warn('⚠️ Could not load story data for avatar:', error);
