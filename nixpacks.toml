@@ -7,11 +7,15 @@ cmds = []
 [phases.build]
 cmds = [
     'echo "=== Starting Composer Install in Build Phase ==="',
-    'composer install --no-dev --optimize-autoloader --classmap-authoritative --no-interaction --prefer-dist --verbose',
-    'echo "=== Verifying vendor directory ==="',
-    'ls -la vendor/ || echo "vendor directory not found"',
-    'test -f vendor/autoload.php && echo "✓ vendor/autoload.php exists" || echo "✗ vendor/autoload.php MISSING"'
+    'composer install --no-dev --optimize-autoloader --classmap-authoritative --no-interaction --prefer-dist',
+    'echo "=== Build completed successfully ==="'
 ]
 
 [start]
 cmd = 'php -S 0.0.0.0:$PORT -t . index.php'
+
+[healthcheck]
+path = '/health'
+interval = 10
+timeout = 5
+retries = 3

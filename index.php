@@ -15,6 +15,14 @@ $requestPath = parse_url($requestUri, PHP_URL_PATH);
 // Remove leading slash
 $requestPath = ltrim($requestPath, '/');
 
+// Health check endpoint for Railway
+if ($requestPath === 'health' || $requestPath === 'healthz') {
+    http_response_code(200);
+    header('Content-Type: application/json');
+    echo json_encode(['status' => 'ok', 'timestamp' => time()]);
+    exit;
+}
+
 // FIRST: Check for static files (CSS, JS, images) and serve with proper MIME types
 // Handle files from public/ or static files (non-PHP) from source/
 $isPublicPath = strpos($requestPath, 'public/') === 0;
@@ -35,6 +43,9 @@ if ($isPublicPath || $isSourceStaticPath) {
             'gif' => 'image/gif',
             'svg' => 'image/svg+xml',
             'ico' => 'image/x-icon',
+            'webp' => 'image/webp',
+            'webm' => 'video/webm',
+            'mp4' => 'video/mp4',
             'woff' => 'font/woff',
             'woff2' => 'font/woff2',
             'ttf' => 'font/ttf',
