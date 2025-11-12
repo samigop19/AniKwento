@@ -301,6 +301,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                                             <li class="mb-2"><strong>Pick a Voice</strong>
                                                 <br><small class="text-muted">Choose from Rachel, Amara, or Lily (or use a custom voice)</small>
                                             </li>
+                                            <li class="mb-2"><strong>Select Background Music</strong> (required)
+                                                <br><small class="text-muted">Choose from: Playful Adventure, Epic Adventure, Adventure Journey, or Magical Wonder</small>
+                                            </li>
                                             <li class="mb-2"><strong>Add Questions</strong> (optional)
                                                 <br><small class="text-muted">Colors, shapes, numbers, or emotions</small>
                                             </li>
