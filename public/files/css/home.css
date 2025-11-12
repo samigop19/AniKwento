@@ -334,7 +334,10 @@ header {
     mix-blend-mode: normal;
     -webkit-mask-composite: clear;
     background-color: transparent !important;
+    background: transparent !important;
     opacity: 1;
+    -webkit-background-clip: content-box;
+    background-clip: content-box;
 }
 
 
@@ -868,7 +871,7 @@ footer {
     .hero-image video {
         max-width: 100%;
         transform: scale(1);
-        background: transparent;
+        background: transparent !important;
         background-color: transparent !important;
     }
 }
@@ -1011,7 +1014,7 @@ footer {
     .hero-image video {
         max-width: 100%;
         transform: scale(1);
-        background: transparent;
+        background: transparent !important;
         background-color: transparent !important;
     }
     .AK-logo-Header {
