@@ -342,51 +342,38 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
 
     <!-- Share Profile Modal -->
     <div class="modal fade" id="shareProfileModal" tabindex="-1" aria-labelledby="shareProfileModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: 20px; overflow: hidden; border: none;">
-                <div class="modal-header" style="background: linear-gradient(135deg, #801b32 0%, #a52742 100%); color: white; border: none; padding: 25px 30px;">
+        <div class="modal-dialog modal-dialog-centered modal-sm" style="max-width: 450px;">
+            <div class="modal-content" style="border-radius: 15px; overflow: hidden; border: none;">
+                <div class="modal-header" style="background: linear-gradient(135deg, #801b32 0%, #a52742 100%); color: white; border: none; padding: 20px;">
                     <div>
-                        <h5 class="modal-title" id="shareProfileModalLabel" style="font-weight: 700; font-size: 1.5rem; margin-bottom: 5px;">
-                            <i class="fas fa-share-alt me-2"></i>Share Your Profile
+                        <h5 class="modal-title" id="shareProfileModalLabel" style="font-weight: 600; font-size: 1.2rem; margin-bottom: 3px;">
+                            <i class="fas fa-share-alt me-2"></i>Share with Parents
                         </h5>
-                        <p class="mb-0" style="font-size: 0.9rem; opacity: 0.9;">Copy and share your professional profile link</p>
+                        <p class="mb-0" style="font-size: 0.8rem; opacity: 0.9;">Copy your profile link</p>
                     </div>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" style="padding: 30px;">
-                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 2px dashed #801b32;">
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <div style="background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                                <i class="fas fa-link" style="font-size: 1.8rem; color: #801b32;"></i>
-                            </div>
-                            <div style="flex: 1;">
-                                <label style="font-size: 0.85rem; color: #6c757d; margin-bottom: 8px; display: block; font-weight: 600;">Your Profile Link</label>
-                                <div style="position: relative;">
-                                    <input type="text" id="shareUrlInput" readonly class="form-control" style="padding-right: 100px; border-radius: 10px; border: 2px solid #dee2e6; font-size: 0.9rem; background: white;">
-                                    <button onclick="copyShareLink()" class="btn" id="copyBtn" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: #801b32; color: white; border: none; border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; font-weight: 600; transition: all 0.3s;">
-                                        <i class="fas fa-copy me-1"></i>Copy
-                                    </button>
-                                </div>
-                            </div>
+                <div class="modal-body" style="padding: 20px;">
+                    <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; border: 2px dashed #801b32;">
+                        <label style="font-size: 0.75rem; color: #6c757d; margin-bottom: 8px; display: block; font-weight: 600;">
+                            <i class="fas fa-link me-1"></i>Profile Link for Parents
+                        </label>
+                        <div style="position: relative;">
+                            <input type="text" id="shareUrlInput" readonly class="form-control" style="padding-right: 90px; border-radius: 8px; border: 1px solid #dee2e6; font-size: 0.8rem; background: white; padding: 8px 90px 8px 10px;">
+                            <button onclick="copyShareLink()" class="btn" id="copyBtn" style="position: absolute; right: 4px; top: 50%; transform: translateY(-50%); background: #801b32; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 0.75rem; font-weight: 600; transition: all 0.3s;">
+                                <i class="fas fa-copy me-1"></i>Copy
+                            </button>
                         </div>
                     </div>
-                    <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 10px;">
-                        <div style="display: flex; align-items: start; gap: 12px;">
-                            <i class="fas fa-info-circle" style="color: #856404; font-size: 1.2rem; margin-top: 2px;"></i>
-                            <div>
-                                <h6 style="color: #856404; font-weight: 600; margin-bottom: 8px; font-size: 0.95rem;">How to use this link:</h6>
-                                <ul style="color: #856404; margin: 0; padding-left: 20px; font-size: 0.85rem; line-height: 1.6;">
-                                    <li>Share with parents, students, or colleagues</li>
-                                    <li>Add to your email signature or social media</li>
-                                    <li>Include in your CV or portfolio</li>
-                                    <li>The link works even if they don't have an account</li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div style="background: #e7f3ff; border-left: 3px solid #0066cc; padding: 12px; border-radius: 8px;">
+                        <p style="color: #004085; margin: 0; font-size: 0.8rem; line-height: 1.5;">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Parents can view your credentials and teaching background through this link.
+                        </p>
                     </div>
                 </div>
-                <div class="modal-footer" style="background: #f8f9fa; border: none; padding: 20px 30px;">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 10px; padding: 10px 24px; font-weight: 600;">
+                <div class="modal-footer" style="background: #f8f9fa; border: none; padding: 12px 20px;">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="border-radius: 8px; padding: 8px 20px; font-weight: 600; font-size: 0.85rem;">
                         <i class="fas fa-times me-1"></i>Close
                     </button>
                 </div>
