@@ -442,14 +442,14 @@ body {
 /* Mobile devices (Portrait and Landscape) */
 @media (max-width: 768px) {
     body {
-        padding: 10px;
+        padding: 8px;
         align-items: flex-start;
-        padding-top: 20px;
+        padding-top: 15px;
     }
 
     .quiz-container {
-        padding: 20px 15px;
-        max-height: 95vh;
+        padding: 18px 12px;
+        max-height: 96vh;
         border-radius: 15px;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -457,59 +457,61 @@ body {
 
     /* Header */
     .back-to-story-section {
-        margin-bottom: 15px;
+        margin-bottom: 12px;
     }
 
     .btn-back-top {
-        padding: 8px 15px;
+        padding: 8px 14px;
         font-size: 0.9rem;
+        gap: 6px;
     }
 
     .quiz-header {
-        margin-bottom: 25px;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
     }
 
     .quiz-header h1 {
-        font-size: 1.6rem;
-        margin-bottom: 10px;
+        font-size: 1.5rem;
+        margin-bottom: 8px;
     }
 
     .quiz-header .story-title {
         font-size: 0.95rem;
-        padding: 8px 15px;
     }
 
     /* Progress section */
     .progress-section {
-        margin-bottom: 20px;
+        margin-bottom: 18px;
+        padding: 12px 15px;
     }
 
     .question-counter {
-        font-size: 0.9rem;
-        padding: 10px 15px;
+        font-size: 0.95rem;
     }
 
     /* Question card */
     .question-card {
-        padding: 20px;
+        padding: 18px 15px;
+        margin-bottom: 15px;
     }
 
     .question-text {
-        font-size: 1.1rem;
-        margin-bottom: 20px;
+        font-size: 1.05rem;
+        margin-bottom: 18px;
         line-height: 1.5;
     }
 
     /* Choices */
     .choices-container {
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 10px;
     }
 
     .choice-btn {
-        padding: 15px 12px;
+        padding: 14px 12px;
         font-size: 0.95rem;
-        min-height: 65px;
+        min-height: 60px;
         text-align: left;
         gap: 10px;
         word-wrap: break-word;
@@ -531,56 +533,75 @@ body {
 
     /* Show answer button */
     .btn-show-answer {
-        padding: 12px 24px;
+        padding: 11px 22px;
         font-size: 0.95rem;
+        gap: 6px;
     }
 
     /* Feedback section */
     .feedback-section {
-        padding: 15px;
-        margin-top: 15px;
+        padding: 14px;
+        margin-top: 14px;
     }
 
     .feedback-section h4 {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
+        margin-bottom: 8px;
     }
 
     .feedback-section p {
         font-size: 0.95rem;
+        line-height: 1.4;
     }
 
     /* Navigation buttons */
     .navigation-btns {
         gap: 10px;
-        margin-top: 20px;
+        margin-top: 18px;
         flex-wrap: wrap;
     }
 
     .nav-btn {
-        padding: 12px 20px;
+        padding: 12px 18px;
         font-size: 0.95rem;
         flex: 1;
-        min-width: 120px;
+        min-width: 115px;
     }
 
     /* Results */
+    .results-score {
+        font-size: 3.5rem;
+        margin: 20px 0;
+    }
+
+    .results-message {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+    }
+
     .results-details {
         flex-direction: column;
         gap: 15px;
-    }
-
-    .stat-card {
         padding: 20px;
+        margin: 30px 0;
     }
 
-    .stat-value {
-        font-size: 2rem;
+    .result-stat {
+        padding: 15px;
+    }
+
+    .result-stat .stat-value {
+        font-size: 2.5rem;
+    }
+
+    .result-stat .stat-label {
+        font-size: 1rem;
     }
 
     .results-actions {
         flex-direction: column;
         gap: 12px;
-        margin-top: 30px;
+        margin-top: 25px;
     }
 
     .results-actions button {
@@ -591,51 +612,66 @@ body {
 /* Small mobile devices */
 @media (max-width: 480px) {
     body {
-        padding: 5px;
+        padding: 6px;
         padding-top: 10px;
     }
 
     .quiz-container {
-        padding: 15px;
+        padding: 14px 10px;
         border-radius: 12px;
         max-height: 97vh;
     }
 
     .btn-back-top {
-        padding: 6px 12px;
+        padding: 7px 12px;
         font-size: 0.85rem;
         gap: 5px;
     }
 
+    .quiz-header {
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+    }
+
     .quiz-header h1 {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
+        margin-bottom: 6px;
     }
 
     .quiz-header .story-title {
-        font-size: 0.85rem;
-        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    .progress-section {
+        margin-bottom: 15px;
+        padding: 10px 12px;
     }
 
     .question-counter {
         font-size: 0.85rem;
-        padding: 8px 12px;
     }
 
     .question-card {
-        padding: 15px;
+        padding: 14px 12px;
+        margin-bottom: 12px;
     }
 
     .question-text {
-        font-size: 1rem;
-        margin-bottom: 15px;
+        font-size: 0.95rem;
+        margin-bottom: 14px;
+        line-height: 1.4;
+    }
+
+    .choices-container {
+        gap: 8px;
     }
 
     .choice-btn {
-        padding: 12px 10px;
-        font-size: 0.9rem;
-        min-height: 60px;
+        padding: 11px 10px;
+        font-size: 0.85rem;
+        min-height: 56px;
         gap: 8px;
-        line-height: 1.4;
+        line-height: 1.3;
     }
 
     .choice-btn .choice-letter {
@@ -645,51 +681,124 @@ body {
     }
 
     .btn-show-answer {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-
-    .nav-btn {
-        padding: 10px 16px;
-        font-size: 0.9rem;
-        min-width: 100px;
-    }
-
-    .stat-card {
-        padding: 15px;
-    }
-
-    .stat-label {
+        padding: 10px 18px;
         font-size: 0.85rem;
     }
 
-    .stat-value {
-        font-size: 1.6rem;
+    .feedback-section {
+        padding: 12px;
+        margin-top: 12px;
     }
 
-    .stat-desc {
-        font-size: 0.8rem;
+    .feedback-section h4 {
+        font-size: 1rem;
+    }
+
+    .feedback-section p {
+        font-size: 0.85rem;
+    }
+
+    .navigation-btns {
+        gap: 8px;
+        margin-top: 15px;
+    }
+
+    .nav-btn {
+        padding: 10px 14px;
+        font-size: 0.85rem;
+        min-width: 100px;
+        gap: 6px;
+    }
+
+    .results-score {
+        font-size: 2.8rem;
+        margin: 15px 0;
+    }
+
+    .results-message {
+        font-size: 1.2rem;
+    }
+
+    .results-details {
+        padding: 15px;
+        margin: 20px 0;
+    }
+
+    .result-stat {
+        padding: 12px;
+    }
+
+    .result-stat .stat-value {
+        font-size: 2rem;
+    }
+
+    .result-stat .stat-label {
+        font-size: 0.9rem;
+        margin-top: 8px;
+    }
+
+    .results-actions {
+        margin-top: 20px;
+        gap: 10px;
     }
 }
 
 /* Very small screens */
 @media (max-width: 360px) {
+    body {
+        padding: 4px;
+        padding-top: 8px;
+    }
+
     .quiz-container {
-        padding: 12px;
+        padding: 12px 8px;
+        max-height: 98vh;
+    }
+
+    .btn-back-top {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+
+    .quiz-header {
+        margin-bottom: 12px;
+        padding-bottom: 10px;
     }
 
     .quiz-header h1 {
-        font-size: 1.2rem;
+        font-size: 1.15rem;
+    }
+
+    .quiz-header .story-title {
+        font-size: 0.8rem;
+    }
+
+    .progress-section {
+        margin-bottom: 12px;
+        padding: 8px 10px;
+    }
+
+    .question-counter {
+        font-size: 0.8rem;
+    }
+
+    .question-card {
+        padding: 12px 10px;
     }
 
     .question-text {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+    }
+
+    .choices-container {
+        gap: 7px;
     }
 
     .choice-btn {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         padding: 10px 8px;
-        min-height: 55px;
+        min-height: 52px;
         gap: 6px;
         line-height: 1.3;
     }
@@ -697,10 +806,54 @@ body {
     .choice-btn .choice-letter {
         width: 28px;
         height: 28px;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
-    .choices-container {
-        gap: 10px;
+    .btn-show-answer {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+
+    .feedback-section {
+        padding: 10px;
+    }
+
+    .feedback-section h4 {
+        font-size: 0.95rem;
+    }
+
+    .feedback-section p {
+        font-size: 0.8rem;
+    }
+
+    .navigation-btns {
+        gap: 6px;
+        margin-top: 12px;
+    }
+
+    .nav-btn {
+        padding: 9px 12px;
+        font-size: 0.8rem;
+        min-width: 90px;
+    }
+
+    .results-score {
+        font-size: 2.5rem;
+    }
+
+    .results-message {
+        font-size: 1.1rem;
+    }
+
+    .results-details {
+        padding: 12px;
+    }
+
+    .result-stat .stat-value {
+        font-size: 1.8rem;
+    }
+
+    .result-stat .stat-label {
+        font-size: 0.85rem;
     }
 }
