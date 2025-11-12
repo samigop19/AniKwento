@@ -686,20 +686,27 @@ body.menu-open {
         position: fixed;
         bottom: 30px;
         right: 30px;
-        width: 60px;
-        height: 60px;
-        border: 2px dashed var(--primary-color);
+        width: 56px;
+        height: 56px;
+        border: none;
         border-radius: 50%;
-        background: var(--white);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        background: var(--primary-color);
+        box-shadow: 0 4px 12px rgba(128, 27, 50, 0.3);
         z-index: 1000;
         margin: 0;
         aspect-ratio: 1;
     }
 
+    .add-new:hover {
+        background: var(--hover-color);
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(128, 27, 50, 0.4);
+    }
+
     .plus-icon {
-        font-size: 2rem;
-        color: var(--primary-color);
+        font-size: 1.8rem;
+        color: var(--white);
+        font-weight: 300;
     }
 
     .story-grid {
