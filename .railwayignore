@@ -1,6 +1,10 @@
 # Railway Deployment - Ignore Files
 # Similar to .gitignore but for Railway deployments
 
+# Large GIF files - we use optimized MP4/WebM video formats instead
+public/files/images/book_gif.gif
+public/files/images/monkey.gif
+
 # Environment files (Railway provides environment variables)
 .env
 .env.*
@@ -45,8 +49,12 @@ vendor/*/tests/
 *.bak
 *.backup
 *~
+public/files/images/favicon_backup/
 
 # Temporary files
 tmp/
 temp/
 cache/
+
+# Claude Code config
+.claude/
