@@ -528,40 +528,40 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
         </div>
     </div>
 
-    <script src="../../../public/files/js/common/mobiletoggle.js"></script>
-    <script src="../../../public/files/js/common/modal.js"> </script>
-    <script src="../../../public/files/js/common/range.js"> </script>
+    <script src="../../../public/files/js/common/mobiletoggle.js?v=1.1"></script>
+    <script src="../../../public/files/js/common/modal.js?v=1.1"> </script>
+    <script src="../../../public/files/js/common/range.js?v=1.1"> </script>
 
     <!-- CRITICAL: Timer Manager prevents tab throttling during story generation -->
-    <script src="../../../public/files/js/story/timer-manager.js"></script>
+    <script src="../../../public/files/js/story/timer-manager.js?v=1.1"></script>
 
     <!-- IMPORTANT: Clear form fields on page load - must load early -->
-    <script src="../../../public/files/js/story/clear-form-on-load.js"></script>
+    <script src="../../../public/files/js/story/clear-form-on-load.js?v=1.1"></script>
 
     <!-- Theme character counter -->
-    <script src="../../../public/files/js/story/theme-character-counter.js"></script>
+    <script src="../../../public/files/js/story/theme-character-counter.js?v=1.1"></script>
 
     <!-- IMPORTANT: Load user default settings from Settings Dashboard -->
-    <script src="../../../public/files/js/story/load-default-settings.js"></script>
+    <script src="../../../public/files/js/story/load-default-settings.js?v=1.1"></script>
 
-    <script src="../../../public/files/js/story/utils/story-utils.js"></script>
-    <script src="../../../public/files/js/story/notification-system.js"></script>
-    <script src="../../../public/files/js/story/character-validation.js"></script>
+    <script src="../../../public/files/js/story/utils/story-utils.js?v=1.1"></script>
+    <script src="../../../public/files/js/story/notification-system.js?v=1.1"></script>
+    <script src="../../../public/files/js/story/character-validation.js?v=1.1"></script>
 
-    <script src="../../../public/files/js/story/api/fal-ai-integration.js"></script>
-    <script src="../../../public/files/js/story/tts-integration.js"></script>
-    <script src="../../../public/files/js/story/tts-story-generator.js"></script>
-    <script src="../../../public/files/js/story/voice-preview.js"></script>
-    <script src="../../../public/files/js/story/dashboard-story-generation-enhanced.js"></script>
+    <script src="../../../public/files/js/story/api/fal-ai-integration.js?v=1.1"></script>
+    <script src="../../../public/files/js/story/tts-integration.js?v=1.1"></script>
+    <script src="../../../public/files/js/story/tts-story-generator.js?v=1.1"></script>
+    <script src="../../../public/files/js/story/voice-preview.js?v=1.1"></script>
+    <script src="../../../public/files/js/story/dashboard-story-generation-enhanced.js?v=1.1"></script>
 
-    <script src="../../../public/files/js/story/dashboard-story-generator-EXACT.js"></script>
+    <script src="../../../public/files/js/story/dashboard-story-generator-EXACT.js?v=1.1"></script>
 
-    <script src="../../../public/files/js/story/dashboard-main.js"></script>
-    <script src="../../../public/files/js/story/dashboard-story-loader.js"></script>
+    <script src="../../../public/files/js/story/dashboard-main.js?v=1.1"></script>
+    <script src="../../../public/files/js/story/dashboard-story-loader.js?v=1.1"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="../../../public/files/js/story/dashboard-preview-modal.js"></script>
+    <script src="../../../public/files/js/story/dashboard-preview-modal.js?v=1.1"></script>
 
 </body>
 </html>
