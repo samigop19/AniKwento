@@ -2,6 +2,8 @@
 
 
 
+$_SERVER['DOCUMENT_ROOT'] = __DIR__;
+
 require_once __DIR__ . '/source/config/env.php';
 EnvLoader::load();
 

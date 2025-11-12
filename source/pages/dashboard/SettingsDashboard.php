@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__ . '/../../config/init.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
 ?>
 <!DOCTYPE html>
