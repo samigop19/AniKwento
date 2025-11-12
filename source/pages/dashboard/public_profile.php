@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../../config/init.php';
 // public_profile.php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/db_connection.php';
 

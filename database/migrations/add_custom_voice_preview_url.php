@@ -1,12 +1,15 @@
 <?php
-
+/**
+ * Migration: Add custom_voice_preview_url column to user_settings table
+ * This migration adds support for storing custom voice preview URLs in the database
+ */
 
 require_once __DIR__ . '/../../source/handlers/db_connection.php';
 
 echo "=== Migration: Add custom_voice_preview_url column ===\n\n";
 
 try {
-    
+    // Check if column already exists
     $result = $conn->query("SHOW COLUMNS FROM user_settings LIKE 'custom_voice_preview_url'");
 
     if ($result->num_rows > 0) {
@@ -14,7 +17,7 @@ try {
         exit(0);
     }
 
-    
+    // Add the column
     echo "Adding column 'custom_voice_preview_url' to user_settings table...\n";
 
     $sql = "ALTER TABLE user_settings

@@ -1,14 +1,17 @@
 <?php
-
+/**
+ * Complete Database Setup Script
+ * Run this script to create all required tables in the correct order
+ */
 
 require_once '../source/handlers/db_connection.php';
 
-
+// Disable mysqli exceptions for this script
 mysqli_report(MYSQLI_REPORT_OFF);
 
 echo "=== AniKwento Database Setup ===\n\n";
 
-
+// Define migrations in order of dependencies
 $migrations = [
     'users.sql',
     'pending_users.sql',
@@ -33,31 +36,31 @@ foreach ($migrations as $migrationFile) {
 
     $sql = file_get_contents($sqlFile);
 
-    
-    
+    // Execute the SQL
+    // For multi-query execution with error handling
     if ($conn->multi_query($sql)) {
         do {
-            
+            // Store first result set
             if ($result = $conn->store_result()) {
                 $result->free();
             }
 
-            
+            // Check for errors in this query
             if ($conn->errno) {
                 $error = $conn->error;
                 $errno = $conn->errno;
 
-                
+                // Ignore certain errors
                 if ($errno == 1050 || stripos($error, 'already exists') !== false ||
                     $errno == 1060 || stripos($error, 'Duplicate column') !== false ||
                     $errno == 1061 || stripos($error, 'Duplicate key') !== false) {
-                    
+                    // Ignorable errors - continue
                 } else {
                     echo "⚠ Warning: $error\n";
                 }
             }
 
-            
+            // Move to next result
             if ($conn->more_results()) {
                 @$conn->next_result();
             }
@@ -68,7 +71,7 @@ foreach ($migrations as $migrationFile) {
         $error = $conn->error;
         $errno = $conn->errno;
 
-        
+        // Ignore certain errors (like table already exists)
         if ($errno == 1050 || stripos($error, 'already exists') !== false) {
             echo "✓ Tables already exist (skipped)\n";
         } else {
@@ -80,7 +83,7 @@ foreach ($migrations as $migrationFile) {
     }
 }
 
-
+// Verify critical tables
 echo "\n" . str_repeat("=", 80) . "\n";
 echo "Verifying database setup...\n";
 echo str_repeat("=", 80) . "\n\n";

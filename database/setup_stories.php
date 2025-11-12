@@ -1,11 +1,20 @@
 <?php
-
+/**
+ * Database Setup Script for Story Saving Feature
+ * Run this script to create all story-related tables
+ *
+ * Tables created:
+ * - stories (main stories table)
+ * - story_scenes (story scenes with narration)
+ * - story_scene_audio (audio files in Cloudflare R2)
+ * - story_gamification (quiz questions)
+ */
 
 require_once '../source/handlers/db_connection.php';
 
 echo "Setting up story-related tables...\n\n";
 
-
+// Read the SQL migration file
 $sqlFile = __DIR__ . '/migrations/stories.sql';
 
 if (!file_exists($sqlFile)) {
@@ -14,29 +23,29 @@ if (!file_exists($sqlFile)) {
 
 $sql = file_get_contents($sqlFile);
 
-
-
+// Split by semicolons to get individual statements
+// Remove comments and filter statements
 $statements = array_filter(
     array_map('trim', explode(';', $sql)),
     function($stmt) {
-        
+        // Skip empty statements
         if (empty($stmt)) return false;
 
-        
+        // Skip SQL comments (lines starting with --)
         $lines = explode("\n", $stmt);
         $nonCommentLines = array_filter($lines, function($line) {
             $trimmed = trim($line);
             return !empty($trimmed) && !str_starts_with($trimmed, '--');
         });
 
-        
+        // Reconstruct statement without comments
         $cleanStmt = implode("\n", $nonCommentLines);
         $cleanStmt = trim($cleanStmt);
 
-        
+        // Skip if empty after removing comments
         if (empty($cleanStmt)) return false;
 
-        
+        // Skip transaction and SET statements
         if (stripos($cleanStmt, 'START TRANSACTION') !== false) return false;
         if (stripos($cleanStmt, 'COMMIT') !== false) return false;
         if (stripos($cleanStmt, 'SET ') === 0) return false;
@@ -45,7 +54,7 @@ $statements = array_filter(
     }
 );
 
-
+// Clean statements by removing comments
 $statements = array_map(function($stmt) {
     $lines = explode("\n", $stmt);
     $nonCommentLines = array_filter($lines, function($line) {
@@ -63,7 +72,7 @@ foreach ($statements as $statement) {
     echo "Executing: " . substr($statement, 0, 50) . "...\n";
 
     if (!$conn->query($statement)) {
-        
+        // Ignore "table already exists" errors
         if ($conn->errno != 1050) {
             echo "Error: " . $conn->error . "\n";
             $success = false;
@@ -75,7 +84,7 @@ foreach ($statements as $statement) {
     }
 }
 
-
+// Verify all tables were created
 $tables = ['stories', 'story_scenes', 'story_scene_audio', 'story_gamification'];
 $allTablesExist = true;
 

@@ -1,10 +1,13 @@
 <?php
+/**
+ * Migration endpoint to add custom_voice_preview_url column to user_settings table
+ * Access via: https://your-railway-app.railway.app/source/admin/migrate_custom_voice_preview.php
+ */
 
-
-
+// Set content type to plain text for better readability
 header('Content-Type: text/plain; charset=utf-8');
 
-
+// Only allow access from localhost or Railway internal network for security
 $allowedIPs = ['127.0.0.1', '::1'];
 $isRailway = isset($_ENV['RAILWAY_ENVIRONMENT']) || getenv('RAILWAY_ENVIRONMENT');
 
@@ -33,7 +36,7 @@ try {
 
     echo "✓ Connected successfully!\n\n";
 
-    
+    // Check if column exists
     echo "Checking if custom_voice_preview_url column exists...\n";
     $stmt = $pdo->prepare("
         SELECT COUNT(*) as col_exists
@@ -61,7 +64,7 @@ try {
         echo "✓ Successfully added custom_voice_preview_url column!\n";
     }
 
-    
+    // Verify the table structure
     echo "\n=== Current user_settings table structure ===\n";
     $stmt = $pdo->query("DESCRIBE user_settings");
     $columns = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -76,12 +79,12 @@ try {
         );
     }
 
-    
+    // Show row count
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM user_settings");
     $count = $stmt->fetch(PDO::FETCH_ASSOC);
     echo "\n✓ Total rows in user_settings: {$count['count']}\n";
 
-    
+    // If there are rows, show a sample
     if ($count['count'] > 0) {
         echo "\n=== Sample data (first 3 rows) ===\n";
         $stmt = $pdo->query("SELECT user_id, voice_mode, custom_voice_id, custom_voice_preview_url FROM user_settings LIMIT 3");

@@ -18,9 +18,7 @@
       "Bash(find:*)",
       "Bash(sort:*)",
       "Bash(test:*)",
-      "Bash(for file in /Applications/MAMP/htdocs/AniKwento/public/files/css/*.css)",
-      "Bash(do basename \"$file\")",
-      "Bash(php remove_comments.php:*)"
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": []
