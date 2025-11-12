@@ -8,6 +8,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Help - AniKwento</title>
+
+    <link rel="icon" type="image/x-icon" href="../../../public/files/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../public/files/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../public/files/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../public/files/images/apple-touch-icon.png">
+    <link rel="manifest" href="../../../public/site.webmanifest">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="files/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../../public/files/css/StoryHelp.css?v=2.0">
