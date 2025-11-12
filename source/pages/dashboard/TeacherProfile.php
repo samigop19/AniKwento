@@ -60,7 +60,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
     <title>Teacher Profile - AniKwento</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../public/files/css/TeacherProfilesample.css?v=2.0">
+    <link rel="stylesheet" href="../../../public/files/css/TeacherProfilesample.css?v=2.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -339,6 +339,60 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
         </div>
     </div>
     <?php endif; ?>
+
+    <!-- Share Profile Modal -->
+    <div class="modal fade" id="shareProfileModal" tabindex="-1" aria-labelledby="shareProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 20px; overflow: hidden; border: none;">
+                <div class="modal-header" style="background: linear-gradient(135deg, #801b32 0%, #a52742 100%); color: white; border: none; padding: 25px 30px;">
+                    <div>
+                        <h5 class="modal-title" id="shareProfileModalLabel" style="font-weight: 700; font-size: 1.5rem; margin-bottom: 5px;">
+                            <i class="fas fa-share-alt me-2"></i>Share Your Profile
+                        </h5>
+                        <p class="mb-0" style="font-size: 0.9rem; opacity: 0.9;">Copy and share your professional profile link</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 2px dashed #801b32;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                <i class="fas fa-link" style="font-size: 1.8rem; color: #801b32;"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <label style="font-size: 0.85rem; color: #6c757d; margin-bottom: 8px; display: block; font-weight: 600;">Your Profile Link</label>
+                                <div style="position: relative;">
+                                    <input type="text" id="shareUrlInput" readonly class="form-control" style="padding-right: 100px; border-radius: 10px; border: 2px solid #dee2e6; font-size: 0.9rem; background: white;">
+                                    <button onclick="copyShareLink()" class="btn" id="copyBtn" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: #801b32; color: white; border: none; border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; font-weight: 600; transition: all 0.3s;">
+                                        <i class="fas fa-copy me-1"></i>Copy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 10px;">
+                        <div style="display: flex; align-items: start; gap: 12px;">
+                            <i class="fas fa-info-circle" style="color: #856404; font-size: 1.2rem; margin-top: 2px;"></i>
+                            <div>
+                                <h6 style="color: #856404; font-weight: 600; margin-bottom: 8px; font-size: 0.95rem;">How to use this link:</h6>
+                                <ul style="color: #856404; margin: 0; padding-left: 20px; font-size: 0.85rem; line-height: 1.6;">
+                                    <li>Share with parents, students, or colleagues</li>
+                                    <li>Add to your email signature or social media</li>
+                                    <li>Include in your CV or portfolio</li>
+                                    <li>The link works even if they don't have an account</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="background: #f8f9fa; border: none; padding: 20px 30px;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 10px; padding: 10px 24px; font-weight: 600;">
+                        <i class="fas fa-times me-1"></i>Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Edit Profile Modal -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
@@ -745,47 +799,76 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
         const basePath = window.location.origin;
         const publicUrl = `${basePath}/source/pages/dashboard/public_profile.php?token=${data.token}`;
 
-        // Try modern Clipboard API first (works in secure contexts)
+        // Set the URL in the modal input
+        document.getElementById('shareUrlInput').value = publicUrl;
+
+        // Show the modal
+        const shareModal = new bootstrap.Modal(document.getElementById('shareProfileModal'));
+        shareModal.show();
+
+      } catch (err) {
+        console.error('Share profile error:', err);
+        showNotification('Failed to generate share link.', 'error');
+      }
+    }
+
+    // Copy share link from modal
+    async function copyShareLink() {
+      const shareUrl = document.getElementById('shareUrlInput').value;
+      const copyBtn = document.getElementById('copyBtn');
+
+      try {
+        // Try modern Clipboard API first
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          try {
-            await navigator.clipboard.writeText(publicUrl);
-            showNotification('Share link copied to clipboard!', 'success');
-            return;
-          } catch (clipboardErr) {
-            // Silently fall through to legacy method if permission denied or other error
-          }
+          await navigator.clipboard.writeText(shareUrl);
+
+          // Update button to show success
+          const originalContent = copyBtn.innerHTML;
+          copyBtn.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+          copyBtn.style.background = '#28a745';
+
+          setTimeout(() => {
+            copyBtn.innerHTML = originalContent;
+            copyBtn.style.background = '#801b32';
+          }, 2000);
+
+          showNotification('Share link copied to clipboard!', 'success');
+          return;
         }
 
-        // Fallback: Legacy method using textarea (compatible with all browsers)
+        // Fallback: Legacy method using textarea
         const textarea = document.createElement('textarea');
-        textarea.value = publicUrl;
+        textarea.value = shareUrl;
         textarea.style.position = 'fixed';
         textarea.style.left = '-9999px';
         textarea.style.top = '0';
         textarea.setAttribute('readonly', '');
         document.body.appendChild(textarea);
 
-        // Select the text
         textarea.select();
-        textarea.setSelectionRange(0, publicUrl.length); // For mobile devices
+        textarea.setSelectionRange(0, shareUrl.length);
 
-        try {
-          const successful = document.execCommand('copy');
-          if (successful) {
-            showNotification('Share link copied to clipboard!', 'success');
-          } else {
-            // If copy command fails, show prompt for manual copying
-            prompt('Unable to copy automatically. Please copy this share link:', publicUrl);
-          }
-        } catch (execErr) {
-          // If execCommand fails, show prompt for manual copying
-          prompt('Unable to copy automatically. Please copy this share link:', publicUrl);
-        } finally {
-          document.body.removeChild(textarea);
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textarea);
+
+        if (successful) {
+          // Update button to show success
+          const originalContent = copyBtn.innerHTML;
+          copyBtn.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+          copyBtn.style.background = '#28a745';
+
+          setTimeout(() => {
+            copyBtn.innerHTML = originalContent;
+            copyBtn.style.background = '#801b32';
+          }, 2000);
+
+          showNotification('Share link copied to clipboard!', 'success');
+        } else {
+          showNotification('Please manually copy the link', 'error');
         }
       } catch (err) {
-        console.error('Share profile error:', err);
-        showNotification('Failed to generate share link.', 'error');
+        console.error('Copy error:', err);
+        showNotification('Please manually copy the link', 'error');
       }
     }
 
