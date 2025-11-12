@@ -66,7 +66,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
     <link rel="manifest" href="../../../public/site.webmanifest">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../public/files/css/TeacherProfilesample.css?v=2.1">
+    <link rel="stylesheet" href="../../../public/files/css/TeacherProfilesample.css?v=2.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -896,14 +896,18 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                 header.classList.toggle('show');
                 body.classList.toggle('menu-open');
 
-                // Toggle icon
+                // Toggle icon and position
                 const icon = this.querySelector('i');
                 if (header.classList.contains('show')) {
                     icon.classList.remove('fa-bars');
                     icon.classList.add('fa-times');
+                    // Move toggle button to the right when menu is open
+                    menuToggle.style.left = '235px';
                 } else {
                     icon.classList.remove('fa-times');
                     icon.classList.add('fa-bars');
+                    // Move toggle button back to the left when menu is closed
+                    menuToggle.style.left = '15px';
                 }
             });
 
@@ -917,6 +921,8 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                     const icon = menuToggle.querySelector('i');
                     icon.classList.remove('fa-times');
                     icon.classList.add('fa-bars');
+                    // Reset toggle button position
+                    menuToggle.style.left = '15px';
                 }
             });
 
@@ -929,6 +935,8 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                     const icon = menuToggle.querySelector('i');
                     icon.classList.remove('fa-times');
                     icon.classList.add('fa-bars');
+                    // Reset toggle button position
+                    menuToggle.style.left = '15px';
                 });
             });
         }

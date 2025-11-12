@@ -262,7 +262,6 @@ html {
 .add-new {
     border: 2px dashed var(--primary-color);
     border-radius: 25px;
-    height: 250px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -645,6 +644,7 @@ body.menu-open {
 
     .header.show ~ .mobile-menu-toggle {
         left: 235px;
+        transform: translateX(0);
     }
 
     .header.show::before {
