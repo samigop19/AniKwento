@@ -191,7 +191,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <label for="storyPrompt" class="form-label mb-0">Story Prompt (Optional)</label>
                                     <div class="d-flex align-items-center gap-3">
-                                        <span id="themeCharCounter" class="text-muted small">0/500</span>
+                                        <span id="themeCharCounter" class="small" style="color: white;">0/500</span>
                                         <button type="button" class="btn btn-sm btn-new-ideas" onclick="refreshPromptSuggestions()">
                                             <i class="fas fa-sync-alt"></i> New Ideas
                                         </button>
