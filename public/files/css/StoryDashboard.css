@@ -645,7 +645,6 @@ body.menu-open {
 
     .header.show ~ .mobile-menu-toggle {
         left: 235px;
-        transform: translateX(0);
     }
 
     .header.show::before {
@@ -679,14 +678,6 @@ body.menu-open {
         transform: translateX(2px);
     }
 
-    .nav-link.active {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        width: 100%;
-        border-radius: 30px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
     .main {
         margin-left: 0;
         padding-top: 70px;
@@ -711,14 +702,20 @@ body.menu-open {
         position: fixed;
         bottom: 30px;
         right: 30px;
-        width: 56px;
-        height: 56px;
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        min-height: 60px;
         border: none;
         border-radius: 50%;
         background: var(--primary-color);
         box-shadow: 0 4px 12px rgba(128, 27, 50, 0.3);
         z-index: 1000;
         margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .add-new:hover {
@@ -731,6 +728,7 @@ body.menu-open {
         font-size: 1.8rem;
         color: var(--white);
         font-weight: 300;
+        line-height: 1;
     }
 
     .story-grid {
