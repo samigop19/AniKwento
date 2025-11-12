@@ -164,28 +164,6 @@ html {
     gap: 20px;
 }
 
-/* Loading stories animation - centered */
-.loading-stories {
-    grid-column: 1 / -1 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-    padding: 60px 20px !important;
-    min-height: 300px !important;
-}
-
-.loading-stories i {
-    margin-bottom: 20px;
-}
-
-.loading-stories p {
-    color: #666;
-    font-size: 16px;
-    font-weight: 500;
-}
-
 .story-card {
     background: var(--white);
     border-radius: 20px;
@@ -286,7 +264,7 @@ html {
     color: var(--primary-color);
     opacity: 0.7;
     transition: all 0.3s ease;
-
+   
 }
 
 .story-card .card-title {
@@ -537,11 +515,6 @@ body.menu-open {
     border-color: transparent;
 }
 
-/* Theme character counter */
-#themeCharCounter {
-    color: white !important;
-}
-
 @keyframes pulse-max {
     0%, 100% {
         box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4);
@@ -616,11 +589,11 @@ body.menu-open {
     .header {
         background: linear-gradient(180deg, #5D0F22 0%, #801B32 100%);
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-        width: 220px;
+        width: 220px; 
         transform: translateX(-100%);
         transition: all 0.3s ease;
         z-index: 1002;
-        padding: 60px 20px 20px;
+        padding: 60px 20px 20px; 
     }
 
     .header.show {
@@ -631,7 +604,7 @@ body.menu-open {
         left: 235px;
         transform: translateX(0);
     }
-
+    
     .header.show::before {
         content: '';
         position: fixed;
@@ -642,24 +615,24 @@ body.menu-open {
         background: var(--overlay-color);
         z-index: 999;
     }
-
+    
     .header-content {
         padding-top: 20px;
         position: relative;
         z-index: 1003;
     }
-
+    
     .nav-link {
         position: relative;
         z-index: 1004;
         padding: 18px 20px;
         margin: 8px 0;
     }
-
+    
     .nav-link:hover {
         transform: translateX(3px);
     }
-
+    
     .nav-link:active {
         transform: translateX(2px);
     }
@@ -1794,8 +1767,7 @@ body.modal-open {
     margin-bottom: 10px;
 }
 
-.student-name-input input,
-.student-name-input {
+.student-name-input input {
     width: 100%;
     padding: 12px 40px 12px 16px;
     background: rgba(255, 255, 255, 0.07);
@@ -1805,45 +1777,6 @@ body.modal-open {
     font-size: 14px;
     height: 45px;
     transition: all 0.2s ease;
-}
-
-/* Student gender select matching voice control style */
-.student-gender-select {
-    width: 100%;
-    padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    color: white;
-    font-size: 14px;
-    height: 45px;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 12px;
-    transition: all 0.2s ease;
-}
-
-.student-gender-select:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.15);
-}
-
-.student-gender-select:focus {
-    outline: none;
-    border-color: var(--secondary-color);
-    background: rgba(255, 255, 255, 0.12);
-    box-shadow: 0 0 0 3px rgba(255, 197, 83, 0.15);
-}
-
-.student-gender-select option {
-    background: #6d1328;
-    color: white;
-    padding: 12px;
 }
 
 .student-name-input input:hover {
@@ -3341,42 +3274,32 @@ body.modal-open {
 
         .music-select {
             flex: 1;
-            padding: 12px 16px;
+            padding: 12px 14px;
             padding-right: 36px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.07);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
             color: white;
             font-weight: 500;
             font-size: 14px;
-            height: 45px;
             cursor: pointer;
             outline: none;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
             transition: all 0.2s ease;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 12px center;
-            background-size: 12px;
+            appearance: none;
         }
 
         .music-select:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .music-select:focus {
             background: rgba(255, 255, 255, 0.12);
             border-color: #FFC553;
-            box-shadow: 0 0 0 3px rgba(255, 197, 83, 0.15);
-        }
-
-        .music-select option {
-            background: #6d1328;
-            color: white;
-            padding: 12px;
+            box-shadow: 0 0 0 2px rgba(255, 197, 83, 0.2);
         }
 
         .music-play-btn {
@@ -4931,195 +4854,5 @@ body.modal-open {
     }
     100% {
         transform: rotate(360deg);
-    }
-}
-
-/* ========================================
-   MOBILE RESPONSIVE STYLES FOR DASHBOARD
-   ======================================== */
-
-/* Tablets */
-@media (max-width: 1024px) {
-    .header {
-        width: 200px;
-    }
-
-    .main {
-        margin-left: 200px;
-        padding: 20px;
-    }
-
-    .story-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 15px;
-    }
-}
-
-/* Mobile - Hide sidebar, show mobile toggle */
-@media (max-width: 768px) {
-    body {
-        padding-right: 0 !important;
-    }
-
-    .header {
-        position: fixed;
-        left: -250px;
-        width: 250px;
-        transition: left 0.3s ease;
-        z-index: 1000;
-    }
-
-    .header.show {
-        left: 0;
-    }
-
-    .main {
-        margin-left: 0;
-        padding: 15px;
-    }
-
-    /* Mobile menu toggle button */
-    .mobile-menu-toggle {
-        position: fixed;
-        top: 15px;
-        left: 15px;
-        z-index: 999;
-        background: var(--primary-color);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        width: 45px;
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .mobile-menu-toggle i {
-        font-size: 20px;
-    }
-
-    /* Story grid adjustments */
-    .story-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 12px;
-    }
-
-    .story-card .card-img-top {
-        height: 160px;
-    }
-
-    .add-new {
-        min-height: 200px;
-    }
-
-    .plus-icon {
-        font-size: 48px;
-    }
-
-    /* Modal adjustments */
-    .create-story-modal .modal-body {
-        padding: 20px;
-    }
-
-    .settings-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-
-    .story-prompt-section textarea {
-        min-height: 100px;
-    }
-
-    .suggestion-chips {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-
-    .suggestion-chip {
-        padding: 10px 15px;
-        font-size: 13px;
-    }
-
-    /* Character inputs */
-    .row.g-3 {
-        gap: 10px !important;
-    }
-
-    .col-md-6 {
-        width: 100%;
-    }
-
-    /* Gamification section */
-    .gamification-section .row {
-        flex-direction: column;
-    }
-
-    .gamification-section .col-md-4,
-    .gamification-section .col-md-8 {
-        width: 100%;
-    }
-
-    .question-types .row {
-        flex-direction: column;
-    }
-
-    .question-types .col-md-6 {
-        width: 100%;
-    }
-}
-
-/* Small mobile devices */
-@media (max-width: 480px) {
-    .main {
-        padding: 10px;
-    }
-
-    .story-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .story-card {
-        max-width: 100%;
-    }
-
-    .add-new {
-        min-height: 180px;
-    }
-
-    .story-actions {
-        padding: 15px;
-        gap: 10px;
-    }
-
-    .story-actions button {
-        padding: 8px 12px;
-        font-size: 13px;
-    }
-
-    .modal-content {
-        margin: 10px;
-    }
-
-    .create-story-modal .modal-body {
-        padding: 15px;
-    }
-
-    .section-title {
-        font-size: 14px;
-    }
-
-    .form-control,
-    .form-select {
-        font-size: 14px;
-        padding: 10px 12px;
-    }
-
-    .create-btn {
-        padding: 14px 24px;
-        font-size: 15px;
     }
 }
