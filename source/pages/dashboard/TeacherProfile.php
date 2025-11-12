@@ -743,7 +743,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
 
         // Construct shareable public link
         const basePath = window.location.origin;
-        const publicUrl = `${basePath}/AniKwento/source/pages/dashboard/public_profile.php?token=${data.token}`;
+        const publicUrl = `${basePath}/source/pages/dashboard/public_profile.php?token=${data.token}`;
 
         // Try modern Clipboard API first (works in secure contexts)
         if (navigator.clipboard && navigator.clipboard.writeText) {
