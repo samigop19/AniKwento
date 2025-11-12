@@ -16,7 +16,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
     <link rel="manifest" href="../../../public/site.webmanifest">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../public/files/css/StoryDashboard.css?v=2.9">
+    <link rel="stylesheet" href="../../../public/files/css/StoryDashboard.css?v=3.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -562,6 +562,66 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="../../../public/files/js/story/dashboard-preview-modal.js"></script>
+
+    <script>
+    // Mobile Menu Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.querySelector('.mobile-menu-toggle');
+        const header = document.querySelector('.header');
+        const body = document.body;
+
+        if (menuToggle && header) {
+            menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                header.classList.toggle('show');
+                body.classList.toggle('menu-open');
+
+                // Toggle icon and position
+                const icon = this.querySelector('i');
+                if (header.classList.contains('show')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                    // Move toggle button to the right when menu is open
+                    menuToggle.style.left = '235px';
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                    // Move toggle button back to the left when menu is closed
+                    menuToggle.style.left = '15px';
+                }
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (header.classList.contains('show') &&
+                    !header.contains(e.target) &&
+                    !menuToggle.contains(e.target)) {
+                    header.classList.remove('show');
+                    body.classList.remove('menu-open');
+                    const icon = menuToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                    // Reset toggle button position
+                    menuToggle.style.left = '15px';
+                }
+            });
+
+            // Close menu when clicking on nav links
+            const navLinks = header.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    header.classList.remove('show');
+                    body.classList.remove('menu-open');
+                    const icon = menuToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                    // Reset toggle button position
+                    menuToggle.style.left = '15px';
+                });
+            });
+        }
+    });
+    </script>
 
 </body>
 </html>
