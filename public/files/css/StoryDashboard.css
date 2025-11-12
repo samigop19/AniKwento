@@ -659,6 +659,7 @@ body.menu-open {
     }
 
     .header-content {
+        padding-top: 20px;
         position: relative;
         z-index: 1003;
     }
@@ -677,6 +678,14 @@ body.menu-open {
     .nav-link:active {
         transform: translateX(2px);
     }
+
+    .nav-link.active {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
 
     .main {
         margin-left: 0;
@@ -704,32 +713,18 @@ body.menu-open {
         right: 30px;
         width: 60px;
         height: 60px;
-        min-width: 60px;
-        min-height: 60px;
-        border: none;
+        border: 2px dashed var(--primary-color);
         border-radius: 50%;
-        background: var(--primary-color);
-        box-shadow: 0 4px 12px rgba(128, 27, 50, 0.3);
+        background: var(--white);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         z-index: 1000;
         margin: 0;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         aspect-ratio: 1;
     }
 
-    .add-new:hover {
-        background: var(--hover-color);
-        transform: scale(1.05);
-        box-shadow: 0 6px 16px rgba(128, 27, 50, 0.4);
-    }
-
     .plus-icon {
-        font-size: 1.8rem;
-        color: var(--white);
-        font-weight: 300;
-        line-height: 1;
+        font-size: 2rem;
+        color: var(--primary-color);
     }
 
     .story-grid {
