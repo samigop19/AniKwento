@@ -60,7 +60,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
     <title>Teacher Profile - AniKwento</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../public/files/css/TeacherProfilesample.css">
+    <link rel="stylesheet" href="../../../public/files/css/TeacherProfilesample.css?v=2.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
