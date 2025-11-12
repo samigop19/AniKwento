@@ -80,13 +80,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                         </div>
                     </div>
 
-                    <!-- My Account -->
+                    <!-- Change Password -->
                     <div class="col-md-6">
                         <div class="help-card">
                             <div class="help-icon">
-                                <i class="fas fa-user"></i>
+                                <i class="fas fa-lock"></i>
                             </div>
-                            <h3>My Account</h3>
+                            <h3>Change Password</h3>
                             <p>Secure your account by changing your password</p>
                             <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#accountModal"></a>
                         </div>
@@ -121,7 +121,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
 
 
     <div class="modal fade" id="aboutModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><i class="fas fa-book me-2"></i>About AniKwento</h5>

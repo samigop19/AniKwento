@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const changePasswordForm = document.getElementById('changePasswordForm');
 
     let userEmail = '';
+    let passwordChangeSuccessful = false;
 
     // Email validation function (matches login/register)
     function validateEmailFormat(email) {
@@ -197,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                passwordChangeSuccessful = true;
                 showAlert('Password changed successfully! Redirecting to login...', 'success');
 
                 // Redirect to login page after success
@@ -280,13 +282,18 @@ document.addEventListener('DOMContentLoaded', function() {
         verifyCodeBtn.disabled = false;
         verifyCodeBtn.innerHTML = 'Verify Code';
         userEmail = '';
+        passwordChangeSuccessful = false;
     }
 
     // Reset modal when closed
     const accountModal = document.getElementById('accountModal');
     if (accountModal) {
         accountModal.addEventListener('hidden.bs.modal', function() {
-            resetPasswordModal();
+            // Only reset if password change was not successful
+            // If successful, the redirect will happen anyway
+            if (!passwordChangeSuccessful) {
+                resetPasswordModal();
+            }
         });
     }
 });
