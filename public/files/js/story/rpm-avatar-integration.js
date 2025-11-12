@@ -419,17 +419,26 @@ const RPMAvatar = {
 
     
     async loadAvatar(url, retryAttempt = 0) {
-        const maxRetryDelay = 10000; 
+        const maxRetryDelay = 10000;
 
         while (true) {
             retryAttempt++;
             console.log(`📦 Loading avatar from: ${url} (Load attempt #${retryAttempt})`);
 
+
+            const loadingEl = document.getElementById('avatar-loading-indicator');
+            if (loadingEl) {
+                const loadingText = loadingEl.querySelector('p');
+                if (loadingText) {
+                    loadingText.textContent = `Loading Avatar... 0%`;
+                }
+            }
+
             try {
                 const avatar = await new Promise((resolve, reject) => {
                     const loader = new GLTFLoader();
 
-                    
+
                     const loadTimeout = setTimeout(() => {
                         reject(new Error('Avatar loading timeout after 60 seconds'));
                     }, 60000);
@@ -514,10 +523,9 @@ const RPMAvatar = {
                         (progress) => {
                             if (progress.total > 0) {
                                 const percent = (progress.loaded / progress.total) * 100;
-                                this.loadingProgress = Math.min(95, percent); 
+                                this.loadingProgress = Math.min(95, percent);
                                 console.log(`📦 Loading avatar: ${percent.toFixed(0)}% (${progress.loaded}/${progress.total} bytes)`);
 
-                                
                                 const loadingEl = document.getElementById('avatar-loading-indicator');
                                 if (loadingEl) {
                                     const loadingText = loadingEl.querySelector('p');
@@ -527,6 +535,15 @@ const RPMAvatar = {
                                 }
                             } else {
                                 console.log(`📦 Loading avatar: ${progress.loaded} bytes loaded...`);
+
+                                const loadingEl = document.getElementById('avatar-loading-indicator');
+                                if (loadingEl) {
+                                    const loadingText = loadingEl.querySelector('p');
+                                    if (loadingText) {
+                                        const kb = (progress.loaded / 1024).toFixed(0);
+                                        loadingText.textContent = `Loading Avatar... ${kb}KB loaded`;
+                                    }
+                                }
                             }
                         },
                         (error) => {
