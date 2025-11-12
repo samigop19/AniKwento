@@ -66,8 +66,8 @@ async function loadUserStories() {
 function showLoadingState(container) {
     // Keep sample card and add button, add loading indicator
     const loadingHTML = `
-        <div class="loading-stories" style="grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
-            <i class="fas fa-spinner fa-spin fa-3x mb-3" style="color: #7C3AED;"></i>
+        <div class="loading-stories">
+            <i class="fas fa-spinner fa-spin fa-3x mb-3" style="color: #801B32;"></i>
             <p style="color: #666; font-size: 16px;">Loading your stories...</p>
         </div>
     `;
