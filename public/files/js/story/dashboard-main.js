@@ -1,16 +1,16 @@
-
+// Global variables for story generation  
 let generatedStory = null;
 
-
+// Make functions available globally for debugging
 window.generatedStory = generatedStory;
 
-
+// Simple test function to verify script loading
 window.testNewIdeas = function() {
     console.log('✅ Test function works!');
     alert('✅ JavaScript is working!');
 };
 
-
+// Test function to display static prompts
 window.testStaticPrompts = function() {
     console.log('🧪 Testing static prompts display...');
     const testPrompts = [
@@ -24,10 +24,10 @@ window.testStaticPrompts = function() {
     window.displayPromptSuggestions(testPrompts);
 };
 
-
+// Debug function availability
 console.log('🔍 Dashboard-main.js loaded');
 
-
+// Make sure refreshPromptSuggestions is available immediately
 if (typeof window.refreshPromptSuggestions === 'undefined') {
     console.log('🔧 Creating placeholder refreshPromptSuggestions function');
     window.refreshPromptSuggestions = function() {
@@ -39,7 +39,7 @@ console.log('🔍 Testing function availability:');
 console.log('🔍 window.refreshPromptSuggestions:', typeof window.refreshPromptSuggestions);
 console.log('🔍 window.displayPromptSuggestions:', typeof window.displayPromptSuggestions);
 
-
+// Prompt refresh functionality - using OpenRouter API for fresh ideas
 window.refreshPromptSuggestions = async function() {
     console.log('🔄 Refreshing prompt suggestions with AI...');
     
@@ -51,10 +51,10 @@ window.refreshPromptSuggestions = async function() {
     }
 
     try {
-        
+        // Use OpenRouter API to generate fresh story ideas
         console.log('🤖 Generating fresh story prompts using OpenRouter API...');
 
-        
+        // Use the STORY_THEMES from dashboard-story-generation-enhanced.js (loaded globally)
         const storyThemes = window.STORY_THEMES || [
             'Adventure', 'Friendship', 'Courage', 'Mystery', 'Magic', 'Self-discovery', 'Hope', 'Kindness',
             'Teamwork', 'Imagination', 'Nature', 'Family', 'Dreams', 'Bravery', 'Curiosity', 'Honesty'
@@ -86,7 +86,7 @@ CRITICAL Requirements:
 
 Session: ${Date.now()}`;
 
-        
+        // Use backend handler for secure API calls
         const response = await fetch('/source/handlers/openrouter_completion.php', {
             method: 'POST',
             headers: {
@@ -112,7 +112,7 @@ Session: ${Date.now()}`;
 
         const aiResponse = data.content;
         
-        
+        // Parse the AI response into individual prompts
         const lines = aiResponse.split('\n').filter(line => {
             const trimmed = line.trim();
             return trimmed.length > 10 && !trimmed.startsWith('Example') && !trimmed.includes(':');
@@ -132,7 +132,7 @@ Session: ${Date.now()}`;
     } catch (error) {
         console.warn('⚠️ AI generation failed, using fallback prompts:', error.message);
 
-        
+        // Fallback prompts using story themes with specific character counts
         const fallbackPrompts = [
             'Two friends go on an adventure to find a lost treasure.',
             'Three kids discover the magic of friendship at the playground.',
@@ -148,13 +148,13 @@ Session: ${Date.now()}`;
             'Four siblings share their favorite toys and play together.'
         ];
 
-        
+        // Shuffle and pick 6
         const shuffled = fallbackPrompts.sort(() => 0.5 - Math.random()).slice(0, 6);
         console.log('📝 Using fallback prompts:', shuffled);
         displayPromptSuggestions(shuffled);
     }
     
-    
+    // Restore button
     if (refreshBtn) {
         refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> New Ideas';
         refreshBtn.disabled = false;
@@ -162,13 +162,13 @@ Session: ${Date.now()}`;
     }
 };
 
-
+// Debug: Verify function is set
 console.log('🔍 After definition - window.refreshPromptSuggestions:', typeof window.refreshPromptSuggestions);
 
 window.displayPromptSuggestions = function(prompts) {
     console.log('🎨 displayPromptSuggestions called with:', prompts);
     
-    
+    // Wait a bit and try multiple times to find the element
     let attempts = 0;
     const maxAttempts = 5;
     
@@ -201,7 +201,7 @@ window.displayPromptSuggestions = function(prompts) {
 };
 
 function actuallyDisplayPrompts(prompts, suggestionChips) {
-    
+    // Use single consistent icon for all ideas
     const ideaIcon = 'fa fa-lightbulb';
     
     if (prompts && prompts.length > 0) {
@@ -228,23 +228,23 @@ window.selectPrompt = function(promptText) {
         storyPrompt.value = promptText;
         storyPrompt.focus();
 
-        
+        // Extract character count from the prompt text
         const characterCount = extractCharacterCount(promptText);
 
         if (characterCount > 0) {
             console.log(`📊 Extracted character count: ${characterCount} from prompt: "${promptText}"`);
 
-            
+            // Store the character count in localStorage for story generation
             localStorage.setItem('suggestedCharacterCount', characterCount.toString());
         }
     }
 };
 
-
+// Function to extract character count from prompt text
 function extractCharacterCount(promptText) {
     const text = promptText.toLowerCase();
 
-    
+    // Map of number words to digits
     const numberWords = {
         'two': 2,
         'three': 3,
@@ -252,14 +252,14 @@ function extractCharacterCount(promptText) {
         'five': 5
     };
 
-    
+    // Check for number words (two, three, four, five)
     for (const [word, num] of Object.entries(numberWords)) {
         if (text.startsWith(word + ' ')) {
             return num;
         }
     }
 
-    
+    // Check for digits at the start (2, 3, 4, 5)
     const digitMatch = text.match(/^(\d+)\s/);
     if (digitMatch) {
         const num = parseInt(digitMatch[1]);
@@ -268,14 +268,14 @@ function extractCharacterCount(promptText) {
         }
     }
 
-    return 0; 
+    return 0; // No valid character count found
 }
 
-
+// Global variable to track storage availability
 window.isStorageAvailable = false;
 window.storageCheckComplete = false;
 
-
+// Browser compatibility check function
 function checkBrowserCompatibility() {
     console.log('🔍 Checking browser storage compatibility...');
 
@@ -283,7 +283,7 @@ function checkBrowserCompatibility() {
         let hasIndexedDB = false;
         let testCompleted = false;
 
-        
+        // Check IndexedDB availability
         if (!window.indexedDB) {
             console.warn('❌ IndexedDB not supported');
             window.isStorageAvailable = false;
@@ -293,11 +293,11 @@ function checkBrowserCompatibility() {
             return;
         }
 
-        
+        // Try to open a test database with timeout
         try {
             const testRequest = indexedDB.open('__browser_test__', 1);
 
-            
+            // Set a timeout in case the request hangs
             const timeout = setTimeout(() => {
                 if (!testCompleted) {
                     testCompleted = true;
@@ -339,7 +339,7 @@ function checkBrowserCompatibility() {
                     testCompleted = true;
                     const db = event.target.result;
                     db.close();
-                    
+                    // Try to delete the test database
                     indexedDB.deleteDatabase('__browser_test__');
                     console.log('✅ IndexedDB is accessible');
                     window.isStorageAvailable = true;
@@ -350,7 +350,7 @@ function checkBrowserCompatibility() {
             };
 
             testRequest.onupgradeneeded = function(event) {
-                
+                // Create a test object store
                 const db = event.target.result;
                 if (!db.objectStoreNames.contains('test')) {
                     db.createObjectStore('test', { keyPath: 'id' });
@@ -366,18 +366,18 @@ function checkBrowserCompatibility() {
     });
 }
 
-
+// Disable story creation when storage is unavailable
 function disableStoryCreation() {
     console.warn('🚫 Disabling story creation due to storage issues');
 
-    
+    // Disable the "Add New Story" button
     const addNewButton = document.querySelector('.add-new');
     if (addNewButton) {
         addNewButton.style.opacity = '0.5';
         addNewButton.style.cursor = 'not-allowed';
         addNewButton.style.filter = 'grayscale(100%)';
 
-        
+        // Remove the modal trigger and add click handler to show warning
         addNewButton.removeAttribute('data-bs-toggle');
         addNewButton.removeAttribute('data-bs-target');
 
@@ -387,7 +387,7 @@ function disableStoryCreation() {
             showStorageWarningModal();
         };
 
-        
+        // Add a warning badge
         const warningBadge = document.createElement('div');
         warningBadge.style.cssText = 'position: absolute; top: 10px; right: 10px; background: #dc3545; color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;';
         warningBadge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Disabled';
@@ -395,7 +395,7 @@ function disableStoryCreation() {
         addNewButton.appendChild(warningBadge);
     }
 
-    
+    // Show notification
     setTimeout(function() {
         if (typeof notificationSystem !== 'undefined') {
             notificationSystem.error(
@@ -408,7 +408,7 @@ function disableStoryCreation() {
     }, 1000);
 }
 
-
+// Enable story creation when storage is available
 function enableStoryCreation() {
     console.log('✅ Story creation enabled');
 
@@ -423,7 +423,7 @@ function enableStoryCreation() {
     }
 }
 
-
+// Show the storage warning modal
 function showStorageWarningModal() {
     const modal = document.getElementById('browserWarningModal');
     if (modal) {
@@ -441,14 +441,14 @@ function showStorageWarningModal() {
     }
 }
 
-
+// Make function globally available
 window.showStorageWarningModal = showStorageWarningModal;
 
 document.addEventListener('DOMContentLoaded', async function() {
-    
+    // Check browser storage compatibility on page load
     await checkBrowserCompatibility();
 
-    
+    // Initialize student management
     initializeStudentManagement();
 
     const volumeRange = document.getElementById('volumeRange');
@@ -475,7 +475,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     console.log('🔍 Found question type checkboxes:', questionTypeCheckboxes.length);
     console.log('🔍 Found question timing radios:', questionTimingRadios.length);
 
-    
+    // Function to update the selection counter display
     function updateSelectionCounter() {
         const checkedBoxes = document.querySelectorAll('.question-type-checkbox:checked');
         if (selectionCounter) {
@@ -483,7 +483,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    
+    // Function to enable/disable question types based on timing selection
     function updateQuestionTypesState() {
         const selectedTiming = document.querySelector('input[name="questionTiming"]:checked');
         const timingValue = selectedTiming ? selectedTiming.value : 'none';
@@ -498,7 +498,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 checkbox.disabled = true;
                 checkbox.checked = false;
             } else {
-                
+                // Re-enable based on max selection for 'during' and 'both'
                 const checkedBoxes = document.querySelectorAll('.question-type-checkbox:checked');
                 if (!checkbox.checked) {
                     checkbox.disabled = checkedBoxes.length >= maxAllowed;
@@ -509,7 +509,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
         });
 
-        
+        // Update visual state of the question types section
         const questionTypesContainer = document.querySelector('.question-types');
         if (questionTypesContainer) {
             if (shouldDisable) {
@@ -524,7 +524,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         updateSelectionCounter();
     }
 
-    
+    // Listen to question timing changes
     questionTimingRadios.forEach(radio => {
         console.log('🔍 Adding listener to radio:', radio.id, 'value:', radio.value);
         radio.addEventListener('change', function() {
@@ -533,7 +533,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     });
 
-    
+    // Listen to checkbox changes for max selection limit
     questionTypeCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             const selectedTiming = document.querySelector('input[name="questionTiming"]:checked');
@@ -559,10 +559,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     });
 
-    
+    // Initialize state on page load
     updateQuestionTypesState();
 
-    
+    // Auto-generate ideas when create story modal opens
     const createStoryModal = document.getElementById('createStoryModal');
     console.log('🔍 createStoryModal element:', createStoryModal);
     
@@ -572,7 +572,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 Create story modal opened - auto-generating ideas');
             console.log('🔍 window.refreshPromptSuggestions type:', typeof window.refreshPromptSuggestions);
             
-            
+            // Automatically call refreshPromptSuggestions when modal opens
             if (typeof window.refreshPromptSuggestions === 'function') {
                 console.log('✅ Calling refreshPromptSuggestions...');
                 window.refreshPromptSuggestions();
@@ -592,14 +592,14 @@ function playStory(imageUrl, title) {
     window.location.href = '../story/StoryPlayer.html';
 }
 
-
+// Make functions available globally for onclick handlers
 window.playStory = playStory;
 
-
+// Dynamic student field management
 let studentCount = 1;
 const maxStudents = 5;
 
-
+// Initialize student management when DOM is loaded
 function initializeStudentManagement() {
     const addStudentOption = document.getElementById('addStudentOption');
     const addPetOption = document.getElementById('addPetOption');
@@ -620,14 +620,14 @@ function initializeStudentManagement() {
         console.log('✅ Add pet option initialized');
     }
 
-    
+    // Update initial character count
     updateCharacterCount();
 }
 
 function addCharacterField(type = 'student') {
     console.log(`🔵 Adding ${type} field, current count:`, studentCount);
 
-    
+    // Close the dropdown immediately when adding a character
     const addBtn = document.getElementById('addCharacterDropdown');
     if (addBtn) {
         const dropdownInstance = bootstrap.Dropdown.getInstance(addBtn);
@@ -691,7 +691,7 @@ function addCharacterField(type = 'student') {
 
     grid.appendChild(characterField);
 
-    
+    // Add event listener to remove button
     const removeBtn = characterField.querySelector('.remove-student-btn');
     if (removeBtn) {
         removeBtn.addEventListener('click', function() {
@@ -699,7 +699,7 @@ function addCharacterField(type = 'student') {
         });
     }
 
-    
+    // Update button state and character count
     updateAddButtonState();
     updateCharacterCount();
 
@@ -712,7 +712,7 @@ function removeStudentField(fieldElement) {
 
     console.log(`🔴 Removing ${characterType} field:`, studentNumber);
 
-    
+    // Don't allow removing if only one character remains
     if (studentCount <= 1) {
         if (typeof notificationSystem !== 'undefined') {
             notificationSystem.warning('At least one character field must remain. Clear the fields instead.');
@@ -722,17 +722,17 @@ function removeStudentField(fieldElement) {
         return;
     }
 
-    
+    // Remove the field with animation
     fieldElement.style.animation = 'slideOut 0.3s ease-out';
 
     setTimeout(() => {
         fieldElement.remove();
         studentCount--;
 
-        
+        // Renumber remaining fields
         renumberStudentFields();
 
-        
+        // Update button state and character count
         updateAddButtonState();
         updateCharacterCount();
 
@@ -748,23 +748,23 @@ function renumberStudentFields() {
         const newNumber = index + 1;
         const characterType = field.getAttribute('data-character-type') || 'student';
 
-        
+        // Update data attribute
         field.setAttribute('data-student', newNumber);
 
-        
+        // Update label
         const label = field.querySelector('label');
         if (label) {
             const characterLabel = characterType === 'student' ? 'Student' : 'Pet';
             label.textContent = `${characterLabel} ${newNumber}`;
         }
 
-        
+        // Update remove button data attribute
         const removeBtn = field.querySelector('.remove-student-btn');
         if (removeBtn) {
             removeBtn.setAttribute('data-remove', newNumber);
         }
 
-        
+        // Update input IDs
         const nameInput = field.querySelector('input[type="text"]');
         const genderSelect = field.querySelector('select');
         const typeInput = field.querySelector('input[type="hidden"]');
@@ -788,7 +788,7 @@ function updateCharacterCount() {
     if (countDisplay) {
         countDisplay.textContent = `${studentCount}/5`;
 
-        
+        // Add/remove at-max class for visual indicator
         if (studentCount >= maxStudents) {
             countDisplay.classList.add('at-max');
         } else {
@@ -801,7 +801,7 @@ function updateAddButtonState() {
     const addBtn = document.getElementById('addCharacterDropdown');
     if (addBtn) {
         if (studentCount >= maxStudents) {
-            
+            // Force close the dropdown if it's open
             const dropdownInstance = bootstrap.Dropdown.getInstance(addBtn);
             if (dropdownInstance) {
                 dropdownInstance.hide();
@@ -809,14 +809,14 @@ function updateAddButtonState() {
 
             addBtn.disabled = true;
             addBtn.title = 'Maximum characters reached (5)';
-            
+            // Remove dropdown functionality when at max
             addBtn.removeAttribute('data-bs-toggle');
             addBtn.style.cursor = 'not-allowed';
             addBtn.style.opacity = '0.6';
         } else {
             addBtn.disabled = false;
             addBtn.title = 'Add a character';
-            
+            // Restore dropdown functionality
             addBtn.setAttribute('data-bs-toggle', 'dropdown');
             addBtn.style.cursor = 'pointer';
             addBtn.style.opacity = '1';
@@ -824,7 +824,7 @@ function updateAddButtonState() {
     }
 }
 
-
+// Add CSS for slideOut animation
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideOut {

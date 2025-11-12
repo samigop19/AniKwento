@@ -1,15 +1,18 @@
 <?php
+/**
+ * Get User Settings Handler
+ * Retrieves story creation default settings from the database
+ */
 
-
-
+// Start output buffering to catch any stray output
 ob_start();
 
 session_start();
 header('Content-Type: application/json');
 
-
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    ob_clean(); 
+    ob_clean(); // Clear any output buffer
     echo json_encode(['success' => false, 'error' => 'User not logged in']);
     exit;
 }
@@ -17,18 +20,18 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 require_once __DIR__ . '/db_connection.php';
 
-
+// Ensure DB connection
 if (!$conn) {
-    ob_clean(); 
+    ob_clean(); // Clear any output buffer
     echo json_encode(['success' => false, 'error' => 'Database connection failed']);
     exit;
 }
 
-
+// Query user settings
 $stmt = $conn->prepare("SELECT * FROM user_settings WHERE user_id = ?");
 
 if (!$stmt) {
-    ob_clean(); 
+    ob_clean(); // Clear any output buffer
     echo json_encode(['success' => false, 'error' => 'Failed to prepare statement: ' . $conn->error]);
     exit;
 }
@@ -38,8 +41,8 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($row = $result->fetch_assoc()) {
-    
-    ob_clean(); 
+    // Settings found - return them
+    ob_clean(); // Clear any output buffer
     echo json_encode([
         'success' => true,
         'settings' => [
@@ -56,8 +59,8 @@ if ($row = $result->fetch_assoc()) {
         ]
     ]);
 } else {
-    
-    ob_clean(); 
+    // No settings found - return defaults
+    ob_clean(); // Clear any output buffer
     echo json_encode([
         'success' => true,
         'settings' => [

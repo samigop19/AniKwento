@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-
+// Set headers for JSON response and CORS
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
-
+// Ensure vendor/autoload.php exists
 if (!file_exists(__DIR__ . '/../../vendor/autoload.php')) {
     echo json_encode([
         'success' => false,
@@ -19,7 +19,7 @@ if (!file_exists(__DIR__ . '/../../vendor/autoload.php')) {
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../config/env.php';
 
-
+// Check if required POST data exists
 if (!isset($_POST['first_name']) || !isset($_POST['last_name']) || !isset($_POST['email']) || !isset($_POST['password'])) {
     echo json_encode([
         'success' => false,
@@ -44,7 +44,7 @@ try {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    
+    // Validate names
     if (!preg_match('/^[A-Za-z\s]{2,50}$/', $first_name)) {
         throw new Exception("First name must be 2-50 characters and contain only letters and spaces");
     }
@@ -53,10 +53,10 @@ try {
         throw new Exception("Last name must be 2-50 characters and contain only letters and spaces");
     }
 
-    
-    
-    
-    
+    // Validate email format - accept three patterns:
+    // 1. 7-digit student ID format: 1234567@ub.edu.ph
+    // 2. firstname.lastname format: firstname.lastname@ub.edu.ph
+    // 3. A-#### format: A-1234@ub.edu.ph
     $validEmailPattern = '/^(\d{7}|[a-zA-Z]+\.[a-zA-Z]+|A-\d{4})@ub\.edu\.ph$/';
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -91,7 +91,7 @@ try {
     $stmt = $pdo->prepare("INSERT INTO pending_users (first_name, last_name, email, password, verification_code, verification_code_expires) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->execute([$first_name, $last_name, $email, $hashed_password, $verification_code, $expires_at]);
 
-    
+    // Use SendGrid API for email sending (works on Railway with HTTP API)
     $sendgridApiKey = EnvLoader::get('SENDGRID_API_KEY');
 
     if (!$sendgridApiKey) {
@@ -156,7 +156,7 @@ try {
     </body>
     </html>";
 
-    
+    // Send email via SendGrid API
     $fromEmail = EnvLoader::get('SENDGRID_FROM_EMAIL', 'noreply@anikwento.com');
     $fromName = EnvLoader::get('SENDGRID_FROM_NAME', 'AniKwento');
 
@@ -194,11 +194,11 @@ try {
     $curlError = curl_error($ch);
     curl_close($ch);
 
-    
+    // Log for debugging
     error_log("SendGrid API Response Code: " . $httpCode);
     error_log("SendGrid API Response: " . $response);
 
-    
+    // SendGrid returns 202 for successful acceptance
     if ($httpCode !== 202) {
         $errorData = json_decode($response, true);
         $errorMessage = 'Unknown error';
@@ -225,10 +225,10 @@ try {
     error_log("Registration Error: " . $e->getMessage());
     error_log("Error trace: " . $e->getTraceAsString());
 
-    
+    // Provide more user-friendly error messages
     $userMessage = $e->getMessage();
 
-    
+    // Check if it's a PHPMailer exception
     if (strpos($e->getMessage(), 'SMTP') !== false || strpos($e->getMessage(), 'Mailer') !== false) {
         error_log("Email sending failed: " . $e->getMessage());
         $userMessage = "Failed to send verification email. Please try again later or contact support.";

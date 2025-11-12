@@ -1,13 +1,21 @@
-
+/**
+ * ElevenLabs TTS Integration Module
+ * Handles text-to-speech generation for story narration
+ */
 
 const TTSIntegration = {
     apiEndpoint: '/source/handlers/elevenlabs_tts.php',
-    audioCache: new Map(), 
-    visemeCache: new Map(), 
+    audioCache: new Map(), // Cache generated audio to avoid duplicate API calls
+    visemeCache: new Map(), // Cache viseme data for lip sync
 
-    
+    /**
+     * Generate speech audio for a single narration line
+     * @param {string} text - The narration text
+     * @param {string} voice - Voice name (Rachel, Amara, Lily, Rod, or Aaron)
+     * @returns {Promise<Object>} - Object with {audioUrl, visemeData}
+     */
     async generateSpeech(text, voice = 'Rachel') {
-        
+        // CRITICAL: Validate inputs
         if (!text || text.trim() === '') {
             console.error('❌ TTS Error: Empty text provided');
             throw new Error('Cannot generate TTS for empty text');
@@ -18,10 +26,10 @@ const TTSIntegration = {
             voice = 'Rachel';
         }
 
-        
+        // Create cache key
         const cacheKey = `${voice}_${text}`;
 
-        
+        // Check cache first
         if (this.audioCache.has(cacheKey)) {
             console.log('🎵 Using cached audio for:', text.substring(0, 50) + '...');
             return {
@@ -97,13 +105,13 @@ const TTSIntegration = {
                 throw new Error('No audio data in TTS API response');
             }
 
-            
+            // Convert base64 to data URL
             const audioDataUrl = `data:audio/mpeg;base64,${data.audio}`;
 
-            
+            // Extract viseme data if available
             const visemeData = data.viseme_data || null;
 
-            
+            // Cache the results
             this.audioCache.set(cacheKey, audioDataUrl);
             if (visemeData) {
                 this.visemeCache.set(cacheKey, visemeData);
@@ -129,7 +137,13 @@ const TTSIntegration = {
         }
     },
 
-    
+    /**
+     * Generate speech for multiple narration lines with progress tracking
+     * @param {Array<string>} narrationLines - Array of narration texts
+     * @param {string} voice - Voice name
+     * @param {Function} progressCallback - Progress callback (current, total)
+     * @returns {Promise<Object>} - Object with {audioUrls, visemeDataArray}
+     */
     async generateMultipleSpeech(narrationLines, voice = 'Rachel', progressCallback = null) {
         const audioUrls = [];
         const visemeDataArray = [];
@@ -147,14 +161,14 @@ const TTSIntegration = {
                     progressCallback(i + 1, total);
                 }
 
-                
+                // Small delay between requests to avoid rate limiting
                 if (i < narrationLines.length - 1) {
                     await this.delay(300);
                 }
 
             } catch (error) {
                 console.error(`❌ Failed to generate audio for line ${i + 1}:`, error);
-                
+                // Push null for failed generations
                 audioUrls.push(null);
                 visemeDataArray.push(null);
             }
@@ -166,7 +180,13 @@ const TTSIntegration = {
         };
     },
 
-    
+    /**
+     * Generate speech for all scenes in a story
+     * @param {Array} scenes - Story scenes array
+     * @param {string} voice - Voice name
+     * @param {Function} progressCallback - Progress callback
+     * @returns {Promise<Array>} - Scenes with audio URLs and viseme data added
+     */
     async generateStoryAudio(scenes, voice = 'Rachel', progressCallback = null) {
         const totalLines = scenes.reduce((sum, scene) => {
             return sum + (scene.narrationLines?.length || 0);
@@ -196,7 +216,7 @@ const TTSIntegration = {
                             progressCallback(processedLines, totalLines);
                         }
 
-                        
+                        // Small delay between requests to avoid rate limiting
                         await this.delay(300);
 
                     } catch (error) {
@@ -206,7 +226,7 @@ const TTSIntegration = {
                         failCount++;
                         processedLines++;
 
-                        
+                        // Still call progress callback for failed lines
                         if (progressCallback) {
                             progressCallback(processedLines, totalLines);
                         }
@@ -221,7 +241,12 @@ const TTSIntegration = {
         return scenesWithAudio;
     },
 
-    
+    /**
+     * Validate audio duration
+     * @param {string} audioDataUrl - Audio data URL
+     * @param {number} maxDuration - Maximum allowed duration in seconds (default: 15)
+     * @returns {Promise<Object>} - Object with {isValid, duration}
+     */
     async validateAudioDuration(audioDataUrl, maxDuration = 15) {
         return new Promise((resolve, reject) => {
             if (!audioDataUrl) {
@@ -232,11 +257,11 @@ const TTSIntegration = {
             const audio = new Audio();
             let timeoutId;
 
-            
+            // Add timeout to prevent hanging (5 second timeout)
             timeoutId = setTimeout(() => {
                 console.warn(`   ⚠️ Audio validation timeout - skipping duration check`);
                 resolve({
-                    isValid: true, 
+                    isValid: true, // Assume valid if we can't check
                     duration: 0
                 });
             }, 5000);
@@ -258,18 +283,22 @@ const TTSIntegration = {
                 clearTimeout(timeoutId);
                 console.warn(`   ⚠️ Audio validation error - skipping duration check`);
                 resolve({
-                    isValid: true, 
+                    isValid: true, // Assume valid if we can't check
                     duration: 0
                 });
             }, { once: true });
 
             audio.src = audioDataUrl;
-            
+            // Explicitly trigger loading
             audio.load();
         });
     },
 
-    
+    /**
+     * Preload audio into HTML5 Audio elements for smoother playback
+     * @param {string} audioDataUrl - Audio data URL
+     * @returns {Promise<HTMLAudioElement>} - Preloaded audio element
+     */
     async preloadAudio(audioDataUrl) {
         return new Promise((resolve, reject) => {
             if (!audioDataUrl) {
@@ -292,17 +321,21 @@ const TTSIntegration = {
         });
     },
 
-    
+    /**
+     * Utility delay function
+     */
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     },
 
-    
+    /**
+     * Clear audio cache
+     */
     clearCache() {
         this.audioCache.clear();
         console.log('🗑️ TTS audio cache cleared');
     }
 };
 
-
+// Make available globally
 window.TTSIntegration = TTSIntegration;

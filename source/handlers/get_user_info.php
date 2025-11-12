@@ -1,24 +1,28 @@
 <?php
+/**
+ * User Information Handler
+ * Fetches the logged-in user's information from the database
+ * This file should be included at the top of protected pages
+ */
 
-
-
+// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    
+    // Redirect to home page if not logged in
     header('Location: /');
     exit();
 }
 
-
+// Include database connection
 require_once __DIR__ . '/db_connection.php';
 
-
+// Fetch user information
 $user_id = $_SESSION['user_id'];
-$user_first_name = 'User'; 
+$user_first_name = 'User'; // Default fallback
 $user_last_name = '';
 $user_email = '';
 
@@ -37,6 +41,6 @@ try {
 
     $stmt->close();
 } catch (Exception $e) {
-    
+    // Log error but continue with default name
     error_log("Error fetching user info: " . $e->getMessage());
 }

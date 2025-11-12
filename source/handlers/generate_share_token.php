@@ -1,10 +1,10 @@
 <?php
 header('Content-Type: application/json');
 
-
+// Start session to get user_id
 session_start();
 
-
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'error' => 'User not logged in']);
     exit;

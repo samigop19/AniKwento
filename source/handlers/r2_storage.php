@@ -1,7 +1,10 @@
 <?php
+/**
+ * Cloudflare R2 Storage Helper for AniKwento
+ * Works on both localhost and production!
+ */
 
-
-
+// Load AWS SDK
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Aws\S3\S3Client;
@@ -14,8 +17,8 @@ class R2Storage {
     private $config;
 
     public function __construct() {
-        
-        
+        // Load configuration - use __DIR__ for reliable path resolution
+        // This works on both localhost and Railway production
         $configFile = __DIR__ . '/r2_config.php';
 
         if (!file_exists($configFile)) {
@@ -24,7 +27,7 @@ class R2Storage {
 
         $this->config = require $configFile;
 
-        
+        // Validate required config keys
         $requiredKeys = ['access_key', 'secret_key', 'endpoint', 'bucket', 'public_url', 'region'];
         foreach ($requiredKeys as $key) {
             if (!isset($this->config[$key]) || empty($this->config[$key])) {
@@ -35,7 +38,7 @@ class R2Storage {
         $this->bucketName = $this->config['bucket'];
         $this->publicUrl = rtrim($this->config['public_url'], '/');
 
-        
+        // Initialize S3 client (R2 is S3-compatible)
         $this->s3Client = new S3Client([
             'version' => 'latest',
             'region' => $this->config['region'],
@@ -48,10 +51,15 @@ class R2Storage {
         ]);
     }
 
-    
+    /**
+     * Upload audio file from base64 data
+     * @param string $base64Audio - Base64 encoded audio
+     * @param string $filePath - Path in bucket (e.g., "audio/story_1/scene_1_line_1.mp3")
+     * @return array - ['success' => true, 'url' => '...'] or ['success' => false, 'error' => '...']
+     */
     public function uploadAudio($base64Audio, $filePath) {
         try {
-            
+            // Remove base64 prefix if present
             $audioData = preg_replace('/^data:audio\/\w+;base64,/', '', $base64Audio);
             $decodedAudio = base64_decode($audioData);
 
@@ -59,17 +67,17 @@ class R2Storage {
                 throw new Exception("Invalid base64 audio data");
             }
 
-            
+            // Upload to R2
             $result = $this->s3Client->putObject([
                 'Bucket' => $this->bucketName,
                 'Key'    => $filePath,
                 'Body'   => $decodedAudio,
                 'ContentType' => 'audio/mpeg',
-                'CacheControl' => 'public, max-age=31536000', 
+                'CacheControl' => 'public, max-age=31536000', // Cache for 1 year
             ]);
 
-            
-            
+            // Build public URL
+            // If using proxy (ends with ?file=), don't add extra slash
             if ($this->config['use_proxy'] ?? false) {
                 $publicUrl = $this->publicUrl . $filePath;
             } else {
@@ -97,26 +105,32 @@ class R2Storage {
         }
     }
 
-    
+    /**
+     * Upload image file from temporary file
+     * @param string $tmpFilePath - Temporary file path from $_FILES
+     * @param string $filename - Desired filename in bucket (e.g., "profiles/teacher_123.jpg")
+     * @param string $mimeType - MIME type (e.g., "image/jpeg")
+     * @return array - ['success' => true, 'url' => '...', 'key' => '...'] or ['success' => false, 'error' => '...']
+     */
     public function uploadImage($tmpFilePath, $filename, $mimeType = 'image/jpeg') {
         try {
-            
+            // Read file content
             $imageData = file_get_contents($tmpFilePath);
 
             if ($imageData === false) {
                 throw new Exception("Failed to read uploaded file");
             }
 
-            
+            // Upload to R2
             $result = $this->s3Client->putObject([
                 'Bucket' => $this->bucketName,
                 'Key'    => $filename,
                 'Body'   => $imageData,
                 'ContentType' => $mimeType,
-                'CacheControl' => 'public, max-age=31536000', 
+                'CacheControl' => 'public, max-age=31536000', // Cache for 1 year
             ]);
 
-            
+            // Build public URL
             if ($this->config['use_proxy'] ?? false) {
                 $publicUrl = $this->publicUrl . $filename;
             } else {
@@ -145,7 +159,10 @@ class R2Storage {
         }
     }
 
-    
+    /**
+     * Test connection to R2
+     * @return bool
+     */
     public function testConnection() {
         try {
             $result = $this->s3Client->headBucket([
@@ -158,7 +175,11 @@ class R2Storage {
         }
     }
 
-    
+    /**
+     * Delete file from R2
+     * @param string $filePath
+     * @return bool
+     */
     public function deleteFile($filePath) {
         try {
             $this->s3Client->deleteObject([
@@ -172,12 +193,16 @@ class R2Storage {
         }
     }
 
-    
+    /**
+     * Delete all audio files for a story
+     * @param int $storyId
+     * @return int - Number of files deleted
+     */
     public function deleteStoryAudio($storyId) {
         try {
             $prefix = "audio/story_{$storyId}/";
 
-            
+            // List all files with this prefix
             $objects = $this->s3Client->listObjects([
                 'Bucket' => $this->bucketName,
                 'Prefix' => $prefix,

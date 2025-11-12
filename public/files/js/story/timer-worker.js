@@ -1,4 +1,8 @@
-
+/**
+ * Timer Worker - Prevents setTimeout throttling in background tabs
+ * This worker acts as a reliable timer service that doesn't get throttled
+ * when the browser tab is in the background.
+ */
 
 let timers = new Map();
 let nextTimerId = 1;

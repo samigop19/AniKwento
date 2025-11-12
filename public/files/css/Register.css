@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Gluten:wght@400;600&display=swap');
 
-
+/* Custom Scrollbar */
 body::-webkit-scrollbar,
 html::-webkit-scrollbar,
 *::-webkit-scrollbar {
@@ -28,13 +28,13 @@ html::-webkit-scrollbar-thumb:hover,
     background: #972542 !important;
 }
 
-
+/* Firefox */
 html {
     scrollbar-width: thin !important;
     scrollbar-color: #801B32 #f8f9fa !important;
 }
 
-
+/* Modern Notification Styles */
 .alert {
     border: none;
     border-radius: 12px;
@@ -305,7 +305,7 @@ header {
     color: #FFC553;
 }
 
-
+/* Floating label effect */
 .form-control:focus + .floating-label,
 .form-control:not(:placeholder-shown) + .floating-label {
     transform: translateY(-20px) scale(0.8);
@@ -364,7 +364,7 @@ footer {
     box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
 }
 
-
+/* Enhanced Email Input Group Styling */
 .input-group {
     position: relative;
     background: linear-gradient(135deg, rgba(128, 27, 50, 0.05), rgba(151, 37, 66, 0.05));
@@ -441,7 +441,7 @@ footer {
     50% { opacity: 1; }
 }
 
-
+/* Enhanced Alert Styling */
 .alert {
     border-radius: 12px;
     padding: 15px 20px;
@@ -482,7 +482,7 @@ footer {
     border-left: 4px solid #17a2b8;
 }
 
-
+/* Loading Spinner */
 .loading-spinner {
     display: inline-block;
     width: 20px;
@@ -521,7 +521,7 @@ footer {
     }
 }
 
-
+/* Button Loading State */
 .btn.loading {
     position: relative;
     color: transparent;
@@ -542,7 +542,7 @@ footer {
     animation: spin 1s linear infinite;
 }
 
-
+/* Enhanced In-Container Notification Styling */
 .notification {
     margin: 15px 0;
     border-radius: 8px;

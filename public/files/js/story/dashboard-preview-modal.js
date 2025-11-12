@@ -1,10 +1,10 @@
-
+// Preview Modal Script for StoryDashboard
 document.addEventListener('DOMContentLoaded', async function() {
     const previewModal = document.getElementById('previewModal');
     const previewModalClose = document.getElementById('previewModalClose');
     const createStoryModal = document.getElementById('createStoryModal');
 
-    
+    // Music controls
     const previewMusicSelect = document.getElementById('previewMusicSelect');
     const previewMusicPlayBtn = document.getElementById('previewMusicPlayBtn');
     const playIcon = document.getElementById('playIcon');
@@ -13,24 +13,27 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     let previewAudio = null;
 
-    
+    // CRITICAL: Wait for user settings to load from database before initializing music
     console.log('⏳ Preview modal waiting for user settings...');
     await waitForUserSettingsToLoad();
     console.log('✅ User settings ready, initializing music selector');
 
-    
+    // Initialize music selector with user settings on page load
     initializeMusicFromSettings();
 
-    
+    /**
+     * Wait for user settings to load from database
+     * load-default-settings.js loads settings asynchronously, so we need to wait
+     */
     async function waitForUserSettingsToLoad() {
-        
+        // Check if loadUserSettings function exists (from load-default-settings.js)
         if (typeof window.loadUserSettings === 'function') {
             console.log('📥 Loading user settings from database for preview modal...');
             await window.loadUserSettings();
             console.log('✅ User settings loaded:', window.userSettings);
         } else {
             console.warn('⚠️ loadUserSettings function not available, waiting for settings...');
-            
+            // Wait up to 3 seconds for settings to populate
             const maxWaitTime = 3000;
             const startTime = Date.now();
             while (!window.userSettings && (Date.now() - startTime) < maxWaitTime) {
@@ -44,16 +47,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    
+    /**
+     * Initialize music selector with user settings from SettingsDashboard
+     */
     function initializeMusicFromSettings() {
         if (previewMusicSelect && window.userSettings && window.userSettings.background_music) {
             const savedMusic = window.userSettings.background_music;
             console.log('🎵 Initializing music selector with user setting:', savedMusic);
 
-            
+            // Set the music selector to the saved value
             previewMusicSelect.value = savedMusic;
 
-            
+            // Save to storage to ensure consistency
             if (savedMusic) {
                 savePreviewMusicToStorage(savedMusic);
             }
@@ -66,10 +71,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    
+    // Function to save selected music to both localStorage and IndexedDB
     async function savePreviewMusicToStorage(musicFileName) {
         try {
-            
+            // Get music label from select option
             const musicSelect = document.getElementById('previewMusicSelect');
             const selectedOption = musicSelect ? musicSelect.options[musicSelect.selectedIndex] : null;
             const musicLabel = selectedOption ? selectedOption.text : musicFileName;
@@ -77,11 +82,11 @@ document.addEventListener('DOMContentLoaded', async function() {
             const musicData = {
                 enabled: true,
                 fileName: musicFileName,
-                volume: 0.5, 
+                volume: 0.5, // Default volume 50% (as decimal 0-1)
                 label: musicLabel
             };
 
-            
+            // 1. Update localStorage
             let storyData = {};
             const stored = localStorage.getItem('generatedStoryData');
             if (stored) {
@@ -91,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             localStorage.setItem('generatedStoryData', JSON.stringify(storyData));
             console.log('🎵 Saved music to localStorage:', storyData.music);
 
-            
+            // 2. Update IndexedDB (primary storage with audio URLs)
             try {
                 const idbStoryData = await loadStoryFromIndexedDB();
                 if (idbStoryData) {
@@ -109,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    
+    // Helper function to load story from IndexedDB
     async function loadStoryFromIndexedDB() {
         return new Promise((resolve, reject) => {
             const request = indexedDB.open('AniKwentoStoryDB', 1);
@@ -142,7 +147,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    
+    // Helper function to save story to IndexedDB
     async function saveStoryToIndexedDB(storyData) {
         return new Promise((resolve, reject) => {
             const request = indexedDB.open('AniKwentoStoryDB', 1);
@@ -182,13 +187,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    
+    // Listen for stop preview music event
     document.addEventListener('stopPreviewMusic', function() {
         console.log('🛑 Stopping preview music...');
         stopMusicAndReset();
     });
 
-    
+    // Music notification function
     function showMusicNotification(message, type = 'info') {
         const notification = document.createElement('div');
         notification.className = 'music-notification';
@@ -252,7 +257,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }, 3000);
     }
 
-    
+    // Handle music play/pause
     if (previewMusicPlayBtn && previewMusicSelect) {
         previewMusicPlayBtn.addEventListener('click', function() {
             const selectedMusic = previewMusicSelect.value;
@@ -262,7 +267,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 return;
             }
 
-            
+            // If audio exists and is playing, pause it
             if (previewAudio && !previewAudio.paused) {
                 previewAudio.pause();
                 if (playIcon) playIcon.style.display = 'inline';
@@ -271,7 +276,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 return;
             }
 
-            
+            // If audio exists and is paused, resume it
             if (previewAudio && previewAudio.paused && previewAudio.src.includes(selectedMusic)) {
                 previewAudio.play();
                 if (playIcon) playIcon.style.display = 'none';
@@ -280,17 +285,17 @@ document.addEventListener('DOMContentLoaded', async function() {
                 return;
             }
 
-            
+            // Stop existing audio if playing different track
             if (previewAudio) {
                 previewAudio.pause();
                 previewAudio.currentTime = 0;
             }
 
-            
+            // Create new audio element
             const musicPath = '../../../public/files/music/' + selectedMusic;
             previewAudio = new Audio(musicPath);
 
-            
+            // Use user settings music volume if available, otherwise default to 50%
             const musicVolume = (window.userSettings && typeof window.userSettings.music_volume === 'number')
                 ? window.userSettings.music_volume
                 : 0.5;
@@ -299,10 +304,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             previewAudio.loop = true;
 
-            
+            // Save selected music to localStorage for storyboard
             savePreviewMusicToStorage(selectedMusic);
 
-            
+            // Play the music
             previewAudio.play()
                 .then(() => {
                     if (playIcon) playIcon.style.display = 'none';
@@ -314,7 +319,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     showMusicNotification('Error playing music. Please try again.', 'error');
                 });
 
-            
+            // Handle audio end (if not looping)
             previewAudio.addEventListener('ended', function() {
                 if (playIcon) playIcon.style.display = 'inline';
                 if (pauseIcon) pauseIcon.style.display = 'none';
@@ -322,16 +327,16 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
         });
 
-        
+        // Handle music selection change
         previewMusicSelect.addEventListener('change', function() {
             const selectedMusic = this.value;
 
-            
+            // Save the selected music immediately when changed
             if (selectedMusic) {
                 savePreviewMusicToStorage(selectedMusic);
             }
 
-            
+            // Stop current music when changing selection
             if (previewAudio && !previewAudio.paused) {
                 previewAudio.pause();
                 previewAudio.currentTime = 0;
@@ -343,11 +348,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
 
-    
+    // Function to load existing image in preview modal
     function loadExistingImage(imageUrl, scenePrompt = null, narrationText = null) {
         console.log('🖼️ Loading existing image in preview modal...');
 
-        
+        // Create story data with existing image
         const existingImageStoryData = {
             title: "Preview with Existing Image",
             setting: "Custom scene preview",
@@ -368,11 +373,11 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
         };
 
-        
+        // Save to localStorage
         localStorage.setItem('generatedStoryData', JSON.stringify(existingImageStoryData));
         console.log('✅ Existing image data saved to localStorage');
 
-        
+        // Call showPreviewModal from dashboard-story-generation-enhanced.js
         if (typeof window.showPreviewModal === 'function') {
             console.log('🎬 Calling showPreviewModal with existing image...');
             window.showPreviewModal(existingImageStoryData);
@@ -381,13 +386,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    
+    // Export function to window for external use
     window.loadExistingImageInPreview = loadExistingImage;
 
 
 
 
-    
+    // Function to stop music and reset UI
     function stopMusicAndReset() {
         if (previewAudio && !previewAudio.paused) {
             previewAudio.pause();
@@ -398,7 +403,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    
+    // Close preview modal
     if (previewModalClose) {
         previewModalClose.addEventListener('click', function() {
             stopMusicAndReset();
@@ -409,7 +414,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    
+    // Close preview modal when clicking overlay
     const previewModalOverlay = document.querySelector('.preview-modal-overlay');
     if (previewModalOverlay) {
         previewModalOverlay.addEventListener('click', function() {
@@ -421,7 +426,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    
+    // Ensure recreate button is visible when preview modal opens with story data
     if (previewModal) {
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
@@ -431,7 +436,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                         setTimeout(() => {
                             const retryContainer = document.getElementById('sceneRetryContainer');
 
-                            
+                            // Ensure recreate button is visible if story has images
                             if (retryContainer) {
                                 const storedData = localStorage.getItem('generatedStoryData');
                                 if (storedData) {

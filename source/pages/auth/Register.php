@@ -12,7 +12,7 @@
     <link rel="manifest" href="/public/site.webmanifest">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link id="theme-style" rel="stylesheet" href="/public/files/css/Register.css?v=1.0">
+    <link id="theme-style" rel="stylesheet" href="/public/files/css/Register.css">
 </head>
 <body>
     <header>

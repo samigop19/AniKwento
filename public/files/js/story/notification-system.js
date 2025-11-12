@@ -1,4 +1,4 @@
-
+// Notification System for StoryDashboard
 class NotificationSystem {
     constructor() {
         this.notifications = [];
@@ -7,7 +7,7 @@ class NotificationSystem {
     }
 
     init() {
-        
+        // Create notification container if it doesn't exist
         this.container = document.getElementById('notification-container');
         if (!this.container) {
             this.container = document.createElement('div');
@@ -22,12 +22,12 @@ class NotificationSystem {
         this.container.appendChild(notification);
         this.notifications.push(notification);
 
-        
+        // Trigger animation
         setTimeout(() => {
             notification.classList.add('show');
         }, 100);
 
-        
+        // Auto-hide notification
         if (duration > 0) {
             setTimeout(() => {
                 this.hide(notification);
@@ -71,7 +71,7 @@ class NotificationSystem {
                 if (notification.parentNode) {
                     notification.parentNode.removeChild(notification);
                 }
-                
+                // Remove from array
                 const index = this.notifications.indexOf(notification);
                 if (index > -1) {
                     this.notifications.splice(index, 1);
@@ -102,10 +102,10 @@ class NotificationSystem {
     }
 }
 
-
+// Create global instance
 const notificationSystem = new NotificationSystem();
 
-
+// CSS Styles for notifications
 const notificationStyles = `
 .notification-container {
     position: fixed;
@@ -221,7 +221,7 @@ const notificationStyles = `
 }
 `;
 
-
+// Inject styles
 if (!document.getElementById('notification-styles')) {
     const styleSheet = document.createElement('style');
     styleSheet.id = 'notification-styles';

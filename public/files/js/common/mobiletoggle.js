@@ -30,14 +30,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    
+    // Close menu when clicking outside
     document.addEventListener('click', function(event) {
         if (isOpen && !header.contains(event.target) && !menuToggle.contains(event.target)) {
             closeMenu();
         }
     });
 
-    
+    // Close menu when clicking on navigation links
     const navLinks = header.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    
+    // Close menu on window resize if screen becomes large
     window.addEventListener('resize', function() {
         if (window.innerWidth > 768 && isOpen) {
             closeMenu();

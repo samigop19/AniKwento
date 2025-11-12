@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Adlam&family=Segoe+UI:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
 
-
+/* Custom Scrollbar */
 body::-webkit-scrollbar,
 html::-webkit-scrollbar,
 *::-webkit-scrollbar {
@@ -29,7 +29,7 @@ html::-webkit-scrollbar-thumb:hover,
     background: #972542 !important;
 }
 
-
+/* Firefox */
 html {
     scrollbar-width: thin !important;
     scrollbar-color: #801B32 #f8f9fa !important;
@@ -327,7 +327,7 @@ header {
     animation: floatAnimation 3s ease-in-out infinite;
 }
 
-
+/* Section 2 Styles */
 .section-2 {
     padding: 80px 0;
     background-color: #fff;

@@ -18,7 +18,7 @@ body {
     background-color: var(--white);
 }
 
-
+/* Custom Scrollbar */
 body::-webkit-scrollbar,
 html::-webkit-scrollbar,
 *::-webkit-scrollbar {
@@ -46,7 +46,7 @@ html::-webkit-scrollbar-thumb:hover,
     background: #972542 !important;
 }
 
-
+/* Firefox */
 html {
     scrollbar-width: thin !important;
     scrollbar-color: #801B32 #f8f9fa !important;
@@ -308,7 +308,7 @@ html {
     font-weight: 600;
 }
 
-
+/* Voice selector wrapper for dropdown + delete button */
 .voice-selector-wrapper {
     display: flex;
     align-items: center;
@@ -320,7 +320,7 @@ html {
     flex: 1;
 }
 
-
+/* Delete voice icon button - compact and professional */
 .delete-voice-btn-icon {
     width: 48px;
     height: 48px;
@@ -642,7 +642,7 @@ html {
     }
 }
 
-
+/* Mobile Navigation Styles */
 body.menu-open {
     overflow: hidden;
 }
@@ -1216,7 +1216,7 @@ body.menu-open {
     }
 }
 
-
+/* Add Voice Modal Styles */
 .modal-content {
     border-radius: 20px;
     border: none;
@@ -1323,7 +1323,9 @@ body.menu-open {
     margin-right: 6px;
 }
 
-
+/* ===============================================
+   Reset Modal Styles
+   =============================================== */
 
 .reset-modal-overlay {
     position: fixed;
@@ -1401,7 +1403,7 @@ body.menu-open {
     background: var(--hover-color);
 }
 
-
+/* Responsive adjustments for reset modal */
 @media (max-width: 768px) {
     .reset-modal {
         padding: 20px;

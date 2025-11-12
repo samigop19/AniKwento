@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Gluten:wght@400;600&display=swap');
 
-
+/* Custom Scrollbar */
 body::-webkit-scrollbar,
 html::-webkit-scrollbar,
 *::-webkit-scrollbar {
@@ -28,13 +28,13 @@ html::-webkit-scrollbar-thumb:hover,
     background: #972542 !important;
 }
 
-
+/* Firefox */
 html {
     scrollbar-width: thin !important;
     scrollbar-color: #801B32 #f8f9fa !important;
 }
 
-
+/* Modern Notification Styles */
 .alert {
     border: none;
     border-radius: 12px;

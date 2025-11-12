@@ -1,20 +1,20 @@
 <?php
-
+// Start output buffering to prevent any premature output
 ob_start();
 
-
+// Enable error logging but suppress display
 error_reporting(E_ALL);
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 
-
+// Start session to get user_id
 session_start();
 
-
+// Clean any previous output and set JSON header
 ob_clean();
 header('Content-Type: application/json; charset=utf-8');
 
-
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     ob_clean();
     echo json_encode(['success' => false, 'error' => 'User not logged in']);
@@ -24,10 +24,10 @@ if (!isset($_SESSION['user_id'])) {
 
 $current_user_id = $_SESSION['user_id'];
 
-
+// Use absolute path for Railway compatibility
 require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/db_connection.php';
 
-
+// Ensure DB connection exists and is valid
 if (!isset($conn) || $conn->connect_error) {
     ob_clean();
     $error_msg = isset($conn) ? $conn->connect_error : 'Database connection object not initialized';
@@ -37,12 +37,12 @@ if (!isset($conn) || $conn->connect_error) {
     exit;
 }
 
-
+// Helper: sanitize input
 function clean($v) {
     return trim($v ?? '');
 }
 
-
+// Collect posted data
 $full_name         = clean($_POST['full_name'] ?? '');
 $position          = clean($_POST['position'] ?? '');
 $degree            = clean($_POST['degree'] ?? '');
@@ -54,7 +54,7 @@ $email             = clean($_POST['email'] ?? '');
 $certifications    = $_POST['certifications'] ?? '[]';
 $skills            = $_POST['skills'] ?? '[]';
 
-
+// Validate JSON for certifications/skills
 if (!json_decode($certifications) && $certifications !== '[]') {
     $certifications = json_encode([]);
 }
@@ -62,30 +62,30 @@ if (!json_decode($skills) && $skills !== '[]') {
     $skills = json_encode([]);
 }
 
-
+// ---- Handle file upload to R2 ----
 $photoUrl = null;
 
 if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
     try {
-        
+        // Start fresh buffer before requiring R2 files to catch any output
         ob_start();
 
         require_once __DIR__ . '/r2_storage.php';
 
-        
+        // Capture any output from the require and discard it
         $requireOutput = ob_get_clean();
         if (!empty($requireOutput)) {
             error_log("Unexpected output during R2 require: " . $requireOutput);
         }
 
-        
+        // Resume main buffer
         ob_start();
 
         $tmpName = $_FILES['photo']['tmp_name'];
         $originalName = basename($_FILES['photo']['name']);
         $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
 
-        
+        // Accept only certain types
         $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
         if (!in_array($ext, $allowed)) {
             ob_clean();
@@ -94,7 +94,7 @@ if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR
             exit;
         }
 
-        
+        // Determine MIME type
         $mimeTypes = [
             'jpg' => 'image/jpeg',
             'jpeg' => 'image/jpeg',
@@ -104,10 +104,10 @@ if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR
         ];
         $mimeType = $mimeTypes[$ext] ?? 'image/jpeg';
 
-        
+        // Generate unique filename for R2
         $r2Filename = 'profiles/teacher_' . $current_user_id . '_' . uniqid() . '.' . $ext;
 
-        
+        // Upload to R2
         $r2Storage = new R2Storage();
         $uploadResult = $r2Storage->uploadImage($tmpName, $r2Filename, $mimeType);
 
@@ -125,7 +125,7 @@ if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR
         ob_end_flush();
         exit;
     } catch (Throwable $t) {
-        
+        // Catch any fatal errors or other throwables
         error_log("Critical error in save_profile.php: " . $t->getMessage());
         ob_clean();
         echo json_encode(['success' => false, 'error' => 'Critical upload error: ' . $t->getMessage()]);
@@ -136,9 +136,9 @@ if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR
     error_log("File upload error code: " . $_FILES['photo']['error']);
 }
 
-
+// ---- Update or Insert teacher row for the current user ----
 try {
-    
+    // First check if profile exists for this user
     $check_stmt = $conn->prepare("SELECT id FROM teacher_profiles WHERE user_id = ?");
     if (!$check_stmt) {
         throw new Exception("Failed to prepare check statement: " . $conn->error);
@@ -159,7 +159,7 @@ try {
 }
 
 if ($profile_exists) {
-    
+    // Update existing profile
     if ($photoUrl) {
         $sql = "UPDATE teacher_profiles
                 SET full_name=?, position=?, degree=?, institution=?, year_graduated=?, experience_years=?,
@@ -214,7 +214,7 @@ if ($profile_exists) {
         );
     }
 } else {
-    
+    // Insert new profile (this handles cases where profile wasn't auto-created)
     if ($photoUrl) {
         $sql = "INSERT INTO teacher_profiles (user_id, full_name, position, degree, institution, year_graduated, experience_years, experience_desc, email, certifications, skills, photo)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -276,7 +276,7 @@ try {
     $stmt->close();
     $conn->close();
 
-    
+    // Clean buffer and send JSON response
     ob_clean();
     echo json_encode(['success' => true]);
     ob_end_flush();

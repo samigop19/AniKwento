@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../config/init.php';
+// Load user information from session
 require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
 ?>
 <!DOCTYPE html>
@@ -17,7 +18,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="files/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../../public/files/css/StoryHelp.css?v=2.1">
+    <link rel="stylesheet" href="../../../public/files/css/StoryHelp.css?v=2.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
