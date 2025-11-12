@@ -316,7 +316,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../../public/files/js/story/notification-system.js"></script>
-  <script src="../../../public/files/js/story/preview.js"></script>
   <script src="../../../public/files/js/common/mobiletoggle.js"></script>
   <script src="../../../public/files/js/story/settings-dashboard.js"></script>
 

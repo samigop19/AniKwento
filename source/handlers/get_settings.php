@@ -69,11 +69,11 @@ if ($row = $result->fetch_assoc()) {
             'custom_voice_name' => null,
             'custom_avatar_url' => null,
             'custom_voice_preview_url' => null,
-            'narration_volume' => 0.5,
+            'narration_volume' => 1.0,
             'background_music' => '',
             'music_volume' => 0.5,
-            'question_timing' => 'none',
-            'question_types' => '[]'
+            'question_timing' => 'after',
+            'question_types' => '["colorRecognition","shapeMatching"]'
         ],
         'is_default' => true
     ]);
