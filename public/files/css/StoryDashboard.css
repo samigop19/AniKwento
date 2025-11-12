@@ -604,41 +604,16 @@ body.menu-open {
 @media (max-width: 768px) {
     .mobile-menu-toggle {
         display: flex;
-        position: fixed;
-        top: 15px;
         left: 15px;
+        top: 15px;
         z-index: 1003;
-        background: var(--primary-color);
-        color: var(--white);
-        border: none;
-        border-radius: 50%;
         width: 40px;
         height: 40px;
-        min-width: 40px;
-        min-height: 40px;
-        cursor: pointer;
-        box-shadow: 0 2px 8px var(--shadow);
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        padding: 0;
-        aspect-ratio: 1;
-    }
-
-    .mobile-menu-toggle:hover {
-        background: var(--hover-color);
-        transform: scale(1.05);
-    }
-
-    .mobile-menu-toggle i {
-        font-size: 1.2rem;
-        color: var(--white);
-        transition: transform 0.3s ease;
     }
 
     .header {
-        background: linear-gradient(90deg, #5D0F22 0%, #801B32 100%);
-        box-shadow: none;
+        background: linear-gradient(180deg, #5D0F22 0%, #801B32 100%);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
         width: 220px;
         transform: translateX(-100%);
         transition: all 0.3s ease;
@@ -721,19 +696,13 @@ body.menu-open {
         right: 30px;
         width: 60px;
         height: 60px;
-        min-width: 60px;
-        min-height: 60px;
         border: 2px dashed var(--primary-color);
         border-radius: 50%;
         background: var(--white);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         z-index: 1000;
         margin: 0;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        aspect-ratio: 1 !important;
+        aspect-ratio: 1;
     }
 
     .plus-icon {
