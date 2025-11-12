@@ -332,6 +332,9 @@ header {
 
 .hero-image video {
     mix-blend-mode: normal;
+    -webkit-mask-composite: clear;
+    background-color: transparent !important;
+    opacity: 1;
 }
 
 /* Section 2 Styles */
@@ -866,6 +869,7 @@ footer {
         max-width: 100%;
         transform: scale(1);
         background: transparent;
+        background-color: transparent !important;
     }
 }
 @media (min-width: 769px) {
@@ -913,6 +917,7 @@ footer {
         max-width: 70%;
             margin-left: 100px;
         background: transparent;
+        background-color: transparent !important;
     }
 
     .journey-btn {
@@ -1007,6 +1012,7 @@ footer {
         max-width: 100%;
         transform: scale(1);
         background: transparent;
+        background-color: transparent !important;
     }
     .AK-logo-Header {
         width: 150px;
@@ -1046,6 +1052,7 @@ footer {
         max-width: 100%;
         margin: 0 auto;
         background: transparent;
+        background-color: transparent !important;
     }
     .hero-content h1 {
         font-size: 2rem;
