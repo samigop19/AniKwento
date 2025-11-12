@@ -312,7 +312,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                         <div class="setup-description">
                             <div class="description-item">
                                 <i class="fas fa-check-circle"></i>
-                                <p>Share your credentials with parents and students</p>
+                                <p>Share your credentials with parents or guardians and students</p>
                             </div>
                             <div class="description-item">
                                 <i class="fas fa-check-circle"></i>
@@ -347,7 +347,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                 <div class="modal-header" style="background: linear-gradient(135deg, #801b32 0%, #a52742 100%); color: white; border: none; padding: 20px;">
                     <div>
                         <h5 class="modal-title" id="shareProfileModalLabel" style="font-weight: 600; font-size: 1.2rem; margin-bottom: 3px;">
-                            <i class="fas fa-share-alt me-2"></i>Share with Parents
+                            <i class="fas fa-share-alt me-2"></i>Share with Parents or Guardians
                         </h5>
                         <p class="mb-0" style="font-size: 0.8rem; opacity: 0.9;">Copy your profile link</p>
                     </div>
@@ -356,7 +356,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                 <div class="modal-body" style="padding: 20px;">
                     <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; border: 2px dashed #801b32;">
                         <label style="font-size: 0.75rem; color: #6c757d; margin-bottom: 8px; display: block; font-weight: 600;">
-                            <i class="fas fa-link me-1"></i>Profile Link for Parents
+                            <i class="fas fa-link me-1"></i>Profile Link for Parents or Guardians
                         </label>
                         <div style="position: relative;">
                             <input type="text" id="shareUrlInput" readonly class="form-control" style="padding-right: 90px; border-radius: 8px; border: 1px solid #dee2e6; font-size: 0.8rem; background: white; padding: 8px 90px 8px 10px;">
@@ -368,7 +368,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                     <div style="background: #e7f3ff; border-left: 3px solid #0066cc; padding: 12px; border-radius: 8px;">
                         <p style="color: #004085; margin: 0; font-size: 0.8rem; line-height: 1.5;">
                             <i class="fas fa-info-circle me-1"></i>
-                            Parents can view your credentials and teaching background through this link.
+                            Parents or guardians can view your teaching background through this link.
                         </p>
                     </div>
                 </div>
@@ -388,7 +388,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                 <div class="modal-header">
                     <div>
                         <h5 class="modal-title" id="editProfileModalLabel"><i class="fas fa-edit"></i> Edit My Teacher Profile</h5>
-                        <p class="text-white mb-0" style="font-size: 0.9rem;">Update your information to share with parents and students</p>
+                        <p class="text-white mb-0" style="font-size: 0.9rem;">Update your information to share with parents or guardians and students</p>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -399,7 +399,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                         <!-- Profile Picture Section -->
                         <div class="edit-section">
                             <h6 class="section-title"><i class="fas fa-camera"></i> Profile Picture</h6>
-                            <p class="section-description">Upload a professional photo that parents and students will see</p>
+                            <p class="section-description">Upload a professional photo that parents or guardians and students will see</p>
                             <div class="picture-edit-section">
                                 <div class="current-picture">
                                     <img src="<?= $teacher['photo'] ? safe($teacher['photo']) : 'images/teacher-placeholder.png' ?>" id="editProfilePicture" class="edit-profile-img" alt="Profile">
@@ -425,7 +425,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                                            value="<?= safe($teacher['full_name']) ?>"
                                            placeholder="e.g., Maria Santos"
                                            required>
-                                    <small class="form-text text-muted">This is how parents and students will see your name</small>
+                                    <small class="form-text text-muted">This is how parents or guardians and students will see your name</small>
                                 </div>
                                 <div class="col-md-5">
                                     <label class="form-label fw-bold">Current Position <span class="text-danger">*</span></label>
@@ -493,7 +493,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                                     <label class="form-label fw-bold">About Your Teaching Experience <span class="text-danger">*</span></label>
                                     <textarea class="form-control" id="editExperienceDesc" name="experience_desc"
                                               rows="4"
-                                              placeholder="Tell parents about your teaching journey, the age groups you've worked with, and what you love about teaching..."
+                                              placeholder="Tell parents or guardians about your teaching journey, the age groups you've worked with, and what you love about teaching..."
                                               required><?= safe($teacher['experience_desc']) ?></textarea>
                                     <small class="form-text text-muted">Share what makes you passionate about teaching young learners</small>
                                 </div>
@@ -503,7 +503,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                         <!-- Contact Information Section -->
                         <div class="edit-section">
                             <h6 class="section-title"><i class="fas fa-envelope"></i> Contact Information</h6>
-                            <p class="section-description">How parents can reach you</p>
+                            <p class="section-description">How parents or guardians can reach you</p>
                             <div class="row g-3">
                                 <div class="col-md-12">
                                     <label class="form-label fw-bold">School Email Address <span class="text-danger">*</span></label>
@@ -511,7 +511,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
                                            value="<?= safe($teacher['email']) ?>"
                                            placeholder="e.g., teacher.maria@school.edu.ph"
                                            required>
-                                    <small class="form-text text-muted">Use your school email - this will be visible to parents for communication</small>
+                                    <small class="form-text text-muted">Use your school email - this will be visible to parents or guardians for communication</small>
                                 </div>
                             </div>
                         </div>
