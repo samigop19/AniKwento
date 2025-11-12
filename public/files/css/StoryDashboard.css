@@ -610,11 +610,15 @@ body.menu-open {
         border-radius: 50%;
         width: 40px;
         height: 40px;
+        min-width: 40px;
+        min-height: 40px;
         cursor: pointer;
         box-shadow: 0 2px 8px var(--shadow);
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
+        padding: 0;
+        aspect-ratio: 1;
     }
 
     .mobile-menu-toggle:hover {
@@ -629,7 +633,7 @@ body.menu-open {
     }
 
     .header {
-        background: linear-gradient(180deg, #5D0F22 0%, #801B32 100%);
+        background: linear-gradient(90deg, #5D0F22 0%, #801B32 100%);
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
         width: 220px;
         transform: translateX(-100%);
@@ -713,13 +717,19 @@ body.menu-open {
         right: 30px;
         width: 60px;
         height: 60px;
+        min-width: 60px;
+        min-height: 60px;
         border: 2px dashed var(--primary-color);
         border-radius: 50%;
         background: var(--white);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         z-index: 1000;
         margin: 0;
-        aspect-ratio: 1;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1 !important;
     }
 
     .plus-icon {
