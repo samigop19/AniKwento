@@ -16,7 +16,7 @@ body {
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Custom Scrollbar */
+
 body::-webkit-scrollbar,
 html::-webkit-scrollbar,
 *::-webkit-scrollbar {
@@ -44,7 +44,7 @@ html::-webkit-scrollbar-thumb:hover,
     background: #972542 !important;
 }
 
-/* Firefox */
+
 html {
     scrollbar-width: thin !important;
     scrollbar-color: #801B32 #f8f9fa !important;

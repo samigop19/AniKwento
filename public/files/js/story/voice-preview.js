@@ -1,43 +1,40 @@
-/**
- * Voice Preview Module
- * Handles preview playback of storyteller voices
- */
+
 
 (function() {
     let currentPreviewAudio = null;
     let isPlaying = false;
 
-    // Sample text for voice preview
+    
     const PREVIEW_TEXT = "Once upon a time, in a magical land filled with wonder, two curious children discovered an amazing adventure waiting just for them.";
 
-    // R2 CDN base URL for voice previews
-    const R2_VOICE_PREVIEW_BASE = 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/';
+    
+    const R2_VOICE_PREVIEW_BASE = 'https:
 
-    // Voice ID to filename mapping
+    
     const VOICE_CACHE_FILES = {
         'Rachel': 'rachel-preview.mp3',
         'Amara': 'amara-preview.mp3',
         'Lily': 'lily-preview.mp3'
     };
 
-    // Voice preview functionality
+    
     document.addEventListener('DOMContentLoaded', function() {
         const voiceSelect = document.getElementById('voiceOption');
         const previewBtn = document.getElementById('voicePreviewBtn');
         const previewIcon = document.getElementById('voicePreviewIcon');
         const previewText = document.getElementById('voicePreviewText');
 
-        // Show preview button when voice is selected
+        
         if (voiceSelect) {
             voiceSelect.addEventListener('change', function() {
                 if (this.value && previewBtn) {
                     previewBtn.style.display = 'inline-block';
-                    stopPreview(); // Stop any playing preview when changing voice
+                    stopPreview(); 
                 }
             });
         }
 
-        // Handle preview button click
+        
         if (previewBtn) {
             previewBtn.addEventListener('click', async function() {
                 const selectedVoice = voiceSelect.value;
@@ -48,10 +45,10 @@
                 }
 
                 if (isPlaying) {
-                    // Stop preview
+                    
                     stopPreview();
                 } else {
-                    // Play preview
+                    
                     await playPreview(selectedVoice);
                 }
             });
@@ -65,7 +62,7 @@
         const voiceSelect = document.getElementById('voiceOption');
 
         try {
-            // Update button to loading state
+            
             if (previewIcon) {
                 previewIcon.className = 'fas fa-spinner fa-spin';
             }
@@ -80,9 +77,9 @@
 
             let audioSource = null;
 
-            // Check if this is a custom voice (starts with 'custom_')
+            
             if (voiceName.startsWith('custom_')) {
-                // Get the selected option to access preview URL
+                
                 const selectedOption = voiceSelect.options[voiceSelect.selectedIndex];
                 const customPreviewUrl = selectedOption ? selectedOption.dataset.previewUrl : null;
 
@@ -94,15 +91,15 @@
                     throw new Error('Preview not available for this custom voice');
                 }
             } else {
-                // Handle default voices
+                
                 const cacheFile = VOICE_CACHE_FILES[voiceName];
 
                 if (cacheFile) {
-                    // Use R2 CDN URL for voice previews
+                    
                     const r2Url = R2_VOICE_PREVIEW_BASE + cacheFile;
 
                     try {
-                        // Check if cached file exists on R2
+                        
                         const response = await fetch(r2Url);
 
                         if (response.ok) {
@@ -117,7 +114,7 @@
                         audioSource = await generateAndCachePreview(voiceName, cacheFile);
                     }
                 } else {
-                    // No cache file defined, generate on-the-fly
+                    
                     if (typeof TTSIntegration === 'undefined') {
                         throw new Error('TTS Integration not loaded');
                     }
@@ -125,7 +122,7 @@
                 }
             }
 
-            // Create and play audio
+            
             currentPreviewAudio = new Audio();
             currentPreviewAudio.src = audioSource;
             currentPreviewAudio.volume = 0.8;
@@ -143,7 +140,7 @@
             await currentPreviewAudio.play();
             isPlaying = true;
 
-            // Update button to stop state
+            
             if (previewIcon) {
                 previewIcon.className = 'fas fa-stop';
             }
@@ -160,7 +157,7 @@
             console.error('❌ Voice preview error:', error);
             stopPreview();
 
-            // Show user-friendly error message
+            
             if (typeof notificationSystem !== 'undefined') {
                 notificationSystem.error('Failed to load voice preview. Please check your API key and try again.');
             } else {
@@ -172,25 +169,25 @@
     async function generateAndCachePreview(voiceName, cachePath) {
         console.log(`🔄 Generating preview for ${voiceName} and caching...`);
 
-        // Generate preview audio using TTS Integration
+        
         if (typeof TTSIntegration === 'undefined') {
             throw new Error('TTS Integration not loaded');
         }
 
         const audioDataUrl = await TTSIntegration.generateSpeech(PREVIEW_TEXT, voiceName);
 
-        // Try to save to server cache
+        
         try {
-            // Convert base64 to blob
+            
             const response = await fetch(audioDataUrl);
             const blob = await response.blob();
 
-            // Create form data to send to server
+            
             const formData = new FormData();
             formData.append('audio', blob, VOICE_CACHE_FILES[voiceName]);
             formData.append('voice_name', voiceName);
 
-            // Send to server to save
+            
             await fetch('/source/handlers/save_voice_preview.php', {
                 method: 'POST',
                 body: formData
@@ -198,11 +195,11 @@
 
             console.log(`💾 Preview cached successfully for ${voiceName}`);
 
-            // Return the cache path for immediate use
+            
             return cachePath;
         } catch (saveError) {
             console.warn('⚠️ Could not cache preview to server, using data URL:', saveError);
-            // Return the data URL if caching fails
+            
             return audioDataUrl;
         }
     }
@@ -216,7 +213,7 @@
 
         isPlaying = false;
 
-        // Reset button to play state
+        
         const previewIcon = document.getElementById('voicePreviewIcon');
         const previewText = document.getElementById('voicePreviewText');
         const previewBtn = document.getElementById('voicePreviewBtn');
@@ -234,6 +231,6 @@
         console.log('⏹️ Voice preview stopped');
     }
 
-    // Make stopPreview available globally for cleanup
+    
     window.stopVoicePreview = stopPreview;
 })();

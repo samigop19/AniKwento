@@ -1,24 +1,10 @@
-/**
- * Avatar Bone Control Debug GUI
- *
- * This module provides a debug GUI for manually controlling avatar bone rotations.
- * It's disabled by default but can be enabled for testing and development purposes.
- *
- * To enable:
- * 1. Import this file in your HTML: <script src="avatar-bone-control.js"></script>
- * 2. Call AvatarBoneControl.enable() after avatar is loaded
- *
- * Note: Requires lil-gui library (https://lil-gui.georgealways.com/)
- */
+
 
 const AvatarBoneControl = {
     gui: null,
     avatarInstance: null,
 
-    /**
-     * Enable the bone control GUI for an avatar instance
-     * @param {Object} avatarInstance - The RPMAvatar instance
-     */
+    
     enable(avatarInstance) {
         if (!avatarInstance) {
             console.error('❌ Cannot enable bone control: No avatar instance provided');
@@ -27,7 +13,7 @@ const AvatarBoneControl = {
 
         if (typeof GUI === 'undefined') {
             console.error('❌ Cannot enable bone control: lil-gui library not loaded');
-            console.log('   Add to HTML: <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.19"></script>');
+            console.log('   Add to HTML: <script src="https:
             return;
         }
 
@@ -35,9 +21,7 @@ const AvatarBoneControl = {
         this.setupDebugGUI();
     },
 
-    /**
-     * Disable and cleanup the bone control GUI
-     */
+    
     disable() {
         if (this.gui) {
             this.gui.destroy();
@@ -46,13 +30,11 @@ const AvatarBoneControl = {
         }
     },
 
-    /**
-     * Setup the debug GUI for bone control
-     */
+    
     setupDebugGUI() {
         const avatar = this.avatarInstance;
 
-        // Cleanup existing GUI if present
+        
         if (this.gui) {
             this.gui.destroy();
         }
@@ -62,7 +44,7 @@ const AvatarBoneControl = {
         this.gui = new GUI();
         this.gui.title('Avatar Bone Control');
 
-        // Add animation toggle at the top (IMPORTANT!)
+        
         this.gui.add(avatar, 'enableAnimations').name('🎬 Enable Animations')
             .onChange((value) => {
                 if (value) {
@@ -72,7 +54,7 @@ const AvatarBoneControl = {
                 }
             });
 
-        // Right Shoulder
+        
         if (avatar.rightShoulderBone) {
             const rightShoulderFolder = this.gui.addFolder('Right Shoulder');
             rightShoulderFolder.add(avatar.rightShoulderBone.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -81,7 +63,7 @@ const AvatarBoneControl = {
             rightShoulderFolder.open();
         }
 
-        // Left Shoulder
+        
         if (avatar.leftShoulderBone) {
             const leftShoulderFolder = this.gui.addFolder('Left Shoulder');
             leftShoulderFolder.add(avatar.leftShoulderBone.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -90,7 +72,7 @@ const AvatarBoneControl = {
             leftShoulderFolder.open();
         }
 
-        // Right Arm
+        
         if (avatar.rightArmBone) {
             const rightArmFolder = this.gui.addFolder('Right Arm');
             rightArmFolder.add(avatar.rightArmBone.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -98,7 +80,7 @@ const AvatarBoneControl = {
             rightArmFolder.add(avatar.rightArmBone.rotation, 'z', -Math.PI, Math.PI, 0.01).name('Z Rotation').listen();
         }
 
-        // Left Arm
+        
         if (avatar.leftArmBone) {
             const leftArmFolder = this.gui.addFolder('Left Arm');
             leftArmFolder.add(avatar.leftArmBone.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -106,7 +88,7 @@ const AvatarBoneControl = {
             leftArmFolder.add(avatar.leftArmBone.rotation, 'z', -Math.PI, Math.PI, 0.01).name('Z Rotation').listen();
         }
 
-        // Right Lower Arm
+        
         if (avatar.rightLowerArmBone) {
             const rightLowerArmFolder = this.gui.addFolder('Right Lower Arm');
             rightLowerArmFolder.add(avatar.rightLowerArmBone.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -114,7 +96,7 @@ const AvatarBoneControl = {
             rightLowerArmFolder.add(avatar.rightLowerArmBone.rotation, 'z', -Math.PI, Math.PI, 0.01).name('Z Rotation').listen();
         }
 
-        // Left Lower Arm
+        
         if (avatar.leftLowerArmBone) {
             const leftLowerArmFolder = this.gui.addFolder('Left Lower Arm');
             leftLowerArmFolder.add(avatar.leftLowerArmBone.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -122,7 +104,7 @@ const AvatarBoneControl = {
             leftLowerArmFolder.add(avatar.leftLowerArmBone.rotation, 'z', -Math.PI, Math.PI, 0.01).name('Z Rotation').listen();
         }
 
-        // Right Hand
+        
         if (avatar.rightHandBone) {
             const rightHandFolder = this.gui.addFolder('Right Hand');
             rightHandFolder.add(avatar.rightHandBone.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -130,7 +112,7 @@ const AvatarBoneControl = {
             rightHandFolder.add(avatar.rightHandBone.rotation, 'z', -Math.PI, Math.PI, 0.01).name('Z Rotation').listen();
         }
 
-        // Left Hand
+        
         if (avatar.leftHandBone) {
             const leftHandFolder = this.gui.addFolder('Left Hand');
             leftHandFolder.add(avatar.leftHandBone.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -138,7 +120,7 @@ const AvatarBoneControl = {
             leftHandFolder.add(avatar.leftHandBone.rotation, 'z', -Math.PI, Math.PI, 0.01).name('Z Rotation').listen();
         }
 
-        // Head
+        
         if (avatar.headBone) {
             const headFolder = this.gui.addFolder('Head');
             headFolder.add(avatar.headBone.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -146,7 +128,7 @@ const AvatarBoneControl = {
             headFolder.add(avatar.headBone.rotation, 'z', -Math.PI, Math.PI, 0.01).name('Z Rotation').listen();
         }
 
-        // Neck
+        
         if (avatar.neckBone) {
             const neckFolder = this.gui.addFolder('Neck');
             neckFolder.add(avatar.neckBone.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -154,7 +136,7 @@ const AvatarBoneControl = {
             neckFolder.add(avatar.neckBone.rotation, 'z', -Math.PI, Math.PI, 0.01).name('Z Rotation').listen();
         }
 
-        // Spine
+        
         if (avatar.spine) {
             const spineFolder = this.gui.addFolder('Spine');
             spineFolder.add(avatar.spine.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -162,7 +144,7 @@ const AvatarBoneControl = {
             spineFolder.add(avatar.spine.rotation, 'z', -Math.PI, Math.PI, 0.01).name('Z Rotation').listen();
         }
 
-        // Hips
+        
         if (avatar.hips) {
             const hipsFolder = this.gui.addFolder('Hips');
             hipsFolder.add(avatar.hips.rotation, 'x', -Math.PI, Math.PI, 0.01).name('X Rotation').listen();
@@ -170,7 +152,7 @@ const AvatarBoneControl = {
             hipsFolder.add(avatar.hips.rotation, 'z', -Math.PI, Math.PI, 0.01).name('Z Rotation').listen();
         }
 
-        // Add utility buttons
+        
         const controls = {
             logCurrentValues: () => {
                 console.log('📋 Current Bone Rotations:');
@@ -277,12 +259,12 @@ const AvatarBoneControl = {
     }
 };
 
-// Make available globally
+
 window.AvatarBoneControl = AvatarBoneControl;
 
-// Example usage (commented out):
-// After avatar loads, enable bone control:
-// AvatarBoneControl.enable(window.RPMAvatar);
-//
-// To disable:
-// AvatarBoneControl.disable();
+
+
+
+
+
+

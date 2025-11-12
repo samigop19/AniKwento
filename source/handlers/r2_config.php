@@ -1,14 +1,11 @@
 <?php
-/**
- * Cloudflare R2 Configuration
- * Loads configuration from environment variables
- */
 
-// Load environment variables
+
+
 require_once __DIR__ . '/../config/env.php';
 EnvLoader::load();
 
-// Get R2 configuration from environment
+
 $r2Config = [
     'access_key' => EnvLoader::get('R2_ACCESS_KEY'),
     'secret_key' => EnvLoader::get('R2_SECRET_KEY'),
@@ -18,7 +15,7 @@ $r2Config = [
     'region' => EnvLoader::get('R2_REGION', 'auto'),
 ];
 
-// Validate required configuration
+
 $requiredKeys = ['access_key', 'secret_key', 'endpoint', 'bucket', 'public_url'];
 foreach ($requiredKeys as $key) {
     if (empty($r2Config[$key])) {

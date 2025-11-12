@@ -1,12 +1,9 @@
 <?php
-/**
- * Upload Voice Preview Files to Cloudflare R2
- * Run this script to upload all voice preview MP3 files to R2 storage
- */
+
 
 require_once __DIR__ . '/source/handlers/r2_storage.php';
 
-// Voice preview files to upload (only Rachel, Amara, Lily)
+
 $voiceFiles = [
     'rachel-preview.mp3',
     'amara-preview.mp3',
@@ -14,15 +11,15 @@ $voiceFiles = [
 ];
 
 $localDir = __DIR__ . '/public/files/voice-previews/';
-$r2Prefix = 'voice-previews/'; // Folder in R2 bucket
+$r2Prefix = 'voice-previews/'; 
 
 echo "=== Voice Preview Upload to R2 ===\n\n";
 
 try {
-    // Initialize R2 Storage
+    
     $r2 = new R2Storage();
 
-    // Test connection
+    
     echo "Testing R2 connection...\n";
     if (!$r2->testConnection()) {
         throw new Exception("Failed to connect to R2. Check your credentials.");
@@ -39,18 +36,18 @@ try {
         echo "Uploading: {$filename}\n";
         echo "  Local: {$localPath}\n";
 
-        // Check if file exists
+        
         if (!file_exists($localPath)) {
             echo "  ✗ File not found!\n\n";
             $failedCount++;
             continue;
         }
 
-        // Get file size
+        
         $fileSize = filesize($localPath);
         echo "  Size: " . number_format($fileSize / 1024, 2) . " KB\n";
 
-        // Read file content
+        
         $fileContent = file_get_contents($localPath);
         if ($fileContent === false) {
             echo "  ✗ Failed to read file!\n\n";
@@ -58,8 +55,8 @@ try {
             continue;
         }
 
-        // Upload using R2Storage's uploadAudio method (adapted for file content)
-        // We'll use the S3 client directly since uploadAudio expects base64
+        
+        
         try {
             $s3Client = new ReflectionClass($r2);
             $s3Property = $s3Client->getProperty('s3Client');
@@ -74,16 +71,16 @@ try {
             $publicUrlProperty->setAccessible(true);
             $publicUrl = $publicUrlProperty->getValue($r2);
 
-            // Upload to R2
+            
             $result = $client->putObject([
                 'Bucket' => $bucket,
                 'Key'    => $r2Path,
                 'Body'   => $fileContent,
                 'ContentType' => 'audio/mpeg',
-                'CacheControl' => 'public, max-age=31536000', // Cache for 1 year
+                'CacheControl' => 'public, max-age=31536000', 
             ]);
 
-            // Build public URL
+            
             $fileUrl = $publicUrl . '/' . $r2Path;
 
             echo "  ✓ Uploaded successfully!\n";

@@ -1,8 +1,5 @@
 <?php
-/**
- * Upload Gamification Audio Files to Cloudflare R2
- * Uploads question background music and correct/wrong answer sound effects
- */
+
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/source/handlers/r2_storage.php';
@@ -10,7 +7,7 @@ require_once __DIR__ . '/source/handlers/r2_storage.php';
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
 
-// Load environment variables
+
 $envFile = __DIR__ . '/.env';
 if (file_exists($envFile)) {
     $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -21,7 +18,7 @@ if (file_exists($envFile)) {
     }
 }
 
-// Initialize S3 client for R2
+
 $s3Client = new S3Client([
     'version' => 'latest',
     'region' => $_ENV['R2_REGION'] ?? 'auto',
@@ -36,7 +33,7 @@ $s3Client = new S3Client([
 $bucketName = $_ENV['R2_BUCKET'];
 $publicUrl = rtrim($_ENV['R2_PUBLIC_URL'], '/');
 
-// Audio files to upload
+
 $audioFiles = [
     'question_bg.mp3' => 'music/Storyboard/question_bg.mp3',
     'correct answer.mp3' => 'music/Storyboard/correct_answer.mp3',
@@ -56,20 +53,20 @@ foreach ($audioFiles as $localFile => $r2Path) {
     try {
         echo "Uploading $localFile...\n";
 
-        // Read file content
+        
         $fileContent = file_get_contents($localPath);
         $fileSize = strlen($fileContent);
 
-        // Upload to R2
+        
         $result = $s3Client->putObject([
             'Bucket' => $bucketName,
             'Key'    => $r2Path,
             'Body'   => $fileContent,
             'ContentType' => 'audio/mpeg',
-            'CacheControl' => 'public, max-age=31536000', // Cache for 1 year
+            'CacheControl' => 'public, max-age=31536000', 
         ]);
 
-        // Build public URL
+        
         $fileUrl = $publicUrl . '/' . $r2Path;
 
         echo "✅ Uploaded successfully!\n";

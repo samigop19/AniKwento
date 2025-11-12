@@ -23,7 +23,7 @@ body {
     padding-right: 0 !important;
 }
 
-/* Custom Scrollbar */
+
 body::-webkit-scrollbar,
 html::-webkit-scrollbar,
 *::-webkit-scrollbar {
@@ -51,13 +51,13 @@ html::-webkit-scrollbar-thumb:hover,
     background: #972542 !important;
 }
 
-/* Firefox */
+
 html {
     scrollbar-width: thin !important;
     scrollbar-color: #801B32 #f8f9fa !important;
 }
 
-/* Header Navigation */
+
 .header {
     width: 220px;
     min-height: 100vh;
@@ -158,7 +158,7 @@ html {
     transform: translateX(-50%);
 }
 
-/* Main Content */
+
 .main {
     margin-left: 220px;
     padding: 20px;
@@ -182,7 +182,7 @@ html {
 
 
 
-/* Profile Header Section */
+
 .profile-header-section {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--hover-color) 100%);
     border-radius: 25px;
@@ -373,7 +373,7 @@ html {
     transform: translateY(-2px);
 }
 
-/* Content Grid Layout */
+
 .profile-content {
     margin-top: 15px;
     width: 100%;
@@ -393,12 +393,12 @@ html {
     flex-direction: column;
 }
 
-/* Full-width cards (Contact) */
+
 .content-full-width {
     grid-column: 1 / -1;
 }
 
-/* Profile Cards */
+
 .profile-card {
     background: var(--white);
     border-radius: 20px;
@@ -439,7 +439,7 @@ html {
     padding: 25px;
 }
 
-/* Information Rows */
+
 .info-row {
     display: flex;
     align-items: center;
@@ -475,7 +475,7 @@ html {
     font-size: 0.9rem;
 }
 
-/* Experience Section */
+
 .experience-highlight {
     text-align: center;
     margin-bottom: 20px;
@@ -510,7 +510,7 @@ html {
     font-size: 1.2rem;
 }
 
-/* Contact Information */
+
 .contact-info-wrapper {
     display: flex;
     justify-content: center;
@@ -578,7 +578,7 @@ html {
     margin-top: 2px;
 }
 
-/* Certifications Grid */
+
 .certification-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -608,7 +608,7 @@ html {
     flex-shrink: 0;
 }
 
-/* Skills Showcase */
+
 .skills-showcase {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -658,7 +658,7 @@ html {
 }
 
 
-/* Availability Section */
+
 .availability-info {
     display: flex;
     flex-direction: column;
@@ -720,7 +720,7 @@ html {
     line-height: 1.5;
 }
 
-/* Philosophy Section */
+
 .philosophy-section {
     margin-top: 20px;
 }
@@ -751,7 +751,7 @@ html {
     box-shadow: 0 4px 15px rgba(255, 197, 83, 0.3);
 }
 
-/* Edit Profile Modal */
+
 .modal-dialog {
     max-width: 700px;
     margin: 1.75rem auto;
@@ -836,7 +836,7 @@ html {
     margin-right: auto !important;
 }
 
-/* Edit Sections */
+
 .edit-section {
     margin-bottom: 30px;
     padding: 20px 25px;
@@ -896,7 +896,7 @@ html {
     margin-top: 4px;
 }
 
-/* Form Styles */
+
 .form-label {
     color: var(--primary-color);
     font-weight: 600;
@@ -944,7 +944,7 @@ html {
     width: 100%;
 }
 
-/* Row spacing for form sections */
+
 .row.g-3 {
     margin-bottom: 0;
 }
@@ -978,7 +978,7 @@ html {
     font-style: normal;
 }
 
-/* Picture Edit Section */
+
 .picture-edit-section {
     display: flex;
     align-items: center;
@@ -1029,7 +1029,7 @@ html {
     box-shadow: 0 4px 12px rgba(128, 27, 50, 0.3);
 }
 
-/* Edit Item Styles */
+
 .cert-edit-item, .skill-edit-item {
     display: flex;
     gap: 10px;
@@ -1124,7 +1124,7 @@ html {
     font-weight: 700 !important;
 }
 
-/* Modal Footer Buttons */
+
 .modal-footer .btn {
     padding: 12px 24px;
     border-radius: 10px;
@@ -1166,7 +1166,7 @@ html {
     font-size: 1.1rem;
 }
 
-/* Notification Styles */
+
 .notification {
     position: fixed;
     top: 20px;
@@ -1198,7 +1198,7 @@ html {
     font-size: 1.2rem;
 }
 
-/* Mobile Menu */
+
 .mobile-menu-toggle {
     display: none;
     position: fixed;
@@ -1240,7 +1240,7 @@ html {
     }
 }
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
     .profile-content {
         width: 100%;
@@ -1263,7 +1263,7 @@ html {
     }
 }
 
-/* Mobile Navigation Styles */
+
 body.menu-open {
     overflow: hidden;
 }
@@ -1493,7 +1493,7 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Welcome Modal Styles */
+
 .welcome-modal-content {
     border: none;
     border-radius: 25px;
@@ -1775,7 +1775,7 @@ html {
     font-size: 1rem;
 }
 
-/* Responsive for Welcome Modal */
+
 @media (max-width: 768px) {
     .welcome-modal-header {
         padding: 40px 25px 30px;

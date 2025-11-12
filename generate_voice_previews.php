@@ -1,21 +1,18 @@
 <?php
-/**
- * Generate Voice Preview Files
- * Downloads preview audio for all storyteller voices
- */
 
-// Load environment variables
+
+
 require_once __DIR__ . '/source/config/env.php';
 EnvLoader::load();
 
-// ElevenLabs API Configuration - Load from environment
+
 $ELEVENLABS_API_KEY = EnvLoader::get('ELEVENLABS_API_KEY');
 if (!$ELEVENLABS_API_KEY) {
     die("❌ ERROR: ELEVENLABS_API_KEY not set in environment\n");
 }
 const ELEVENLABS_API_URL = 'https://api.elevenlabs.io/v1/text-to-speech/';
 
-// Voice configurations
+
 $voices = [
     'Rachel' => [
         'id' => '21m00Tcm4TlvDq8ikWAM',
@@ -44,19 +41,19 @@ $voices = [
     ]
 ];
 
-// Preview text
+
 $previewText = "Once upon a time, in a magical land filled with wonder, two curious children discovered an amazing adventure waiting just for them.";
 
-// Output directory
+
 $outputDir = __DIR__ . '/public/files/voice-previews/';
 
-// Create directory if it doesn't exist
+
 if (!file_exists($outputDir)) {
     mkdir($outputDir, 0755, true);
     echo "✅ Created directory: {$outputDir}\n";
 }
 
-// Voice settings
+
 $voiceSettings = [
     'text' => $previewText,
     'model_id' => 'eleven_flash_v2_5',
@@ -77,7 +74,7 @@ foreach ($voices as $key => $voice) {
     $apiUrl = ELEVENLABS_API_URL . $voice['id'];
     $outputFile = $outputDir . $voice['filename'];
 
-    // Initialize cURL
+    
     $ch = curl_init($apiUrl);
 
     curl_setopt_array($ch, [
@@ -93,14 +90,14 @@ foreach ($voices as $key => $voice) {
         CURLOPT_SSL_VERIFYPEER => true
     ]);
 
-    // Execute request
+    
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error = curl_error($ch);
 
     curl_close($ch);
 
-    // Handle response
+    
     if ($error) {
         echo "  ❌ cURL error: {$error}\n";
         continue;
@@ -111,7 +108,7 @@ foreach ($voices as $key => $voice) {
         continue;
     }
 
-    // Save audio file
+    
     $result = file_put_contents($outputFile, $response);
 
     if ($result === false) {
@@ -121,7 +118,7 @@ foreach ($voices as $key => $voice) {
         echo "  ✅ Saved: {$voice['filename']} ({$fileSize} KB)\n";
     }
 
-    // Small delay between requests
+    
     sleep(1);
     echo "\n";
 }

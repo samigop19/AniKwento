@@ -170,10 +170,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const generateAgainBtn = document.getElementById('generateAgain');
     const saveStoryBtn = document.getElementById('saveStory');
     
-    // Initialize storyboard generator
+    
     storyboardGenerator = new StoryboardGenerator();
 
-    // Get references to player controls
+    
     const playPauseBtn = document.getElementById('playPauseBtn');
     const muteBtn = document.getElementById('muteBtn');
   
@@ -216,8 +216,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
     function resetForm() {
-        // Don't reset API key as user might want to keep it
-        // document.getElementById('googleApiKey').value = '';
+        
+        
         
         document.getElementById('storyPrompt').value = '';
 
@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let errors = [];
 
-        // API key validation removed - using built-in keys
+        
 
         if (!voiceOption) {
             errors.push('Please select a voice option');
@@ -337,20 +337,20 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Using built-in API keys - no need to get from form
+        
         
         progressModal.show();
         
         try {
-            // Phase 1: Generate story
+            
             updateProgress(10, 'Generating story...');
             const story = await storyboardGenerator.generateStory();
             
-            // Phase 2: Generate character descriptions
+            
             updateProgress(30, 'Creating character descriptions...');
             const characters = await storyboardGenerator.generateCharacterDescriptions();
             
-            // Phase 3: Generate scene images
+            
             updateProgress(50, 'Generating scene images...');
             const images = await storyboardGenerator.generateAllSceneImages((current, total) => {
                 const imageProgress = 50 + (current / total) * 40;
@@ -359,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             updateProgress(100, 'Finalizing your story...');
             
-            // Get complete story data
+            
             currentStoryData = storyboardGenerator.getStoryData();
             
             setTimeout(() => {
@@ -386,14 +386,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Initialize storyboard player
+        
         const playerContainer = document.getElementById('storyboardPlayerContainer');
         storyboardPlayer = new StoryboardPlayer(playerContainer);
         
-        // Load the generated story data
+        
         storyboardPlayer.loadStory(currentStoryData);
         
-        // Show the preview modal
+        
         previewModal.show();
     }
 
@@ -430,17 +430,17 @@ document.addEventListener('DOMContentLoaded', function() {
             updateProgress(0, 'Generating story elements...');
             
             try {
-                // Using built-in API keys - no need to get from form
                 
-                // Phase 1: Generate story
+                
+                
                 updateProgress(10, 'Generating story...');
                 const story = await storyboardGenerator.generateStory();
                 
-                // Phase 2: Generate character descriptions
+                
                 updateProgress(30, 'Creating character descriptions...');
                 const characters = await storyboardGenerator.generateCharacterDescriptions();
                 
-                // Phase 3: Generate scene images
+                
                 updateProgress(50, 'Generating scene images...');
                 const images = await storyboardGenerator.generateAllSceneImages((current, total) => {
                     const imageProgress = 50 + (current / total) * 40;
@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 updateProgress(100, 'Finalizing your story...');
                 
-                // Get complete story data
+                
                 currentStoryData = storyboardGenerator.getStoryData();
                 
                 setTimeout(() => {

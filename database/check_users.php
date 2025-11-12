@@ -1,7 +1,5 @@
 <?php
-/**
- * Quick script to check if there are users in the database
- */
+
 
 require_once '../source/handlers/db_connection.php';
 

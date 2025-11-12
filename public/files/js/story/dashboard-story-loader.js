@@ -1,17 +1,12 @@
-/**
- * Story Dashboard Loader
- * Loads and displays user stories from the database
- */
 
-// Load user stories when page loads
+
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('📚 Story Dashboard Loader initialized');
     loadUserStories();
 });
 
-/**
- * Load all user stories from the database
- */
+
 async function loadUserStories() {
     console.log('📚 Loading user stories...');
 
@@ -22,10 +17,10 @@ async function loadUserStories() {
     }
 
     try {
-        // Show loading state
+        
         showLoadingState(storyGrid);
 
-        // Fetch stories from the backend
+        
         const response = await fetch('/source/handlers/get_user_stories.php', {
             method: 'GET',
             headers: {
@@ -45,26 +40,24 @@ async function loadUserStories() {
 
         console.log('✅ Loaded stories:', data);
 
-        // Clear loading state
+        
         clearLoadingState(storyGrid);
 
-        // Display stories
+        
         displayStories(data.stories, storyGrid);
 
     } catch (error) {
         console.error('❌ Error loading stories:', error);
 
-        // Clear loading state and show error
+        
         clearLoadingState(storyGrid);
         showErrorState(storyGrid, error.message);
     }
 }
 
-/**
- * Show loading state in the story grid
- */
+
 function showLoadingState(container) {
-    // Keep sample card and add button, add loading indicator
+    
     const loadingHTML = `
         <div class="loading-stories">
             <i class="fas fa-spinner fa-spin fa-3x mb-3" style="color: #801B32;"></i>
@@ -72,14 +65,14 @@ function showLoadingState(container) {
         </div>
     `;
 
-    // Find the add-new button
+    
     const addNewBtn = container.querySelector('.add-new');
 
-    // Clear existing stories but keep sample
+    
     const cards = container.querySelectorAll('.story-card:not([data-sample])');
     cards.forEach(card => card.remove());
 
-    // Add loading indicator before add button
+    
     if (addNewBtn) {
         addNewBtn.insertAdjacentHTML('beforebegin', loadingHTML);
     } else {
@@ -87,9 +80,7 @@ function showLoadingState(container) {
     }
 }
 
-/**
- * Clear loading state
- */
+
 function clearLoadingState(container) {
     const loadingElement = container.querySelector('.loading-stories');
     if (loadingElement) {
@@ -97,9 +88,7 @@ function clearLoadingState(container) {
     }
 }
 
-/**
- * Show error state
- */
+
 function showErrorState(container, errorMessage) {
     const errorHTML = `
         <div class="error-stories" style="grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
@@ -120,20 +109,18 @@ function showErrorState(container, errorMessage) {
     }
 }
 
-/**
- * Display stories in the grid
- */
+
 function displayStories(stories, container) {
     console.log(`📚 Displaying ${stories.length} stories`);
 
-    // Remove sample story card
+    
     const sampleCard = container.querySelector('.story-card[data-bs-target="#story1Modal"]');
     if (sampleCard) {
         sampleCard.remove();
     }
 
     if (stories.length === 0) {
-        // Show simple empty state
+        
         const emptyHTML = `
             <div class="empty-stories" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
                 <h4 style="color: #999; font-size: 18px;">No Stories Yet</h4>
@@ -149,13 +136,13 @@ function displayStories(stories, container) {
         return;
     }
 
-    // Find the add button
+    
     const addNewBtn = container.querySelector('.add-new');
 
-    // Create story cards HTML
+    
     const storyCardsHTML = stories.map(story => createStoryCard(story)).join('');
 
-    // Insert all stories after the add button (add button is now first)
+    
     if (addNewBtn) {
         addNewBtn.insertAdjacentHTML('afterend', storyCardsHTML);
     } else {
@@ -165,9 +152,7 @@ function displayStories(stories, container) {
     console.log('✅ Stories displayed successfully');
 }
 
-/**
- * Create HTML for a story card
- */
+
 function createStoryCard(story) {
     const modalId = `story${story.id}Modal`;
     const thumbnailUrl = story.thumbnail_url || '../../../public/files/images/story1.png';
@@ -177,7 +162,7 @@ function createStoryCard(story) {
     const playCount = story.play_count || 0;
     const hasGamification = story.has_gamification;
 
-    // Format date
+    
     const createdDate = new Date(story.created_at);
     const formattedDate = createdDate.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -264,14 +249,12 @@ function createStoryCard(story) {
     `;
 }
 
-/**
- * Play a story by ID
- */
+
 async function playStoryById(storyId) {
     console.log('▶️ Playing story ID:', storyId);
 
     try {
-        // Fetch full story details
+        
         const response = await fetch(`/source/handlers/get_story_detail.php?story_id=${storyId}`);
 
         if (!response.ok) {
@@ -284,7 +267,7 @@ async function playStoryById(storyId) {
             throw new Error(data.error || 'Failed to load story');
         }
 
-        // Store in sessionStorage and redirect to player
+        
         sessionStorage.setItem('currentStory', JSON.stringify(data.story));
         window.location.href = '/storyboard';
 
@@ -299,9 +282,7 @@ async function playStoryById(storyId) {
     }
 }
 
-/**
- * Delete a story
- */
+
 async function deleteStory(storyId) {
     if (!confirm('Are you sure you want to delete this story? This action cannot be undone.')) {
         return;
@@ -309,18 +290,18 @@ async function deleteStory(storyId) {
 
     console.log('🗑️ Deleting story ID:', storyId);
 
-    // Find the story card and show loading state
+    
     const storyCard = document.querySelector(`.story-card[data-story-id="${storyId}"]`);
     const deleteButtons = document.querySelectorAll(`[onclick*="deleteStory(${storyId})"]`);
 
-    // Disable all delete buttons for this story
+    
     deleteButtons.forEach(btn => {
         btn.disabled = true;
         btn.style.opacity = '0.6';
         btn.style.cursor = 'not-allowed';
     });
 
-    // Add loading overlay to the story card
+    
     if (storyCard) {
         const loadingOverlay = document.createElement('div');
         loadingOverlay.className = 'delete-loading-overlay';
@@ -361,7 +342,7 @@ async function deleteStory(storyId) {
             alert('Story deleted successfully');
         }
 
-        // Close any open modals
+        
         const modals = document.querySelectorAll('.modal.show');
         modals.forEach(modal => {
             const bsModal = bootstrap.Modal.getInstance(modal);
@@ -370,7 +351,7 @@ async function deleteStory(storyId) {
             }
         });
 
-        // Reload stories
+        
         setTimeout(() => {
             loadUserStories();
         }, 300);
@@ -378,7 +359,7 @@ async function deleteStory(storyId) {
     } catch (error) {
         console.error('❌ Error deleting story:', error);
 
-        // Remove loading overlay
+        
         if (storyCard) {
             const overlay = storyCard.querySelector('.delete-loading-overlay');
             if (overlay) {
@@ -386,7 +367,7 @@ async function deleteStory(storyId) {
             }
         }
 
-        // Re-enable delete buttons
+        
         deleteButtons.forEach(btn => {
             btn.disabled = false;
             btn.style.opacity = '1';
@@ -401,9 +382,7 @@ async function deleteStory(storyId) {
     }
 }
 
-/**
- * Share a story
- */
+
 async function shareStory(storyId) {
     console.log('🔗 Sharing story ID:', storyId);
 
@@ -426,10 +405,10 @@ async function shareStory(storyId) {
             throw new Error(data.error || 'Failed to generate share link');
         }
 
-        // Get the share URL
+        
         const shareUrl = `${window.location.origin}/source/pages/storyboard/StoryPlayer.html?share=${data.token}`;
 
-        // Copy to clipboard
+        
         if (navigator.clipboard) {
             await navigator.clipboard.writeText(shareUrl);
 
@@ -439,7 +418,7 @@ async function shareStory(storyId) {
                 alert('Share link copied to clipboard:\n' + shareUrl);
             }
         } else {
-            // Fallback for older browsers
+            
             prompt('Copy this share link:', shareUrl);
         }
 
@@ -456,7 +435,7 @@ async function shareStory(storyId) {
     }
 }
 
-// Make functions globally available
+
 window.loadUserStories = loadUserStories;
 window.playStoryById = playStoryById;
 window.deleteStory = deleteStory;

@@ -1,14 +1,7 @@
-/**
- * TTS Story Generation Module
- * Generates all TTS audio URLs during story creation
- * Handles both scene narration (6 lines per scene) and quiz questions
- */
+
 
 const TTSStoryGenerator = {
-    /**
-     * Voice settings matching ElevenLabs configuration
-     * Model: Eleven Flash v2.5
-     */
+    
     settings: {
         model: 'eleven_flash_v2_5',
         speed: 0.80,
@@ -18,35 +11,29 @@ const TTSStoryGenerator = {
         speakerBoost: true
     },
 
-    /**
-     * Generate all TTS audio for a complete story
-     * @param {Object} storyData - Story data with scenes and optional gamification
-     * @param {string} selectedVoice - Voice name (Rachel, Amara, Lily)
-     * @param {Function} progressCallback - Progress callback function
-     * @returns {Promise<Object>} - Story data with audio URLs added
-     */
+    
     async generateAllStoryAudio(storyData, selectedVoice = 'Rachel', progressCallback = null) {
         console.log('🎤 Starting comprehensive TTS generation...');
         console.log(`📊 Voice: ${selectedVoice}`);
         console.log(`📊 Total scenes: ${storyData.scenes?.length || 0}`);
 
         try {
-            // Generate audio for all scenes
+            
             const scenesWithAudio = await this.generateScenesAudio(
                 storyData.scenes,
                 selectedVoice,
                 progressCallback
             );
 
-            // SKIP audio generation for quiz questions - only generate TTS for scene narration
-            // Quiz questions will be displayed as text only without audio narration
+            
+            
             console.log('ℹ️ Skipping TTS generation for quiz questions (narration only mode)');
 
-            // Return enhanced story data
+            
             return {
                 ...storyData,
                 scenes: scenesWithAudio,
-                gamification: storyData.gamification, // Keep gamification data without audio
+                gamification: storyData.gamification, 
                 voice: {
                     name: selectedVoice,
                     voiceId: this.getVoiceId(selectedVoice),
@@ -60,11 +47,7 @@ const TTSStoryGenerator = {
         }
     },
 
-    /**
-     * Generate TTS audio for all scenes
-     * Each scene has 6 narration lines that need audio URLs
-     * Generates audio for scenes 1-10 (60 audio files total)
-     */
+    
     async generateScenesAudio(scenes, voice, progressCallback) {
         console.log('\n🎬 ========== TTS SCENE AUDIO GENERATION ==========');
         console.log('   Input validation:');
@@ -84,8 +67,8 @@ const TTSStoryGenerator = {
             return [];
         }
 
-        // CRITICAL: Generate audio for SCENE 1-10 (60 audio files total - 6 per scene)
-        const maxScenes = 10; // Generate audio for all 10 scenes
+        
+        const maxScenes = 10; 
         const scenesToProcess = Math.min(scenes.length, maxScenes);
 
         console.log(`\n   🎯 FULL MODE: Generating audio for SCENES 1-10 (${scenesToProcess} scenes)`);
@@ -100,7 +83,7 @@ const TTSStoryGenerator = {
         for (let i = 0; i < scenes.length; i++) {
             const scene = scenes[i];
 
-            // CRITICAL: Generate audio for scenes 1-10
+            
             if (i < scenesToProcess) {
                 console.log(`\n📖 Processing Scene ${i + 1}/${scenesToProcess}...`);
                 console.log(`   🔍 Scene has narrationLines:`, !!scene.narrationLines);
@@ -113,10 +96,10 @@ const TTSStoryGenerator = {
                     console.warn(`   ⚠️ Scene ${i + 1} has NO narrationLines! Checking scene.narration:`, scene.narration?.substring(0, 100));
                 }
 
-                // Each scene should have narrationLines array (6 lines)
+                
                 if (scene.narrationLines && Array.isArray(scene.narrationLines)) {
                     const audioUrls = [];
-                    const visemeDataArray = []; // Store viseme data for lip sync
+                    const visemeDataArray = []; 
 
                     console.log(`   📝 Generating audio for ${scene.narrationLines.length} narration lines...`);
 
@@ -135,47 +118,47 @@ const TTSStoryGenerator = {
                             }
 
                             const result = await TTSIntegration.generateSpeech(narrationText, voice);
-                            const audioUrl = result.audioUrl; // Extract audioUrl from result object
-                            const visemeData = result.visemeData; // Extract viseme data for lip sync
+                            const audioUrl = result.audioUrl; 
+                            const visemeData = result.visemeData; 
 
-                            // Validate audio duration (max 15 seconds)
+                            
                             try {
                                 const validation = await TTSIntegration.validateAudioDuration(audioUrl, 15);
                                 if (!validation.isValid) {
                                     console.warn(`   ⚠️ Audio duration (${validation.duration.toFixed(2)}s) exceeds 15 seconds limit`);
-                                    // Still accept the audio but log the warning
+                                    
                                 }
                             } catch (validationError) {
                                 console.warn(`   ⚠️ Could not validate audio duration:`, validationError.message);
                             }
 
                             audioUrls.push(audioUrl);
-                            visemeDataArray.push(visemeData); // Store viseme data
+                            visemeDataArray.push(visemeData); 
                             console.log(`   ✅ Line ${j + 1}/${scene.narrationLines.length} generated`);
                             console.log(`   🔗 Audio URL type: ${typeof audioUrl}, length: ${audioUrl?.length || 0}, preview: ${audioUrl?.substring(0, 100)}...`);
                             console.log(`   🎭 Viseme data: ${visemeData ? visemeData.length + ' phonemes' : 'not available'}`);
 
-                            // Small delay to avoid rate limiting
+                            
                             await this.delay(300);
 
                         } catch (error) {
                             console.error(`   ❌ Failed to generate audio for line ${j + 1}:`, error);
-                            audioUrls.push(null); // Add null for failed generation
-                            visemeDataArray.push(null); // Add null for failed viseme data
+                            audioUrls.push(null); 
+                            visemeDataArray.push(null); 
                         }
                     }
 
                     scenesWithAudio.push({
                         ...scene,
                         audioUrls: audioUrls,
-                        visemeDataArray: visemeDataArray // Add viseme data to scene
+                        visemeDataArray: visemeDataArray 
                     });
 
                     console.log(`   ✅ Scene ${i + 1} complete: ${audioUrls.filter(url => url !== null).length}/${audioUrls.length} audio URLs generated`);
                     console.log(`   🎭 Viseme data: ${visemeDataArray.filter(v => v !== null).length}/${visemeDataArray.length} viseme arrays stored`);
 
                 } else if (scene.narration) {
-                    // Fallback: If narration is a single string, generate one audio URL
+                    
                     try {
                         if (progressCallback) {
                             progressCallback({
@@ -188,15 +171,15 @@ const TTSStoryGenerator = {
                         }
 
                         const result = await TTSIntegration.generateSpeech(scene.narration, voice);
-                        const audioUrl = result.audioUrl; // Extract audioUrl from result object
-                        const visemeData = result.visemeData; // Extract viseme data for lip sync
+                        const audioUrl = result.audioUrl; 
+                        const visemeData = result.visemeData; 
 
-                        // Validate audio duration (max 15 seconds)
+                        
                         try {
                             const validation = await TTSIntegration.validateAudioDuration(audioUrl, 15);
                             if (!validation.isValid) {
                                 console.warn(`   ⚠️ Audio duration (${validation.duration.toFixed(2)}s) exceeds 15 seconds limit`);
-                                // Still accept the audio but log the warning
+                                
                             }
                         } catch (validationError) {
                             console.warn(`   ⚠️ Could not validate audio duration:`, validationError.message);
@@ -205,7 +188,7 @@ const TTSStoryGenerator = {
                         scenesWithAudio.push({
                             ...scene,
                             audioUrls: [audioUrl],
-                            visemeDataArray: [visemeData] // Add viseme data to scene
+                            visemeDataArray: [visemeData] 
                         });
                         console.log(`   ✅ Scene ${i + 1} (single narration) complete`);
                         console.log(`   🎭 Viseme data: ${visemeData ? visemeData.length + ' phonemes' : 'not available'}`);
@@ -225,12 +208,12 @@ const TTSStoryGenerator = {
                     scenesWithAudio.push(scene);
                 }
             } else {
-                // Scenes beyond maxScenes (if story has more than 10 scenes)
+                
                 console.log(`\n⚠️ Scene ${i + 1} - SKIPPING (beyond maxScenes limit: ${maxScenes})`);
                 scenesWithAudio.push({
                     ...scene,
-                    audioUrls: [], // Empty array for scenes without audio
-                    visemeDataArray: [] // Empty array for scenes without viseme data
+                    audioUrls: [], 
+                    visemeDataArray: [] 
                 });
             }
         }
@@ -250,10 +233,7 @@ const TTSStoryGenerator = {
         return scenesWithAudio;
     },
 
-    /**
-     * Generate TTS audio for quiz questions
-     * Only generates audio for "during" mode questions (not "after" mode)
-     */
+    
     async generateQuizAudio(gamification, voice, progressCallback) {
         if (!gamification) return null;
 
@@ -261,7 +241,7 @@ const TTSStoryGenerator = {
 
         const enhancedGamification = { ...gamification };
 
-        // Generate audio for "during" story questions
+        
         if (gamification.questionTiming === 'during' || gamification.questionTiming === 'both') {
             console.log('   📝 Generating audio for during-story questions...');
             enhancedGamification.duringQuestions = await this.generateDuringQuizAudio(
@@ -271,16 +251,13 @@ const TTSStoryGenerator = {
             );
         }
 
-        // Note: We don't generate audio for "after" story questions
-        // as those appear after the story is complete
+        
+        
 
         return enhancedGamification;
     },
 
-    /**
-     * Generate audio for "during story" quiz questions
-     * These are the questions that appear between scenes
-     */
+    
     async generateDuringQuizAudio(duringQuestions, voice, progressCallback) {
         if (!duringQuestions || duringQuestions.length === 0) {
             console.log('   ℹ️ No during-story questions to process');
@@ -303,16 +280,16 @@ const TTSStoryGenerator = {
                     });
                 }
 
-                // Generate audio for the question text
+                
                 const result = await TTSIntegration.generateSpeech(question.question, voice);
-                const questionAudioUrl = result.audioUrl; // Extract audioUrl from result object
+                const questionAudioUrl = result.audioUrl; 
 
-                // Validate audio duration (max 15 seconds)
+                
                 try {
                     const validation = await TTSIntegration.validateAudioDuration(questionAudioUrl, 15);
                     if (!validation.isValid) {
                         console.warn(`      ⚠️ Quiz audio duration (${validation.duration.toFixed(2)}s) exceeds 15 seconds limit`);
-                        // Still accept the audio but log the warning
+                        
                     }
                 } catch (validationError) {
                     console.warn(`      ⚠️ Could not validate quiz audio duration:`, validationError.message);
@@ -341,9 +318,7 @@ const TTSStoryGenerator = {
         return questionsWithAudio;
     },
 
-    /**
-     * Get voice ID mapping
-     */
+    
     getVoiceId(voiceName) {
         const voiceIds = {
             'Rachel': '21m00Tcm4TlvDq8ikWAM',
@@ -355,21 +330,16 @@ const TTSStoryGenerator = {
         return voiceIds[voiceName] || voiceIds['Rachel'];
     },
 
-    /**
-     * Utility delay function - Uses worker-based timing to prevent tab throttling
-     */
+    
     delay(ms) {
-        // Use timerManager if available (prevents throttling), otherwise fall back to setTimeout
+        
         if (window.timerManager && typeof window.timerManager.delay === 'function') {
             return window.timerManager.delay(ms);
         }
         return new Promise(resolve => setTimeout(resolve, ms));
     },
 
-    /**
-     * Extract narration lines from story text
-     * Parses story format to extract 6 narration lines per scene
-     */
+    
     extractNarrationLines(storyText, sceneNumber) {
         const lines = [];
         const scenePattern = new RegExp(
@@ -380,13 +350,13 @@ const TTSStoryGenerator = {
         const match = storyText.match(scenePattern);
         if (match && match[1]) {
             const narrationText = match[1].trim();
-            // Extract numbered lines (1. ... 2. ... 3. ...)
+            
             const lineMatches = narrationText.match(/\d+\.\s*([^\n]+)/g);
 
             if (lineMatches) {
                 lineMatches.forEach(line => {
                     const cleanedLine = line.replace(/^\d+\.\s*/, '').trim();
-                    // Remove transition markers
+                    
                     const finalLine = cleanedLine.replace(/\(→\s*Transition:.*?\)/, '').trim();
                     if (finalLine) {
                         lines.push(finalLine);
@@ -398,10 +368,7 @@ const TTSStoryGenerator = {
         return lines;
     },
 
-    /**
-     * Parse story data and extract all narration lines for all scenes
-     * Useful for converting old format stories to new format with narrationLines
-     */
+    
     parseStoryNarrationLines(storyText, sceneCount = 10) {
         const allSceneLines = [];
 
@@ -417,7 +384,7 @@ const TTSStoryGenerator = {
     }
 };
 
-// Make available globally
+
 window.TTSStoryGenerator = TTSStoryGenerator;
 
 console.log('✅ TTS Story Generator module loaded');

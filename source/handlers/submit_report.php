@@ -25,7 +25,7 @@ if (empty($problem)) {
     exit;
 }
 
-// Create table if not exists
+
 $createTable = "CREATE TABLE IF NOT EXISTS reports (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,

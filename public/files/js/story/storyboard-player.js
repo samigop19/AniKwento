@@ -7,7 +7,7 @@ class StoryboardPlayer {
         this.scenes = [];
         this.images = [];
         this.autoPlayTimer = null;
-        this.defaultSceneDuration = 5000; // 5 seconds fallback
+        this.defaultSceneDuration = 5000; 
         
         this.createPlayerUI();
     }
@@ -117,7 +117,7 @@ class StoryboardPlayer {
             this.goToScene(targetScene);
         });
 
-        // Keyboard controls
+        
         document.addEventListener('keydown', (e) => {
             if (this.container.style.display !== 'none') {
                 switch(e.code) {
@@ -167,11 +167,11 @@ class StoryboardPlayer {
         const scene = this.scenes[sceneIndex];
         const imageData = this.images.find(img => img.sceneNumber === scene.number);
 
-        // Update scene text
+        
         const narrationElement = this.container.querySelector('.narration-text');
         narrationElement.textContent = scene.narration;
 
-        // Update scene info
+        
         const sceneCounterElement = this.container.querySelector('.scene-counter');
         const sceneDuration = scene.duration || (this.defaultSceneDuration / 1000);
         sceneCounterElement.textContent = `Scene ${sceneIndex + 1} of ${this.scenes.length} (${sceneDuration}s)`;
@@ -183,7 +183,7 @@ class StoryboardPlayer {
             charactersElement.textContent = 'No characters in this scene';
         }
 
-        // Update image
+        
         const imageElement = this.container.querySelector('.scene-image');
         const loadingElement = this.container.querySelector('.scene-loading');
 
@@ -219,19 +219,19 @@ class StoryboardPlayer {
 
         this.updateProgress();
 
-        // Update navigation buttons
+        
         const prevBtn = this.container.querySelector('#prevBtn');
         const nextBtn = this.container.querySelector('#nextBtn');
         
         prevBtn.disabled = sceneIndex === 0;
         nextBtn.disabled = sceneIndex === this.scenes.length - 1;
 
-        // Announce scene change for accessibility
+        
         this.announceSceneChange(scene);
     }
 
     announceSceneChange(scene) {
-        // Create or update aria-live region for screen readers
+        
         let announcement = this.container.querySelector('.sr-announcement');
         if (!announcement) {
             announcement = document.createElement('div');
@@ -293,7 +293,7 @@ class StoryboardPlayer {
                     this.nextScene();
                     this.startAutoPlay();
                 } else {
-                    // Story finished
+                    
                     this.stop();
                     this.onStoryComplete();
                 }
@@ -347,7 +347,7 @@ class StoryboardPlayer {
             progressFill.style.width = `${progress}%`;
             progressThumb.style.left = `${progress}%`;
 
-            // Calculate elapsed time up to current scene
+            
             let currentTime = 0;
             for (let i = 0; i < this.currentScene; i++) {
                 currentTime += this.scenes[i].duration || (this.defaultSceneDuration / 1000);
@@ -371,7 +371,7 @@ class StoryboardPlayer {
     }
 
     onStoryComplete() {
-        // Show completion message or trigger callback
+        
         const completionToast = document.createElement('div');
         completionToast.className = 'story-completion-toast';
         completionToast.innerHTML = `
@@ -393,7 +393,7 @@ class StoryboardPlayer {
     }
 
     setSceneDuration(duration) {
-        this.sceneDuration = duration * 1000; // Convert to milliseconds
+        this.sceneDuration = duration * 1000; 
         this.updateTotalTime();
     }
 

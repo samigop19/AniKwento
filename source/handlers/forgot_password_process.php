@@ -58,7 +58,7 @@ function sendResetCode($pdo) {
         throw new Exception("Please use a valid UB email address");
     }
 
-    // Check if user exists in main users table
+    
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -67,21 +67,21 @@ function sendResetCode($pdo) {
         throw new Exception("No account found with this email address");
     }
 
-    // Generate verification code
+    
     $verification_code = sprintf('%06d', mt_rand(0, 999999));
     
-    // Use MySQL's ADDTIME to ensure timezone consistency
+    
     $stmt_time = $pdo->prepare("SELECT ADDTIME(NOW(), '0:15:0') as expires_at");
     $stmt_time->execute();
     $time_result = $stmt_time->fetch(PDO::FETCH_ASSOC);
     $expires_at = $time_result['expires_at'];
     
 
-    // Store reset code in users table
+    
     $stmt = $pdo->prepare("UPDATE users SET verification_code = ?, verification_code_expires = ? WHERE email = ?");
     $stmt->execute([$verification_code, $expires_at, $email]);
 
-    // Send email
+    
     sendResetEmail($email, $user['first_name'], $verification_code);
 
     echo json_encode([
@@ -94,12 +94,12 @@ function verifyResetCode($pdo) {
     $email = trim($_POST['email']);
     $verification_code = trim($_POST['verification_code']);
     
-    // Start session to track verification status
+    
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
 
-    // Validate input
+    
     if (empty($email) || empty($verification_code)) {
         throw new Exception("Email and verification code are required");
     }
@@ -108,7 +108,7 @@ function verifyResetCode($pdo) {
         throw new Exception("Please enter a valid 6-digit verification code");
     }
 
-    // Check for valid reset code
+    
     $stmt = $pdo->prepare("SELECT *, verification_code_expires, NOW() as db_current_time, verification_code_expires > NOW() as is_valid FROM users WHERE email = ? AND verification_code = ?");
     $stmt->execute([$email, $verification_code]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -122,7 +122,7 @@ function verifyResetCode($pdo) {
         throw new Exception("Verification code has expired. Please request a new one.");
     }
 
-    // Mark this email as verified in session
+    
     $_SESSION['password_reset_verified'] = $email;
     $_SESSION['password_reset_time'] = time();
 
@@ -133,7 +133,7 @@ function verifyResetCode($pdo) {
 }
 
 function updatePassword($pdo) {
-    // Start session to check verification status
+    
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
@@ -142,29 +142,29 @@ function updatePassword($pdo) {
     $new_password = $_POST['new_password'];
     $confirm_password = $_POST['confirm_password'] ?? '';
     
-    // Check if user has verified their code in this session
+    
     if (!isset($_SESSION['password_reset_verified']) || $_SESSION['password_reset_verified'] !== $email) {
         throw new Exception("Invalid session. Please verify your code first.");
     }
     
-    // Check if verification session is still valid (15 minutes)
+    
     if (!isset($_SESSION['password_reset_time']) || (time() - $_SESSION['password_reset_time']) > 900) {
         unset($_SESSION['password_reset_verified']);
         unset($_SESSION['password_reset_time']);
         throw new Exception("Session expired. Please start over.");
     }
 
-    // Basic password validation
+    
     if (strlen($new_password) < 6) {
         throw new Exception("Password must be at least 6 characters long");
     }
     
-    // Check if passwords match
+    
     if ($new_password !== $confirm_password) {
         throw new Exception("Passwords do not match");
     }
 
-    // Verify the reset session is still valid and get current password
+    
     $stmt = $pdo->prepare("SELECT password, verification_code_expires > NOW() as is_valid FROM users WHERE email = ? AND verification_code IS NOT NULL");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -173,19 +173,19 @@ function updatePassword($pdo) {
         throw new Exception("Reset session expired. Please start over.");
     }
 
-    // Check if new password is different from current password
+    
     if (password_verify($new_password, $user['password'])) {
         throw new Exception("New password must be different from your current password");
     }
 
-    // Hash the new password
+    
     $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 
-    // Update the password and clear verification code in users table
+    
     $stmt = $pdo->prepare("UPDATE users SET password = ?, verification_code = NULL, verification_code_expires = NULL WHERE email = ?");
     $stmt->execute([$hashed_password, $email]);
 
-    // Clear session data after successful password update
+    
     unset($_SESSION['password_reset_verified']);
     unset($_SESSION['password_reset_time']);
 
@@ -206,20 +206,20 @@ function resendResetCode($pdo) {
         throw new Exception("No account found with this email address");
     }
 
-    // Generate new verification code
+    
     $verification_code = sprintf('%06d', mt_rand(0, 999999));
     
-    // Use MySQL's ADDTIME to ensure timezone consistency
+    
     $stmt_time = $pdo->prepare("SELECT ADDTIME(NOW(), '0:15:0') as expires_at");
     $stmt_time->execute();
     $time_result = $stmt_time->fetch(PDO::FETCH_ASSOC);
     $expires_at = $time_result['expires_at'];
 
-    // Update verification code in users table
+    
     $stmt = $pdo->prepare("UPDATE users SET verification_code = ?, verification_code_expires = ? WHERE email = ?");
     $stmt->execute([$verification_code, $expires_at, $email]);
 
-    // Send new email
+    
     sendResetEmail($email, $user['first_name'], $verification_code, true);
 
     echo json_encode([
@@ -301,7 +301,7 @@ function sendResetEmail($email, $first_name, $verification_code, $isResend = fal
     </body>
     </html>";
 
-    // Send email via SendGrid API
+    
     $fromEmail = EnvLoader::get('SENDGRID_FROM_EMAIL', 'noreply@anikwento.com');
     $fromName = EnvLoader::get('SENDGRID_FROM_NAME', 'AniKwento');
 
@@ -339,13 +339,13 @@ function sendResetEmail($email, $first_name, $verification_code, $isResend = fal
     $curlError = curl_error($ch);
     curl_close($ch);
 
-    // Log for debugging
+    
     error_log("SendGrid API Response Code: " . $httpCode);
     if ($curlError) {
         error_log("SendGrid cURL Error: " . $curlError);
     }
 
-    // SendGrid returns 202 for successful email acceptance
+    
     if ($httpCode !== 202) {
         error_log("SendGrid API Error Response: " . $response);
         throw new Exception("Failed to send verification email. Please try again later.");

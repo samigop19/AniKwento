@@ -1,17 +1,12 @@
 <?php
-/**
- * Web-accessible migration script for teacher_profiles table
- * Access via: https://your-domain.com/run_teacher_migration.php
- *
- * SECURITY: Delete this file after running the migration!
- */
 
-// Set execution time and output settings
+
+
 set_time_limit(120);
 ini_set('display_errors', '1');
 error_reporting(E_ALL);
 
-// Output as plain text
+
 header('Content-Type: text/plain; charset=utf-8');
 
 echo "Teacher Profiles Table Migration\n";
@@ -36,7 +31,7 @@ try {
     echo "   Database: " . EnvLoader::get('DB_NAME', 'railway') . "\n";
     echo "   Host: " . EnvLoader::get('DB_HOST', 'localhost') . "\n\n";
 
-    // Check current table structure
+    
     echo "[2/5] Checking current table structure...\n";
     $stmt = $pdo->query("DESCRIBE teacher_profiles");
     $existingColumns = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -44,7 +39,7 @@ try {
 
     echo "   Current columns: " . implode(', ', $columnNames) . "\n\n";
 
-    // Define required columns
+    
     $requiredColumns = [
         'full_name' => "VARCHAR(255) DEFAULT NULL",
         'position' => "VARCHAR(255) DEFAULT NULL",
@@ -87,7 +82,7 @@ try {
         echo "   Successfully added $columnsAdded column(s)!\n\n";
     }
 
-    // Verify final structure
+    
     echo "[5/5] Verifying final table structure...\n";
     $stmt = $pdo->query("DESCRIBE teacher_profiles");
     $finalColumns = $stmt->fetchAll(PDO::FETCH_ASSOC);

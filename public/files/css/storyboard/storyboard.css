@@ -1,4 +1,4 @@
-/* AniKwento Storyboard Player CSS - Extracted from UPDATE STORYGEN */
+
 
 * {
     margin: 0;
@@ -15,7 +15,7 @@ body {
     padding: 20px;
 }
 
-/* Story Title Section */
+
 .story-title-section {
     text-align: center;
     padding: 15px 20px;
@@ -38,7 +38,7 @@ body {
     font-family: 'Kalam', cursive;
 }
 
-/* Meteor Background Animation */
+
 .meteor-background {
     position: fixed;
     top: 0;
@@ -80,7 +80,7 @@ body {
     }
 }
 
-/* Header Styles */
+
 .header {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
@@ -154,7 +154,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* Main content area */
+
 .main-container {
     flex: 1;
     display: flex;
@@ -174,12 +174,12 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Fullscreen Styles */
+
 .blackboard-container {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Storyboard player transitions */
+
 .storyboard-player {
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -286,7 +286,7 @@ body {
     margin: 0 auto !important;
 }
 
-/* Show controls when controls-visible class is added */
+
 .storyboard-player.fullscreen.controls-visible .player-controls {
     opacity: 1 !important;
     visibility: visible !important;
@@ -302,8 +302,8 @@ body {
     margin-bottom: 0 !important;
     padding: 0 !important;
     z-index: 20;
-    width: 390px !important; /* Maintain same width in fullscreen */
-    height: 480px !important; /* Maintain same height in fullscreen */
+    width: 390px !important; 
+    height: 480px !important; 
     min-width: 390px !important;
     max-width: 390px !important;
     transform: none !important;
@@ -320,14 +320,14 @@ body {
     height: 420px !important;
     min-width: 300px !important;
     max-width: 300px !important;
-    filter: brightness(1.15); /* Natural brightness in fullscreen */
+    filter: brightness(1.15); 
     flex-shrink: 0 !important;
     flex-grow: 0 !important;
 }
 
-/* Removed zoom on hover effect for fullscreen */
 
-/* Fullscreen narration overlay - positioned within chalkboard area */
+
+
 .storyboard-player.fullscreen .narration-text-overlay {
     position: absolute !important;
     bottom: 2px !important;
@@ -358,20 +358,20 @@ body {
     overflow: visible !important;
 }
 
-/* When navigation controls are visible, keep narration text in current position */
+
 .storyboard-player.fullscreen.controls-visible .narration-text-overlay,
 .storyboard-player.fullscreen.show-cursor .narration-text-overlay {
     bottom: 100px !important;
     transition: bottom 0.3s ease !important;
 }
 
-/* When controls fade out, move narration text much lower for better viewing */
+
 .storyboard-player.fullscreen:not(.controls-visible):not(.show-cursor) .narration-text-overlay {
     bottom: 2px !important;
     transition: bottom 0.3s ease !important;
 }
 
-/* Volume Slider Styles */
+
 .volume-slider-container {
     display: flex;
     align-items: center;
@@ -429,7 +429,7 @@ body {
     border-radius: 2px;
 }
 
-/* Volume slider track fill effect */
+
 .volume-slider {
     background: linear-gradient(to right, #e53e3e 0%, #e53e3e var(--volume-progress, 75%), rgba(255, 255, 255, 0.2) var(--volume-progress, 75%), rgba(255, 255, 255, 0.2) 100%);
     transition: background 0.1s ease-out;
@@ -447,7 +447,7 @@ body {
     background: #666;
 }
 
-/* Narration Volume Display */
+
 .narration-volume-display {
     display: flex;
     align-items: center;
@@ -481,55 +481,55 @@ body {
     gap: 20px;
 }
 
-/* Content Wrapper */
+
 .content-wrapper {
     position: relative;
     margin-bottom: 10px;
 }
 
-/* Blackboard Container */
+
 .blackboard-container {
     position: relative;
     margin-bottom: 15px;
 }
 
-/* Teacher Avatar External (Bottom left corner of blackboard, in front but not overlapping text) */
+
 .teacher-avatar-external {
-    width: 390px !important;  /* Locked width - prevent any layout changes */
-    height: 480px !important; /* Locked height - prevent any layout changes */
-    min-width: 390px !important; /* Enforce minimum width */
-    max-width: 390px !important; /* Enforce maximum width */
-    position: absolute !important; /* Force absolute positioning */
-    left: -250px !important;  /* Fixed left position - prevent movement */
-    bottom: 1px !important; /* Fixed bottom position - prevent movement */
+    width: 390px !important;  
+    height: 480px !important; 
+    min-width: 390px !important; 
+    max-width: 390px !important; 
+    position: absolute !important; 
+    left: -250px !important;  
+    bottom: 1px !important; 
     z-index: 15;
-    flex-shrink: 0 !important; /* Prevent flexbox from shrinking this element */
-    flex-grow: 0 !important; /* Prevent flexbox from growing this element */
-    transform: none !important; /* Prevent transforms from moving this element */
+    flex-shrink: 0 !important; 
+    flex-grow: 0 !important; 
+    transform: none !important; 
 }
 
 .teacher-svg {
     filter: drop-shadow(3px 3px 8px rgba(0, 0, 0, 0.3));
 }
 
-/* 3D Avatar Container Styles */
+
 .avatar-3d-container {
-    width: 380px !important; /* Locked width */
-    height: 480px !important; /* Locked height */
-    min-width: 380px !important; /* Enforce minimum width */
-    max-width: 380px !important; /* Enforce maximum width */
+    width: 380px !important; 
+    height: 480px !important; 
+    min-width: 380px !important; 
+    max-width: 380px !important; 
     position: relative;
     border-radius: 0;
     overflow: visible;
-    background: transparent; /* No background */
-    filter: brightness(1.1); /* Natural brightness, no shadows */
+    background: transparent; 
+    filter: brightness(1.1); 
     transition: transform 0.3s ease, filter 0.3s ease;
     cursor: pointer;
-    flex-shrink: 0 !important; /* Prevent flexbox from shrinking */
-    flex-grow: 0 !important; /* Prevent flexbox from growing */
+    flex-shrink: 0 !important; 
+    flex-grow: 0 !important; 
 }
 
-/* Removed zoom on hover effect */
+
 
 .avatar-3d-container canvas {
     width: 100% !important;
@@ -537,7 +537,7 @@ body {
     display: block;
 }
 
-/* Avatar Loading Indicator */
+
 .avatar-loading {
     position: absolute;
     top: 50%;
@@ -571,7 +571,7 @@ body {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* Fallback SVG Avatar */
+
 .fallback-avatar {
     display: none;
 }
@@ -643,13 +643,13 @@ body {
 .actual-story-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Changed from contain to cover to properly fill the frame */
+    object-fit: cover; 
     object-position: center;
     border-radius: 10px;
     transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
 }
 
-/* Transition effects for scene changes (UPDATE STORYGEN style) */
+
 .story-image.fade-out {
     opacity: 0.3;
     transform: scale(0.95);
@@ -670,7 +670,7 @@ body {
     opacity: 1;
 }
 
-/* Question indicator for scene dots */
+
 .dot.has-question {
     background: linear-gradient(45deg, #ff6b6b, #ffa500) !important;
     box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
@@ -682,7 +682,7 @@ body {
     50% { box-shadow: 0 0 25px rgba(255, 107, 107, 0.8); }
 }
 
-/* Fullscreen mode enhancements */
+
 .storyboard-player.fullscreen {
     position: fixed;
     top: 0;
@@ -701,7 +701,7 @@ body {
     max-height: calc(100vh - 150px);
 }
 
-/* Enhanced button feedback */
+
 .choice-btn.correct {
     background: #4CAF50 !important;
     color: white !important;
@@ -736,7 +736,7 @@ body {
     color: #f0f0f0;
 }
 
-/* Narration Text Overlay inside chalkboard */
+
 .narration-text-overlay {
     position: absolute;
     bottom: 12px;
@@ -764,7 +764,7 @@ body {
     margin: 0 auto;
 }
 
-/* Scene Info Section */
+
 .scene-info {
     background: rgba(255, 255, 255, 0.95);
     padding: 12px 18px;
@@ -802,7 +802,7 @@ body {
     font-weight: 400;
 }
 
-/* Video Player Controls */
+
 .player-controls {
     background: rgba(45, 55, 72, 0.95);
     border-radius: 12px;
@@ -817,14 +817,14 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Always show controls in normal (windowed) mode */
+
 .storyboard-player:not(.fullscreen) .player-controls {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: all !important;
 }
 
-/* Top Controls */
+
 .top-controls {
     display: flex;
     align-items: center;
@@ -834,7 +834,7 @@ body {
     flex-wrap: wrap;
 }
 
-/* Top Controls in fullscreen - center everything */
+
 .storyboard-player.fullscreen .top-controls {
     justify-content: center;
 }
@@ -859,7 +859,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Enhanced hover effects for fullscreen mode */
+
 .storyboard-player.fullscreen .control-btn:hover {
     background: rgba(255, 255, 255, 0.3);
     transform: scale(1.1);
@@ -885,7 +885,7 @@ body {
     font-weight: 500;
 }
 
-/* Time display in fullscreen - center it */
+
 .storyboard-player.fullscreen .time-display {
     margin-left: 0;
     margin-right: 0;
@@ -931,7 +931,7 @@ body {
     transform: scale(1.1);
 }
 
-/* Enhanced dot hover effects for fullscreen mode */
+
 .storyboard-player.fullscreen .dot:hover {
     background: rgba(255, 255, 255, 0.7);
     transform: scale(1.3);
@@ -956,7 +956,7 @@ body {
     animation: pulse 2s infinite;
 }
 
-/* Question indicator dot */
+
 .dot.has-question {
     background: linear-gradient(135deg, #fbbf24, #f59e0b);
     border-color: #d97706;
@@ -979,7 +979,7 @@ body {
     background: linear-gradient(135deg, #f59e0b, #d97706);
 }
 
-/* Scene transition classes */
+
 .story-image.fade-out {
     opacity: 0;
 }
@@ -1009,7 +1009,7 @@ body {
     }
 }
 
-/* Progress Container */
+
 .progress-container {
     margin-bottom: 12px;
     position: relative;
@@ -1029,7 +1029,7 @@ body {
     height: 8px;
 }
 
-/* Enhanced progress bar hover effects for fullscreen mode */
+
 .storyboard-player.fullscreen .progress-bar:hover {
     height: 10px;
     box-shadow: 0 2px 8px rgba(229, 62, 62, 0.3);
@@ -1087,7 +1087,7 @@ body {
     100% { transform: translateX(100%); }
 }
 
-/* Scene Navigation */
+
 .scene-navigation {
     display: flex;
     align-items: center;
@@ -1097,7 +1097,7 @@ body {
     margin-top: 8px;
 }
 
-/* Scene Navigation in fullscreen - ensure perfect centering */
+
 .storyboard-player.fullscreen .scene-navigation {
     justify-content: center;
     align-items: center;
@@ -1120,7 +1120,7 @@ body {
 }
 
 
-/* Enhanced Responsive Design */
+
 @media (max-width: 768px) {
     body {
         padding: 10px;
@@ -1279,7 +1279,7 @@ body {
         filter: brightness(1.1);
     }
 
-    /* Removed zoom on hover effect for mobile */
+    
 
     .narration-text-overlay {
         font-size: 11px;
@@ -1433,7 +1433,7 @@ body {
         filter: brightness(1.1);
     }
 
-    /* Removed zoom on hover effect for small screens */
+    
 }
 
 @media (max-width: 360px) {
@@ -1546,10 +1546,10 @@ body {
         filter: brightness(1.1);
     }
 
-    /* Removed zoom on hover effect for small screens */
+    
 }
 
-/* ==================== GAMIFICATION OVERLAY STYLES ==================== */
+
 
 .gamification-overlay {
     position: absolute !important;
@@ -1557,11 +1557,11 @@ body {
     left: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
-    background: rgba(0, 0, 0, 0.4) !important; /* Dark overlay to ensure visibility */
+    background: rgba(0, 0, 0, 0.4) !important; 
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    z-index: 2000 !important; /* Above everything else */
+    z-index: 2000 !important; 
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -1573,7 +1573,7 @@ body {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    display: flex !important; /* Ensure it's always flexbox when showing */
+    display: flex !important; 
 }
 
 .gamification-overlay.hidden {
@@ -1610,11 +1610,11 @@ body {
     border: 4px solid #5c3317;
     overflow: hidden;
     word-wrap: break-word;
-    z-index: 2001 !important; /* Above gamification overlay */
-    pointer-events: auto !important; /* Always allow interaction with question */
+    z-index: 2001 !important; 
+    pointer-events: auto !important; 
 }
 
-/* Wood texture effect */
+
 .question-container::before {
     content: '';
     position: absolute;
@@ -1697,7 +1697,7 @@ body {
     width: 100%;
 }
 
-/* Ensure 3 choices display properly (2 on top, 1 centered below) */
+
 .answer-choices:has(.choice-btn:nth-child(3):last-child) {
     grid-template-columns: repeat(2, 1fr);
 }
@@ -1923,12 +1923,12 @@ body {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* Remove continue button - auto continue after feedback */
+
 .continue-btn {
     display: none;
 }
 
-/* Responsive adjustments for gamification */
+
 @media (max-width: 768px) {
     .gamification-overlay {
         padding: 15px;
@@ -2011,7 +2011,7 @@ body {
     }
 }
 
-/* Fullscreen adjustments */
+
 .storyboard-player.fullscreen .gamification-overlay {
     padding: 40px;
 }
@@ -2032,7 +2032,7 @@ body {
     min-height: 52px;
 }
 
-/* After Story Quiz Button Styles */
+
 .after-quiz-section {
     width: 100%;
     padding: 0 20px;
@@ -2069,11 +2069,9 @@ body {
     flex-shrink: 0;
 }
 
-/* ========================================
-   MOBILE RESPONSIVE STYLES
-   ======================================== */
 
-/* Tablets and smaller screens */
+
+
 @media (max-width: 1024px) {
     body {
         padding: 10px;
@@ -2097,13 +2095,13 @@ body {
     }
 }
 
-/* Mobile devices (Portrait and Landscape) */
+
 @media (max-width: 768px) {
     body {
         padding: 5px;
     }
 
-    /* Header adjustments */
+    
     .header {
         padding: 10px 15px;
         margin-bottom: 10px;
@@ -2136,7 +2134,7 @@ body {
         font-size: 12px;
     }
 
-    /* Story title */
+    
     .story-title-section {
         margin: 0 5px 10px;
         padding: 10px;
@@ -2147,7 +2145,7 @@ body {
         font-size: 18px;
     }
 
-    /* Main container and player */
+    
     .main-container {
         padding: 5px;
     }
@@ -2156,7 +2154,7 @@ body {
         padding: 10px;
     }
 
-    /* Blackboard adjustments */
+    
     .blackboard-container {
         margin-bottom: 10px;
     }
@@ -2173,7 +2171,7 @@ body {
         max-width: 450px;
     }
 
-    /* Avatar visibility and positioning on mobile (NOT fullscreen) */
+    
     .teacher-avatar-external {
         display: block !important;
         visibility: visible !important;
@@ -2195,7 +2193,7 @@ body {
         max-width: 180px !important;
     }
 
-    /* Narration text */
+    
     .narration-text-overlay {
         font-size: 14px;
         padding: 8px 15px;
@@ -2205,7 +2203,7 @@ body {
         right: 5px;
     }
 
-    /* Player controls */
+    
     .player-controls {
         padding: 10px;
         border-radius: 10px;
@@ -2240,7 +2238,7 @@ body {
         font-size: 11px;
     }
 
-    /* Scene navigation */
+    
     .scene-navigation {
         flex-wrap: wrap;
         justify-content: center;
@@ -2266,7 +2264,7 @@ body {
     }
 }
 
-/* Mobile Fullscreen Mode */
+
 @media (max-width: 768px) {
     .storyboard-player.fullscreen .blackboard-screen {
         width: 95vw;
@@ -2290,7 +2288,7 @@ body {
         width: 100%;
     }
 
-    /* Adjust narration text size for mobile fullscreen */
+    
     .storyboard-player.fullscreen .narration-text-overlay {
         font-size: 16px !important;
         padding: 8px 20px !important;
@@ -2303,7 +2301,7 @@ body {
         bottom: 80px !important;
     }
 
-    /* Resize avatar for mobile fullscreen */
+    
     .storyboard-player.fullscreen .teacher-avatar-external {
         width: 200px !important;
         height: 250px !important;
@@ -2322,7 +2320,7 @@ body {
         max-width: 200px !important;
     }
 
-    /* Adjust navigation controls for mobile fullscreen */
+    
     .storyboard-player.fullscreen .player-controls {
         max-width: 90% !important;
         min-width: 300px !important;
@@ -2356,7 +2354,7 @@ body {
     }
 }
 
-/* Small mobile devices */
+
 @media (max-width: 480px) {
     .story-title {
         font-size: 16px;
@@ -2405,7 +2403,7 @@ body {
     }
 
     .narration-volume-display {
-        display: none; /* Hide on very small screens */
+        display: none; 
     }
 
     .time-display {
@@ -2417,7 +2415,7 @@ body {
         height: 8px;
     }
 
-    /* Mobile fullscreen small */
+    
     .storyboard-player.fullscreen .teacher-avatar-external {
         width: 160px !important;
         height: 200px !important;

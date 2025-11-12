@@ -15,7 +15,7 @@ body {
     padding-right: 0 !important;
 }
 
-/* Custom Scrollbar */
+
 body::-webkit-scrollbar,
 html::-webkit-scrollbar,
 *::-webkit-scrollbar {
@@ -43,7 +43,7 @@ html::-webkit-scrollbar-thumb:hover,
     background: #972542 !important;
 }
 
-/* Firefox */
+
 html {
     scrollbar-width: thin !important;
     scrollbar-color: #801B32 #f8f9fa !important;
@@ -164,7 +164,7 @@ html {
     gap: 20px;
 }
 
-/* Loading stories animation - centered */
+
 .loading-stories {
     grid-column: 1 / -1 !important;
     display: flex !important;
@@ -415,12 +415,12 @@ html {
     border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* Mobile Navigation Styles */
+
 body.menu-open {
     overflow: hidden;
 }
 
-/* Add Student Button Styling */
+
 .add-student-btn {
     width: 36px;
     height: 36px;
@@ -465,9 +465,9 @@ body.menu-open {
     font-weight: bold;
 }
 
-/* Character dropdown menu styling */
+
 .add-student-btn.dropdown-toggle::after {
-    display: none; /* Hide the default Bootstrap dropdown arrow */
+    display: none; 
 }
 
 .add-student-btn + .dropdown-menu {
@@ -516,7 +516,7 @@ body.menu-open {
     transform: translateX(2px);
 }
 
-/* Character count indicator */
+
 #characterCount {
     display: inline-block;
     background: rgba(255, 255, 255, 0.12);
@@ -537,7 +537,7 @@ body.menu-open {
     border-color: transparent;
 }
 
-/* Theme character counter */
+
 #themeCharCounter {
     color: white !important;
 }
@@ -553,7 +553,7 @@ body.menu-open {
     }
 }
 
-/* Remove Student Button */
+
 .remove-student-btn {
     width: 24px;
     height: 24px;
@@ -579,7 +579,7 @@ body.menu-open {
     transform: scale(0.95);
 }
 
-/* Student Field Styling */
+
 .student-field {
     position: relative;
     animation: slideIn 0.3s ease-out;
@@ -819,9 +819,9 @@ body.modal-open {
     transform: scale(1.05);
 }
 
-/* ==== EXTRACTED FROM STORYDASHBOARD.HTML ==== */
 
-/* Override with maroon theme for modal */
+
+
 .create-story-modal .story-suggestions {
     margin-top: 15px;
 }
@@ -836,7 +836,7 @@ body.modal-open {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     margin-top: 10px;
-    min-height: 120px; /* Ensure enough height for proper centering */
+    min-height: 120px; 
 }
 .create-story-modal .suggestion-chip {
     background: rgba(255, 255, 255, 0.08);
@@ -918,15 +918,15 @@ body.modal-open {
     color: rgba(255, 255, 255, 0.7);
     font-style: italic;
     text-align: center;
-    grid-column: 1 / -1; /* Span full width across grid columns */
-    min-height: 120px; /* Match container height */
+    grid-column: 1 / -1; 
+    min-height: 120px; 
     width: 100%;
 }
 .create-story-modal .loading-suggestions i {
     margin-right: 8px;
 }
 
-/* Fix New Ideas button color scheme for maroon modal */
+
 .create-story-modal .btn-primary {
     background: var(--secondary-color) !important;
     border-color: var(--secondary-color) !important;
@@ -949,7 +949,7 @@ body.modal-open {
     color: rgba(128, 27, 50, 0.7) !important;
 }
 
-/* New Ideas button styling */
+
 .btn-new-ideas {
     background: var(--secondary-color) !important;
     border: none !important;
@@ -1005,7 +1005,7 @@ body.modal-open {
     50% { opacity: 0.7; transform: scale(1.05); }
 }
 
-/* Storyboard Player Styles */
+
 .storyboard-player-container {
     width: 100%;
     min-height: 600px;
@@ -1122,7 +1122,7 @@ body.modal-open {
     left: 20px;
     right: 20px;
     font-family: 'Inter', sans-serif;
-    display: none; /* Hide narration text in preview modal */
+    display: none; 
     font-weight: 500;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     font-size: 18px;
@@ -1264,7 +1264,7 @@ body.modal-open {
     border-color: white;
 }
 
-/* Unique Preview Modal Styles - Designed for Preview Only */
+
 .preview-modal-content {
     background: linear-gradient(135deg, var(--primary-color) 0%, #5c1425 50%, var(--primary-color) 100%);
     border: none;
@@ -1397,7 +1397,7 @@ body.modal-open {
     bottom: -25px !important;
 }
 
-/* Preview Modal Scrollbar - Gold Theme */
+
 .preview-modal-content::-webkit-scrollbar,
 .preview-body::-webkit-scrollbar {
     width: 12px;
@@ -1421,14 +1421,14 @@ body.modal-open {
     background: linear-gradient(135deg, #ffed4a, #ffd700);
 }
 
-/* Firefox */
+
 .preview-modal-content,
 .preview-body {
     scrollbar-width: thin;
     scrollbar-color: var(--secondary-color) rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
     .preview-body {
         padding: 20px;
@@ -1807,7 +1807,7 @@ body.modal-open {
     transition: all 0.2s ease;
 }
 
-/* Student gender select matching voice control style */
+
 .student-gender-select {
     width: 100%;
     padding: 12px 16px;
@@ -3051,7 +3051,7 @@ body.modal-open {
 }
 
 
-        /* Modal Styles */
+        
         :root {
             --primary-50: #f0f9ff;
             --primary-100: #e0f2fe;
@@ -3087,14 +3087,14 @@ body.modal-open {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* Ensure our modal is above Bootstrap modals and hide their backdrops */
+        
         .preview-modal.show {
             opacity: 1;
             visibility: visible;
             z-index: 10000 !important;
         }
         
-        /* Hide Bootstrap modal backdrops when our modal is active */
+        
         body:has(.preview-modal.show) .modal-backdrop {
             display: none !important;
         }
@@ -3224,7 +3224,7 @@ body.modal-open {
             transform: scale(1.1);
         }
 
-        /* Preview Storyboard Player */
+        
         .preview-storyboard-player {
             display: flex;
             flex-direction: column;
@@ -3237,7 +3237,7 @@ body.modal-open {
             max-width: 100%;
         }
 
-        /* Preview Blackboard - reusing storyboard styles but with preview prefix */
+        
         .preview-blackboard-container {
             position: relative;
             margin-bottom: 0;
@@ -3304,8 +3304,8 @@ body.modal-open {
             border-radius: 0 0 10px 10px;
         }
 
-        /* Scene Navigation */
-        /* Music Controls */
+        
+        
         .preview-music-controls {
             background: linear-gradient(145deg, #801B32, #6d1328);
             padding: 20px;
@@ -3409,7 +3409,7 @@ body.modal-open {
             box-shadow: 0 2px 6px rgba(255, 197, 83, 0.25);
         }
 
-        /* Voice Preview Button - matches music play button style */
+        
         .voice-preview-btn {
             background: #FFC553;
             color: #801B32;
@@ -3580,7 +3580,7 @@ body.modal-open {
             }
         }
 
-        /* Preview Modal Actions */
+        
         .preview-modal-actions {
             display: flex !important;
             flex-direction: column;
@@ -3682,7 +3682,7 @@ body.modal-open {
             color: white;
         }
 
-        /* Responsive Design for Preview Modal */
+        
         @media (max-width: 768px) {
             .preview-modal-content {
                 max-width: 98vw;
@@ -3832,7 +3832,7 @@ body.modal-open {
             }
         }
 
-        /* Console Styling */
+        
         .console-line {
             margin-bottom: 4px;
             padding: 2px 0;
@@ -3854,12 +3854,12 @@ body.modal-open {
             color: #ef4444;
         }
 
-        /* Hidden utility class */
+        
         .hidden {
             display: none;
         }
 
-        /* Scene Retry Button Styles */
+        
         .scene-retry-container {
             position: absolute;
             top: 15px;
@@ -3907,7 +3907,7 @@ body.modal-open {
             transform: rotate(15deg);
         }
 
-        /* Spin animation for retry loading */
+        
         @keyframes spin {
             from {
                 transform: rotate(0deg);
@@ -3917,7 +3917,7 @@ body.modal-open {
             }
         }
 
-        /* ==================== GAMIFICATION OVERLAY STYLES ==================== */
+        
         .gamification-overlay {
             position: absolute;
             top: 0;
@@ -3973,7 +3973,7 @@ body.modal-open {
             word-wrap: break-word;
         }
 
-        /* Wood texture effect */
+        
         .question-container::before {
             content: '';
             position: absolute;
@@ -4191,12 +4191,12 @@ body.modal-open {
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
-        /* Remove continue button - auto continue after feedback */
+        
         .continue-btn {
             display: none;
         }
 
-        /* Question indicator dot */
+        
         .dot.has-question {
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
             border-color: #d97706;
@@ -4219,7 +4219,7 @@ body.modal-open {
             background: linear-gradient(135deg, #f59e0b, #d97706);
         }
 
-        /* Gamification styling for original AniKwento design */
+        
         .limit-indicator {
             font-size: 0.75rem;
             color: #fff8dc;
@@ -4247,7 +4247,7 @@ body.modal-open {
             color: var(--secondary-color);
         }
 
-        /* Responsive adjustments for gamification */
+        
         @media (max-width: 768px) {
             .question-container {
                 padding: 12px;
@@ -4305,7 +4305,7 @@ body.modal-open {
             }
         }
 
-        /* ==================== STORYBOARD PLAYER STYLES ==================== */
+        
         .storyboard-player {
             position: fixed;
             top: 0;
@@ -4494,7 +4494,7 @@ body.modal-open {
             font-weight: 500;
         }
 
-        /* Responsive design for storyboard player */
+        
         @media (max-width: 768px) {
             .storyboard-player .blackboard-screen {
                 width: 95vw;
@@ -4523,9 +4523,7 @@ body.modal-open {
             }
         }
 
-/* ============================================
-   THUMBNAIL MODAL STYLES
-   ============================================ */
+
 
 .thumbnail-modal {
     position: fixed;
@@ -4613,7 +4611,7 @@ body.modal-open {
     overflow: hidden;
 }
 
-/* Sparkle Effect Background */
+
 .thumbnail-sparkle-effect {
     position: absolute;
     top: 0;
@@ -4627,7 +4625,7 @@ body.modal-open {
     pointer-events: none;
 }
 
-/* Header Section */
+
 .thumbnail-header-section {
     text-align: center;
     margin-bottom: 35px;
@@ -4674,7 +4672,7 @@ body.modal-open {
     font-style: italic;
 }
 
-/* Image Container */
+
 .thumbnail-image-container {
     margin: 35px 0;
     position: relative;
@@ -4690,7 +4688,7 @@ body.modal-open {
     padding: 0;
 }
 
-/* Decorative Corners */
+
 .thumbnail-corner {
     position: absolute;
     width: 30px;
@@ -4743,7 +4741,7 @@ body.modal-open {
     z-index: 1;
 }
 
-/* Shimmer Effect */
+
 .thumbnail-shimmer {
     position: absolute;
     top: 0;
@@ -4764,7 +4762,7 @@ body.modal-open {
     50%, 100% { left: 100%; }
 }
 
-/* Action Section */
+
 .thumbnail-action-section {
     text-align: center;
     margin-top: 35px;
@@ -4799,7 +4797,7 @@ body.modal-open {
     transform: translateY(-1px);
 }
 
-/* Button Shine Effect */
+
 .btn-shine {
     display: none;
 }
@@ -4819,7 +4817,7 @@ body.modal-open {
     font-weight: 500;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .thumbnail-modal-content {
         max-width: 95%;
@@ -4870,7 +4868,7 @@ body.modal-open {
     }
 }
 
-/* Voice Selection Validation Styles */
+
 #voiceOption.is-invalid {
     border-color: #801B32 !important;
     border-width: 2px !important;
@@ -4883,7 +4881,7 @@ body.modal-open {
     box-shadow: 0 0 0 0.25rem rgba(128, 27, 50, 0.25) !important;
 }
 
-/* Delete Loading Animation Styles */
+
 .delete-loading-overlay {
     position: absolute;
     top: 0;

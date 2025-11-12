@@ -1,22 +1,8 @@
 <?php
-/**
- * Railway Database Schema Sync Script
- *
- * This script will:
- * 1. Drop the incorrectly named 'teacher_profile' table
- * 2. Recreate all tables with correct schema from local database
- *
- * Tables to sync:
- * - stories
- * - story_gamification
- * - story_scene_audio
- * - story_scenes
- * - teacher_profiles (correct plural name)
- * - user_settings
- */
 
-// Use Railway database connection
-// Try both MYSQL_ and DB_ prefixes for compatibility
+
+
+
 $host = getenv('MYSQL_HOST') ?: getenv('DB_HOST');
 $port = getenv('MYSQL_PORT') ?: '3306';
 $dbname = getenv('MYSQL_DATABASE') ?: getenv('DB_NAME');
@@ -45,15 +31,15 @@ try {
 
     echo "✓ Connected to Railway database successfully!\n\n";
 
-    // Start transaction
+    
     $pdo->beginTransaction();
 
-    // 1. Drop the incorrectly named teacher_profile table
+    
     echo "Step 1: Dropping incorrect 'teacher_profile' table...\n";
     $pdo->exec("DROP TABLE IF EXISTS `teacher_profile`");
     echo "✓ Dropped teacher_profile table\n\n";
 
-    // 2. Drop existing tables in correct order (respecting foreign keys)
+    
     echo "Step 2: Dropping existing tables (if they exist)...\n";
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
 
@@ -74,7 +60,7 @@ try {
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
     echo "\n";
 
-    // 3. Create stories table
+    
     echo "Step 3: Creating stories table...\n";
     $pdo->exec("
         CREATE TABLE `stories` (
@@ -109,7 +95,7 @@ try {
     ");
     echo "✓ Created stories table\n\n";
 
-    // 4. Create story_scenes table
+    
     echo "Step 4: Creating story_scenes table...\n";
     $pdo->exec("
         CREATE TABLE `story_scenes` (
@@ -131,7 +117,7 @@ try {
     ");
     echo "✓ Created story_scenes table\n\n";
 
-    // 5. Create story_scene_audio table
+    
     echo "Step 5: Creating story_scene_audio table...\n";
     $pdo->exec("
         CREATE TABLE `story_scene_audio` (
@@ -153,7 +139,7 @@ try {
     ");
     echo "✓ Created story_scene_audio table\n\n";
 
-    // 6. Create story_gamification table
+    
     echo "Step 6: Creating story_gamification table...\n";
     $pdo->exec("
         CREATE TABLE `story_gamification` (
@@ -175,7 +161,7 @@ try {
     ");
     echo "✓ Created story_gamification table\n\n";
 
-    // 7. Create teacher_profiles table (with correct plural name)
+    
     echo "Step 7: Creating teacher_profiles table...\n";
     $pdo->exec("
         CREATE TABLE `teacher_profiles` (
@@ -199,7 +185,7 @@ try {
     ");
     echo "✓ Created teacher_profiles table\n\n";
 
-    // 8. Create user_settings table
+    
     echo "Step 8: Creating user_settings table...\n";
     $pdo->exec("
         CREATE TABLE `user_settings` (
@@ -223,14 +209,14 @@ try {
     ");
     echo "✓ Created user_settings table\n\n";
 
-    // Commit transaction
+    
     $pdo->commit();
 
     echo "========================================\n";
     echo "✓ Schema sync completed successfully!\n";
     echo "========================================\n\n";
 
-    // Verify tables
+    
     echo "Verifying created tables:\n";
     $stmt = $pdo->query("SHOW TABLES");
     $tables = $stmt->fetchAll(PDO::FETCH_COLUMN);

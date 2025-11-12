@@ -23,7 +23,7 @@ body {
     padding: 20px;
 }
 
-/* Meteor Background Animation */
+
 .meteor-background {
     position: fixed;
     top: 0;
@@ -359,7 +359,7 @@ body {
     box-shadow: 0 6px 15px rgba(255, 197, 83, 0.4);
 }
 
-/* Results Screen */
+
 .results-container {
     display: none;
     text-align: center;
@@ -415,11 +415,9 @@ body {
     margin-top: 40px;
 }
 
-/* ========================================
-   MOBILE RESPONSIVE STYLES
-   ======================================== */
 
-/* Tablets */
+
+
 @media (max-width: 1024px) {
     body {
         padding: 15px;
@@ -439,7 +437,7 @@ body {
     }
 }
 
-/* Mobile devices (Portrait and Landscape) */
+
 @media (max-width: 768px) {
     body {
         padding: 8px;
@@ -455,7 +453,7 @@ body {
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Header */
+    
     .back-to-story-section {
         margin-bottom: 12px;
     }
@@ -480,7 +478,7 @@ body {
         font-size: 0.95rem;
     }
 
-    /* Progress section */
+    
     .progress-section {
         margin-bottom: 18px;
         padding: 12px 15px;
@@ -490,7 +488,7 @@ body {
         font-size: 0.95rem;
     }
 
-    /* Question card */
+    
     .question-card {
         padding: 18px 15px;
         margin-bottom: 15px;
@@ -502,7 +500,7 @@ body {
         line-height: 1.5;
     }
 
-    /* Choices */
+    
     .choices-container {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -531,14 +529,14 @@ body {
         word-wrap: break-word;
     }
 
-    /* Show answer button */
+    
     .btn-show-answer {
         padding: 11px 22px;
         font-size: 0.95rem;
         gap: 6px;
     }
 
-    /* Feedback section */
+    
     .feedback-section {
         padding: 14px;
         margin-top: 14px;
@@ -554,7 +552,7 @@ body {
         line-height: 1.4;
     }
 
-    /* Navigation buttons */
+    
     .navigation-btns {
         gap: 10px;
         margin-top: 18px;
@@ -568,7 +566,7 @@ body {
         min-width: 115px;
     }
 
-    /* Results */
+    
     .results-score {
         font-size: 3.5rem;
         margin: 20px 0;
@@ -609,7 +607,7 @@ body {
     }
 }
 
-/* Small mobile devices */
+
 @media (max-width: 480px) {
     body {
         padding: 6px;
@@ -743,7 +741,7 @@ body {
     }
 }
 
-/* Very small screens */
+
 @media (max-width: 360px) {
     body {
         padding: 4px;

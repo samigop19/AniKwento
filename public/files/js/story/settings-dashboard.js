@@ -1,12 +1,9 @@
-/**
- * Settings Dashboard JavaScript
- * Handles loading, saving, and managing user story settings
- */
+
 
 (function() {
     'use strict';
 
-    // DOM Elements
+    
     const saveBtn = document.getElementById('saveSettingsBtn');
     const resetBtn = document.getElementById('resetSettingsBtn');
     const voiceSelector = document.getElementById('voiceSelector');
@@ -19,72 +16,70 @@
     const questionTimingRadios = document.querySelectorAll('input[name="questionTiming"]');
     const questionTypeCheckboxes = document.querySelectorAll('.question-type');
 
-    // Add Voice Modal Elements
+    
     const addVoiceModal = new bootstrap.Modal(document.getElementById('addVoiceModal'));
     const saveVoiceBtn = document.getElementById('saveVoiceBtn');
     const modalVoiceName = document.getElementById('modalVoiceName');
     const modalVoiceId = document.getElementById('modalVoiceId');
     const modalAvatarUrl = document.getElementById('modalAvatarUrl');
 
-    // Store custom voices
+    
     let customVoices = [];
 
-    // Initialize on page load
+    
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Settings Dashboard initialized');
 
-        // Initialize slider CSS variables with current values
+        
         narrationVolumeRange.style.setProperty('--value', narrationVolumeRange.value + '%');
         musicVolumeRange.style.setProperty('--value', musicVolumeRange.value + '%');
 
-        // Setup event listeners
+        
         setupEventListeners();
 
-        // Initialize question timing state (call this before loading settings)
+        
         handleQuestionTimingChange();
 
-        // Load custom voices first, then settings
+        
         loadCustomVoices().then(() => {
-            // Load existing settings
+            
             loadSettings();
 
-            // Initialize preview panel
+            
             updatePreviewPanel();
         });
     });
 
-    /**
-     * Setup all event listeners
-     */
+    
     function setupEventListeners() {
-        // Save button
+        
         saveBtn.addEventListener('click', saveSettings);
 
-        // Reset button
+        
         resetBtn.addEventListener('click', resetToDefaults);
 
-        // Volume sliders
+        
         narrationVolumeRange.addEventListener('input', function() {
             narrationVolumeValue.textContent = this.value + '%';
-            // Update CSS variable for slider animation
+            
             this.style.setProperty('--value', this.value + '%');
             updatePreviewPanel();
         });
 
         musicVolumeRange.addEventListener('input', function() {
             musicVolumeValue.textContent = this.value + '%';
-            // Update CSS variable for slider animation
+            
             this.style.setProperty('--value', this.value + '%');
             updatePreviewPanel();
         });
 
-        // Voice selector
+        
         voiceSelector.addEventListener('change', updatePreviewPanel);
 
-        // Music selector
+        
         musicSelector.addEventListener('change', updatePreviewPanel);
 
-        // Question timing radios
+        
         questionTimingRadios.forEach(radio => {
             radio.addEventListener('change', () => {
                 handleQuestionTimingChange();
@@ -92,27 +87,25 @@
             });
         });
 
-        // Question type checkboxes (limit to 2)
+        
         const checkboxes = document.querySelectorAll('.question-type');
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', handleQuestionTypeChange);
         });
 
-        // Voice selector - handle "Add Voice" option
+        
         voiceSelector.addEventListener('change', handleVoiceSelectorChange);
 
-        // Save voice button in modal
+        
         saveVoiceBtn.addEventListener('click', handleSaveCustomVoice);
 
-        // Delete voice button
+        
         if (deleteVoiceBtn) {
             deleteVoiceBtn.addEventListener('click', handleDeleteCustomVoice);
         }
     }
 
-    /**
-     * Load custom voices from database
-     */
+    
     async function loadCustomVoices() {
         try {
             const response = await fetch('/source/handlers/get_custom_voices.php');
@@ -122,14 +115,14 @@
                 customVoices = data.custom_voices || [];
                 console.log('Loaded custom voices:', customVoices);
 
-                // Add custom voices to the dropdown
+                
                 const addVoiceOption = document.getElementById('addVoiceOption');
 
-                // Remove any existing custom voice options first
+                
                 const existingCustomOptions = voiceSelector.querySelectorAll('option[value^="custom_"]');
                 existingCustomOptions.forEach(opt => opt.remove());
 
-                // Add each custom voice to the dropdown
+                
                 customVoices.forEach(voice => {
                     const newOption = document.createElement('option');
                     newOption.value = voice.voice_key;
@@ -151,28 +144,24 @@
         }
     }
 
-    /**
-     * Handle voice selector change - show modal for "Add Voice"
-     */
+    
     function handleVoiceSelectorChange() {
         if (voiceSelector.value === 'add-voice') {
-            // Show the modal
+            
             addVoiceModal.show();
 
-            // Reset to previous selection temporarily
+            
             const previousValue = voiceSelector.dataset.previousValue || 'Rachel';
             voiceSelector.value = previousValue;
         } else {
-            // Store current value as previous
+            
             voiceSelector.dataset.previousValue = voiceSelector.value;
             updatePreviewPanel();
             updateDeleteButtonVisibility();
         }
     }
 
-    /**
-     * Update delete button visibility based on selected voice
-     */
+    
     function updateDeleteButtonVisibility() {
         if (!deleteVoiceBtn) return;
 
@@ -186,13 +175,11 @@
         }
     }
 
-    /**
-     * Handle deleting a custom voice
-     */
+    
     async function handleDeleteCustomVoice() {
         const selectedValue = voiceSelector.value;
 
-        // Only allow deleting custom voices
+        
         if (!selectedValue.startsWith('custom_')) {
             showToast('Cannot delete default voices', 'warning');
             return;
@@ -201,13 +188,13 @@
         const selectedOption = voiceSelector.options[voiceSelector.selectedIndex];
         const voiceName = selectedOption.textContent;
 
-        // Confirm deletion
+        
         if (!confirm(`Are you sure you want to delete the custom voice "${voiceName}"?`)) {
             return;
         }
 
         try {
-            // Delete from database
+            
             const formData = new FormData();
             formData.append('voice_key', selectedValue);
 
@@ -219,24 +206,24 @@
             const data = await response.json();
 
             if (data.success) {
-                // Remove from custom voices array
+                
                 customVoices = customVoices.filter(v => v.voice_key !== selectedValue);
 
-                // Remove option from dropdown
+                
                 selectedOption.remove();
 
-                // Select default voice
+                
                 voiceSelector.value = 'Rachel';
                 voiceSelector.dataset.previousValue = 'Rachel';
 
-                // Update UI
+                
                 updatePreviewPanel();
                 updateDeleteButtonVisibility();
 
-                // Show success message
+                
                 showToast('Custom voice deleted successfully!', 'success');
 
-                // Save settings to update selected voice if needed
+                
                 saveSettings();
             } else {
                 showToast('Failed to delete custom voice: ' + data.error, 'error');
@@ -247,13 +234,11 @@
         }
     }
 
-    /**
-     * Handle saving custom voice from modal
-     */
+    
     async function handleSaveCustomVoice() {
         const form = document.getElementById('addVoiceForm');
 
-        // Validate form
+        
         if (!form.checkValidity()) {
             form.reportValidity();
             return;
@@ -263,32 +248,32 @@
         const voiceId = modalVoiceId.value.trim();
         let avatarUrl = modalAvatarUrl.value.trim();
 
-        // Automatically add lip sync support to avatar URL if not present
+        
         avatarUrl = ensureLipSyncSupport(avatarUrl);
 
-        // Create custom voice object
+        
         const customVoice = {
             name: name,
             voiceId: voiceId,
             avatarUrl: avatarUrl,
-            value: 'custom_' + Date.now() // Unique identifier
+            value: 'custom_' + Date.now() 
         };
 
-        // Disable save button and show loading
+        
         saveVoiceBtn.disabled = true;
         saveVoiceBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Preview...';
 
         try {
-            // Generate voice preview
+            
             const previewResult = await generateCustomVoicePreview(voiceId, customVoice.value);
 
             if (previewResult.success) {
-                // Store the preview URL in the custom voice object
+                
                 customVoice.previewUrl = previewResult.preview_url;
 
                 showToast('Voice preview generated successfully!', 'success');
             } else {
-                // Continue even if preview generation fails
+                
                 console.warn('Preview generation failed:', previewResult.error);
                 showToast('Voice added but preview generation failed', 'warning');
             }
@@ -297,7 +282,7 @@
             showToast('Voice added but preview generation failed', 'warning');
         }
 
-        // Save custom voice to database
+        
         try {
             const saveFormData = new FormData();
             saveFormData.append('voice_key', customVoice.value);
@@ -314,10 +299,10 @@
             const saveData = await saveResponse.json();
 
             if (saveData.success) {
-                // Add to custom voices array
+                
                 customVoices.push(customVoice);
 
-                // Add option to dropdown (before "Add Voice" option)
+                
                 const addVoiceOption = document.getElementById('addVoiceOption');
                 const newOption = document.createElement('option');
                 newOption.value = customVoice.value;
@@ -329,28 +314,28 @@
                 }
                 voiceSelector.insertBefore(newOption, addVoiceOption);
 
-                // Select the new voice
+                
                 voiceSelector.value = customVoice.value;
                 voiceSelector.dataset.previousValue = customVoice.value;
 
-                // Clear form
+                
                 form.reset();
 
-                // Close modal
+                
                 addVoiceModal.hide();
 
-                // Re-enable save button
+                
                 saveVoiceBtn.disabled = false;
                 saveVoiceBtn.innerHTML = '<i class="fas fa-save"></i> Save Voice';
 
-                // Update preview
+                
                 updatePreviewPanel();
                 updateDeleteButtonVisibility();
 
-                // Show success message
+                
                 showToast('Custom voice added successfully!', 'success');
 
-                // Save settings to database immediately to update selected voice
+                
                 saveSettings();
             } else {
                 throw new Error(saveData.error || 'Failed to save custom voice');
@@ -359,15 +344,13 @@
             console.error('Error saving custom voice:', error);
             showToast('Error saving custom voice: ' + error.message, 'error');
 
-            // Re-enable save button
+            
             saveVoiceBtn.disabled = false;
             saveVoiceBtn.innerHTML = '<i class="fas fa-save"></i> Save Voice';
         }
     }
 
-    /**
-     * Generate preview for custom voice
-     */
+    
     async function generateCustomVoicePreview(voiceId, customVoiceKey) {
         try {
             const formData = new FormData();
@@ -390,28 +373,26 @@
         }
     }
 
-    /**
-     * Handle question timing change - disable question types if "No Questions" or "After the Story" is selected
-     */
+    
     function handleQuestionTimingChange() {
         const selectedTiming = document.querySelector('input[name="questionTiming"]:checked');
         const timingValue = selectedTiming ? selectedTiming.value : 'none';
         const shouldDisable = timingValue === 'none' || timingValue === 'after';
 
-        // Requery to ensure we have the latest elements (in case DOM wasn't ready earlier)
+        
         const checkboxes = document.querySelectorAll('.question-type');
 
         checkboxes.forEach(checkbox => {
             const checkboxContainer = checkbox.closest('.custom-checkbox');
 
             if (shouldDisable) {
-                // Disable all question type checkboxes when "No Questions" or "After" is selected
+                
                 checkbox.disabled = true;
                 if (checkboxContainer) {
                     checkboxContainer.classList.add('disabled');
                 }
             } else {
-                // Re-enable based on the 2-selection limit for 'during' and 'both'
+                
                 const checkedBoxes = document.querySelectorAll('.question-type:checked');
                 const maxAllowed = 2;
 
@@ -425,7 +406,7 @@
                         }
                     }
                 } else {
-                    // Checked boxes should always be enabled (not disabled)
+                    
                     checkbox.disabled = false;
                     if (checkboxContainer) {
                         checkboxContainer.classList.remove('disabled');
@@ -435,24 +416,22 @@
         });
     }
 
-    /**
-     * Handle question type checkbox changes (max 2 selections)
-     */
+    
     function handleQuestionTypeChange() {
         const checkedBoxes = document.querySelectorAll('.question-type:checked');
         const maxAllowed = 2;
 
         if (checkedBoxes.length > maxAllowed) {
-            // Uncheck the current checkbox that exceeded the limit
+            
             this.checked = false;
             showToast('Maximum 2 question types allowed', 'warning');
             return;
         }
 
-        // Requery to ensure we have the latest elements
+        
         const checkboxes = document.querySelectorAll('.question-type');
 
-        // Enable/disable unchecked boxes based on limit
+        
         checkboxes.forEach(checkbox => {
             const checkboxContainer = checkbox.closest('.custom-checkbox');
             if (!checkbox.checked) {
@@ -470,9 +449,7 @@
         updatePreviewPanel();
     }
 
-    /**
-     * Load settings from server
-     */
+    
     async function loadSettings() {
         try {
             const response = await fetch('/source/handlers/get_settings.php');
@@ -491,49 +468,47 @@
         }
     }
 
-    /**
-     * Populate UI with settings data
-     */
+    
     function populateSettings(settings) {
-        // Voice mode
+        
         if (settings.voice_mode) {
             let voiceValue = settings.voice_mode;
 
-            // Map old voice_mode values to actual voice names
+            
             if (voiceValue === 'teacher' || voiceValue === 'ai-cheerful' || voiceValue === 'ai-gentle' || voiceValue === 'ai-engaging') {
                 voiceValue = 'Rachel';
             }
 
-            // Custom voices are already loaded from the custom_voices table
-            // Just select the saved voice
+            
+            
             voiceSelector.value = voiceValue;
             voiceSelector.dataset.previousValue = voiceValue;
         }
 
-        // Narration volume
+        
         if (settings.narration_volume !== undefined) {
             const volumePercent = Math.round(settings.narration_volume * 100);
             narrationVolumeRange.value = volumePercent;
             narrationVolumeValue.textContent = volumePercent + '%';
-            // Update CSS variable for slider animation
+            
             narrationVolumeRange.style.setProperty('--value', volumePercent + '%');
         }
 
-        // Background music
+        
         if (settings.background_music !== undefined) {
             musicSelector.value = settings.background_music;
         }
 
-        // Music volume
+        
         if (settings.music_volume !== undefined) {
             const musicVolumePercent = Math.round(settings.music_volume * 100);
             musicVolumeRange.value = musicVolumePercent;
             musicVolumeValue.textContent = musicVolumePercent + '%';
-            // Update CSS variable for slider animation
+            
             musicVolumeRange.style.setProperty('--value', musicVolumePercent + '%');
         }
 
-        // Question timing
+        
         if (settings.question_timing) {
             const timingRadio = document.getElementById(getQuestionTimingId(settings.question_timing));
             if (timingRadio) {
@@ -541,7 +516,7 @@
             }
         }
 
-        // Question types
+        
         if (settings.question_types) {
             let questionTypes = [];
             try {
@@ -552,11 +527,11 @@
                 console.error('Error parsing question types:', e);
             }
 
-            // Uncheck all first
+            
             const checkboxes = document.querySelectorAll('.question-type');
             checkboxes.forEach(cb => cb.checked = false);
 
-            // Check the saved types
+            
             questionTypes.forEach(type => {
                 const checkbox = document.querySelector(`.question-type[value="${type}"]`);
                 if (checkbox) {
@@ -564,13 +539,13 @@
                 }
             });
 
-            // Update disabled state based on both timing and selection count
+            
             handleQuestionTimingChange();
             if (checkboxes.length > 0) {
                 handleQuestionTypeChange.call(checkboxes[0]);
             }
         } else {
-            // No saved question types, still check timing to disable if needed
+            
             handleQuestionTimingChange();
         }
 
@@ -578,9 +553,7 @@
         updateDeleteButtonVisibility();
     }
 
-    /**
-     * Get radio button ID from question timing value
-     */
+    
     function getQuestionTimingId(timing) {
         const map = {
             'none': 'noneQuestions',
@@ -591,23 +564,21 @@
         return map[timing] || 'afterStory';
     }
 
-    /**
-     * Save settings to server
-     */
+    
     async function saveSettings() {
-        // Disable button during save
+        
         saveBtn.disabled = true;
         saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
         try {
-            // Gather form data
+            
             const formData = new FormData();
 
-            // Voice settings
+            
             const selectedVoice = voiceSelector.value;
             formData.append('voice_mode', selectedVoice);
 
-            // If a custom voice is selected, include its details
+            
             if (selectedVoice.startsWith('custom_')) {
                 const selectedOption = voiceSelector.options[voiceSelector.selectedIndex];
                 formData.append('custom_voice_name', selectedOption.textContent);
@@ -615,28 +586,28 @@
                 formData.append('custom_avatar_url', selectedOption.dataset.avatarUrl || '');
                 formData.append('custom_voice_preview_url', selectedOption.dataset.previewUrl || '');
             } else {
-                // Clear custom voice fields for non-custom voices
+                
                 formData.append('custom_voice_name', '');
                 formData.append('custom_voice_id', '');
                 formData.append('custom_avatar_url', '');
                 formData.append('custom_voice_preview_url', '');
             }
 
-            // Volume settings (convert percentage to 0-1 range)
+            
             const narrationVolume = narrationVolumeRange.value / 100;
             formData.append('narration_volume', narrationVolume);
 
             const musicVolume = musicVolumeRange.value / 100;
             formData.append('music_volume', musicVolume);
 
-            // Music selection
+            
             formData.append('background_music', musicSelector.value);
 
-            // Question timing
+            
             const selectedTiming = document.querySelector('input[name="questionTiming"]:checked');
             formData.append('question_timing', selectedTiming ? selectedTiming.value : 'after');
 
-            // Question types (collect checked checkboxes)
+            
             const checkedTypes = [];
             const checkboxes = document.querySelectorAll('.question-type');
             checkboxes.forEach(cb => {
@@ -646,7 +617,7 @@
             });
             formData.append('question_types', JSON.stringify(checkedTypes));
 
-            // Send to server
+            
             const response = await fetch('/source/handlers/save_settings.php', {
                 method: 'POST',
                 body: formData
@@ -665,25 +636,21 @@
             console.error('Error saving settings:', error);
             showToast('Error saving settings', 'error');
         } finally {
-            // Re-enable button
+            
             saveBtn.disabled = false;
             saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Settings';
         }
     }
 
-    /**
-     * Reset settings to defaults
-     */
+    
     function resetToDefaults() {
-        // Create custom confirmation modal with better design
+        
         showResetConfirmation();
     }
 
-    /**
-     * Show simple confirmation modal for reset
-     */
+    
     function showResetConfirmation() {
-        // Create modal overlay
+        
         const overlay = document.createElement('div');
         overlay.className = 'reset-modal-overlay';
         overlay.innerHTML = `
@@ -705,15 +672,13 @@
 
         document.body.appendChild(overlay);
 
-        // Show modal
+        
         setTimeout(() => {
             overlay.classList.add('active');
         }, 10);
     }
 
-    /**
-     * Close reset confirmation modal
-     */
+    
     window.closeResetModal = function() {
         const overlay = document.querySelector('.reset-modal-overlay');
         if (overlay) {
@@ -724,37 +689,35 @@
         }
     };
 
-    /**
-     * Confirm and execute reset
-     */
+    
     window.confirmReset = function() {
-        // Close modal
+        
         closeResetModal();
 
-        // Reset all fields to defaults
+        
         voiceSelector.value = 'Rachel';
         voiceSelector.dataset.previousValue = 'Rachel';
 
-        // Voice narration at 50%
+        
         narrationVolumeRange.value = 50;
         narrationVolumeValue.textContent = '50%';
         narrationVolumeRange.style.setProperty('--value', '50%');
 
-        // No music selected
+        
         musicSelector.value = '';
 
-        // Music volume at 50%
+        
         musicVolumeRange.value = 50;
         musicVolumeValue.textContent = '50%';
         musicVolumeRange.style.setProperty('--value', '50%');
 
-        // Reset question timing to "none" (no questions)
+        
         const noneQuestionsRadio = document.getElementById('noneQuestions');
         if (noneQuestionsRadio) {
             noneQuestionsRadio.checked = true;
         }
 
-        // Reset question types (uncheck all)
+        
         const checkboxes = document.querySelectorAll('.question-type');
         checkboxes.forEach((cb) => {
             cb.checked = false;
@@ -765,35 +728,33 @@
             }
         });
 
-        // Update disabled state based on timing (should disable all since we reset to "none")
+        
         handleQuestionTimingChange();
 
         updatePreviewPanel();
         updateDeleteButtonVisibility();
 
-        // Show success notification
+        
         showToast('Settings reset to defaults successfully!', 'success');
     };
 
-    /**
-     * Update the preview panel with current selections
-     */
+    
     function updatePreviewPanel() {
-        // Voice preview
+        
         const voiceText = voiceSelector.options[voiceSelector.selectedIndex].text;
         document.getElementById('voicePreviewText').textContent = voiceText;
 
-        // Narration volume preview
+        
         const narrationVolText = 'Narration: ' + narrationVolumeRange.value + '%';
         document.getElementById('narrationVolumePreviewText').textContent = narrationVolText;
 
-        // Music preview
+        
         const musicText = musicSelector.value
             ? musicSelector.options[musicSelector.selectedIndex].text + ' (' + musicVolumeRange.value + '%)'
             : 'No Music';
         document.getElementById('musicPreviewText').textContent = musicText;
 
-        // Question types preview
+        
         const checkedCount = document.querySelectorAll('.question-type:checked').length;
         const questionText = checkedCount > 0
             ? checkedCount + ' Question Type' + (checkedCount !== 1 ? 's' : '') + ' Selected'
@@ -801,23 +762,21 @@
         document.getElementById('questionPreviewText').textContent = questionText;
     }
 
-    /**
-     * Ensure avatar URL has lip sync support morphTargets
-     */
+    
     function ensureLipSyncSupport(avatarUrl) {
         if (!avatarUrl) return avatarUrl;
 
-        // Check if it's a ReadyPlayerMe URL
+        
         if (!avatarUrl.includes('readyplayer.me')) {
             return avatarUrl;
         }
 
-        // Check if morphTargets parameter already exists
+        
         if (avatarUrl.includes('morphTargets')) {
             return avatarUrl;
         }
 
-        // Add morphTargets parameter for lip sync support
+        
         const separator = avatarUrl.includes('?') ? '&' : '?';
         const enhancedUrl = avatarUrl + separator + 'morphTargets=ARKit,Oculus Visemes';
 
@@ -825,11 +784,9 @@
         return enhancedUrl;
     }
 
-    /**
-     * Show notification using the notification system
-     */
+    
     function showToast(message, type = 'info') {
-        // Use the global notification system from notification-system.js
+        
         if (typeof notificationSystem !== 'undefined') {
             switch(type) {
                 case 'success':
@@ -847,20 +804,20 @@
         }
     }
 
-    // Audio preview functionality
+    
     let currentVoicePreview = null;
     let currentMusicPreview = null;
     let isVoicePlaying = false;
     let isMusicPlaying = false;
 
-    // Voice preview file paths (using R2 CDN)
+    
     const VOICE_PREVIEW_PATHS = {
-        'Rachel': 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/rachel-preview.mp3',
-        'Amara': 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/amara-preview.mp3',
-        'Lily': 'https://anikwento-r2-public.thesamz20.workers.dev/voice-previews/lily-preview.mp3'
+        'Rachel': 'https:
+        'Amara': 'https:
+        'Lily': 'https:
     };
 
-    // Music preview file paths
+    
     const MUSIC_PREVIEW_PATHS = {
         'playful.mp3': '../../../public/files/music/playful.mp3',
         'adventure.mp3': '../../../public/files/music/adventure.mp3',
@@ -868,7 +825,7 @@
         'magical.mp3': '../../../public/files/music/magical.mp3'
     };
 
-    // Make functions globally available for inline onclick handlers
+    
     window.previewVoice = function() {
         const selectedVoice = voiceSelector.value;
         const previewBtn = document.querySelector('.voice-selection .preview-voice-btn');
@@ -883,10 +840,10 @@
             return;
         }
 
-        // Check for default voice preview
+        
         let voicePreviewPath = VOICE_PREVIEW_PATHS[selectedVoice];
 
-        // Check for custom voice preview
+        
         if (!voicePreviewPath && selectedVoice.startsWith('custom_')) {
             const selectedOption = voiceSelector.options[voiceSelector.selectedIndex];
             voicePreviewPath = selectedOption.dataset.previewUrl;
@@ -906,7 +863,7 @@
             currentVoicePreview = new Audio(voicePreviewPath);
             currentVoicePreview.volume = narrationVolumeRange.value / 100;
 
-            // Update volume when slider changes during preview
+            
             const volumeUpdateHandler = () => {
                 if (currentVoicePreview) {
                     currentVoicePreview.volume = narrationVolumeRange.value / 100;
@@ -929,7 +886,7 @@
             currentVoicePreview.play();
             isVoicePlaying = true;
 
-            // Update button state
+            
             if (previewBtn) {
                 previewBtn.classList.add('playing');
                 previewBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Preview<div class="preview-indicator"></div>';
@@ -985,7 +942,7 @@
             currentMusicPreview.volume = musicVolumeRange.value / 100;
             currentMusicPreview.loop = false;
 
-            // Update volume when slider changes during preview
+            
             const volumeUpdateHandler = () => {
                 if (currentMusicPreview) {
                     currentMusicPreview.volume = musicVolumeRange.value / 100;
@@ -1008,7 +965,7 @@
             currentMusicPreview.play();
             isMusicPlaying = true;
 
-            // Update button state
+            
             if (previewBtn) {
                 previewBtn.classList.add('playing');
                 previewBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Preview<div class="preview-indicator"></div>';
@@ -1038,11 +995,11 @@
         }
     }
 
-    // Stop any playing previews when voice or music selection changes
+    
     voiceSelector.addEventListener('change', stopVoicePreview);
     musicSelector.addEventListener('change', stopMusicPreview);
 
-    // Make stop functions available globally for cleanup
+    
     window.stopVoicePreview = stopVoicePreview;
     window.stopMusicPreview = stopMusicPreview;
 

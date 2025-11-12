@@ -19,7 +19,7 @@ body {
     background-color: var(--white);
 }
 
-/* Custom Scrollbar */
+
 body::-webkit-scrollbar,
 html::-webkit-scrollbar,
 *::-webkit-scrollbar {
@@ -47,7 +47,7 @@ html::-webkit-scrollbar-thumb:hover,
     background: #972542 !important;
 }
 
-/* Firefox */
+
 html {
     scrollbar-width: thin !important;
     scrollbar-color: #801B32 #f8f9fa !important;
@@ -166,7 +166,7 @@ html {
     display: none;
 }
 
-/* Mobile Navigation Styles */
+
 body.menu-open {
     overflow: hidden;
 }
@@ -396,7 +396,7 @@ body.menu-open {
     --card-index: 0;
 }
 
-/* Ensure 2x2 grid layout at tablet/desktop sizes */
+
 @media (min-width: 768px) {
     .row {
         max-width: 1000px;

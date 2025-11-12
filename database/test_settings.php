@@ -1,18 +1,15 @@
 <?php
-/**
- * Test Script for Settings Dashboard
- * This script tests if settings can be loaded and saved correctly
- */
 
-// Start session and set test user
+
+
 session_start();
 
-// For testing, we'll use user_id = 1 (make sure you have a user with ID 1)
+
 $_SESSION['user_id'] = 1;
 
 echo "=== Settings Dashboard Test ===\n\n";
 
-// Test 1: Load settings
+
 echo "Test 1: Loading settings...\n";
 echo str_repeat("-", 80) . "\n";
 
@@ -50,7 +47,7 @@ if ($httpCode == 200) {
 
 echo "\n" . str_repeat("=", 80) . "\n\n";
 
-// Test 2: Save settings
+
 echo "Test 2: Saving test settings...\n";
 echo str_repeat("-", 80) . "\n";
 
@@ -90,7 +87,7 @@ if ($httpCode == 200) {
 
 echo "\n" . str_repeat("=", 80) . "\n\n";
 
-// Test 3: Verify saved settings were persisted
+
 echo "Test 3: Verifying saved settings were persisted...\n";
 echo str_repeat("-", 80) . "\n";
 
@@ -109,7 +106,7 @@ if ($httpCode == 200) {
             $expected = $value;
             $actual = $data['settings'][$key];
 
-            // Convert numeric values for comparison
+            
             if ($key === 'narration_volume' || $key === 'music_volume') {
                 $expected = floatval($expected);
                 $actual = floatval($actual);

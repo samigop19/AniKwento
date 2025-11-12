@@ -1,10 +1,10 @@
 <?php
-// Load user information from session
+
 require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/db_connection.php';
 
-// Load teacher profile for the current logged-in user
+
 $sql = "SELECT * FROM teacher_profiles WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -13,10 +13,10 @@ $result = $stmt->get_result();
 $teacher = $result ? $result->fetch_assoc() : null;
 $stmt->close();
 
-// Check if profile is new/empty (for first-time users)
+
 $is_new_profile = false;
 if (!$teacher) {
-    // This shouldn't happen if verification created the profile, but handle it just in case
+    
     $teacher = [
         'id' => null,
         'user_id' => $user_id,
@@ -34,16 +34,16 @@ if (!$teacher) {
     ];
     $is_new_profile = true;
 } else {
-    // Check if profile has been filled out (check if full_name is empty)
+    
     $is_new_profile = empty(trim($teacher['full_name']));
 }
 
-// helper
+
 function safe($value) {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
 
-// Ensure certifications and skills are arrays for rendering
+
 $certs_raw = $teacher['certifications'] ?? '[]';
 $certs = json_decode($certs_raw, true);
 if (!is_array($certs)) $certs = array_filter(array_map('trim', explode(',', $certs_raw)));
@@ -66,7 +66,7 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
     <link rel="manifest" href="../../../public/site.webmanifest">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../public/files/css/TeacherProfilesample.css?v=2.2">
+    <link rel="stylesheet" href="../../../public/files/css/TeacherProfilesample.css?v=2.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>

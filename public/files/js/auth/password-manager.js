@@ -14,48 +14,48 @@ document.addEventListener('DOMContentLoaded', function() {
     let userEmail = '';
     let passwordChangeSuccessful = false;
 
-    // Email validation function (matches login/register)
+    
     function validateEmailFormat(email) {
-        // Pattern 1: 7-digit student ID (will be converted to email)
+        
         const studentIdPattern = /^\d{7}$/;
-        // Pattern 2: 7-digit student ID with @ub.edu.ph
+        
         const digitEmailPattern = /^\d{7}@ub\.edu\.ph$/;
-        // Pattern 3: firstname.lastname@ub.edu.ph
+        
         const nameEmailPattern = /^[a-zA-Z]+\.[a-zA-Z]+@ub\.edu\.ph$/;
-        // Pattern 4: A-#### format (A-1234@ub.edu.ph)
+        
         const aIdPattern = /^A-\d{4}@ub\.edu\.ph$/;
 
         return studentIdPattern.test(email) || digitEmailPattern.test(email) || nameEmailPattern.test(email) || aIdPattern.test(email);
     }
 
-    // Function to convert input to full email if needed
+    
     function convertToEmail(input) {
-        // If it's just 7 digits, append @ub.edu.ph
+        
         if (/^\d{7}$/.test(input)) {
             return input + '@ub.edu.ph';
         }
-        // Otherwise, return as-is (already a full email)
+        
         return input;
     }
 
-    // Send verification code
+    
     sendCodeBtn.addEventListener('click', function() {
         const emailInput = ubEmail.value.trim();
 
-        // Validation
+        
         if (!validateEmailFormat(emailInput)) {
             showAlert('Please enter a valid format: 7-digit ID, firstname.lastname@ub.edu.ph, or A-1234@ub.edu.ph', 'danger');
             return;
         }
 
-        // Convert to full email if needed
+        
         const email = convertToEmail(emailInput);
 
-        // Loading state
+        
         this.disabled = true;
         this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
 
-        // Send to backend
+        
         const formData = new FormData();
         formData.append('action', 'send_code');
         formData.append('email', email);
@@ -86,21 +86,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Verify code
+    
     verifyCodeBtn.addEventListener('click', function() {
         const code = verificationInput.value.trim();
 
-        // Validation
+        
         if (code.length !== 6 || !/^\d{6}$/.test(code)) {
             showAlert('Please enter a valid 6-digit code', 'danger');
             return;
         }
 
-        // Loading state
+        
         this.disabled = true;
         this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
 
-        // Verify with backend
+        
         const formData = new FormData();
         formData.append('action', 'verify_code');
         formData.append('email', userEmail);
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Resend code
+    
     resendCodeBtn.addEventListener('click', function() {
         this.disabled = true;
         this.textContent = 'Sending...';
@@ -161,13 +161,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Change password
+    
     changePasswordForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const newPass = document.getElementById('newPassword').value;
         const confirmPass = document.getElementById('confirmPassword').value;
 
-        // Validation
+        
         if (newPass.length < 6) {
             showAlert('Password must be at least 6 characters long', 'danger');
             return;
@@ -178,13 +178,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Loading state
+        
         const submitBtn = this.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Changing Password...';
 
-        // Change password with backend
+        
         const formData = new FormData();
         formData.append('action', 'change_password');
         formData.append('email', userEmail);
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 passwordChangeSuccessful = true;
                 showAlert('Password changed successfully! Redirecting to login...', 'success');
 
-                // Redirect to login page after success
+                
                 setTimeout(() => {
                     window.location.href = '/source/pages/auth/Login.php';
                 }, 2000);
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Toggle password visibility
+    
     document.querySelectorAll('.toggle-password').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
@@ -241,9 +241,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Helper function to show alerts
+    
     function showAlert(message, type = 'info') {
-        // Create alert element
+        
         const alertDiv = document.createElement('div');
         alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
         alertDiv.style.cssText = `
@@ -259,17 +259,17 @@ document.addEventListener('DOMContentLoaded', function() {
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         `;
 
-        // Add to body
+        
         document.body.appendChild(alertDiv);
 
-        // Auto remove after 4 seconds
+        
         setTimeout(() => {
             alertDiv.classList.remove('show');
             setTimeout(() => alertDiv.remove(), 150);
         }, 4000);
     }
 
-    // Helper function to reset password modal
+    
     function resetPasswordModal() {
         step1.style.display = 'block';
         step2.style.display = 'none';
@@ -285,12 +285,12 @@ document.addEventListener('DOMContentLoaded', function() {
         passwordChangeSuccessful = false;
     }
 
-    // Reset modal when closed
+    
     const accountModal = document.getElementById('accountModal');
     if (accountModal) {
         accountModal.addEventListener('hidden.bs.modal', function() {
-            // Only reset if password change was not successful
-            // If successful, the redirect will happen anyway
+            
+            
             if (!passwordChangeSuccessful) {
                 resetPasswordModal();
             }

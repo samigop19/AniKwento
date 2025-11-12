@@ -1,62 +1,14 @@
 <?php
-/**
- * Get Story Detail Handler - AniKwento
- * Retrieves complete story data for playback
- *
- * GET Request Parameters:
- * - story_id (required): The ID of the story to retrieve
- *
- * Response Format:
- * {
- *   "success": true,
- *   "story": {
- *     "id": 123,
- *     "title": "Story Title",
- *     "theme": "Educational",
- *     "total_scenes": 10,
- *     "thumbnail_url": "https://...",
- *     "context_image_url": "https://...",
- *     "selected_voice": "Rachel",
- *     "voice_id": "21m00Tcm4TlvDq8ikWAM",
- *     "avatar_url": "https://...",
- *     "music": {
- *       "name": "Playful",
- *       "file": "playful.mp3",
- *       "volume": 0.5
- *     },
- *     "gamification_enabled": true,
- *     "question_timing": "during",
- *     "scenes": [
- *       {
- *         "number": 1,
- *         "narration": "Full text...",
- *         "narration_lines": ["Line 1", "Line 2"],
- *         "characters": ["Alice", "Bob"],
- *         "visual_description": "...",
- *         "image_url": "https://...",
- *         "audio_urls": ["https://r2.../audio1.mp3", "https://r2.../audio2.mp3"],
- *         "gamification": {
- *           "has_question": true,
- *           "question": "What color?",
- *           "choices": ["Red", "Blue"],
- *           "correct_answer": "Red",
- *           "audio_url": "https://r2.../question.mp3"
- *         }
- *       }
- *     ],
- *     "after_story_questions": [...]
- *   }
- * }
- */
+
 
 header('Content-Type: application/json');
 
-// Start session to get user_id
+
 session_start();
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/db_connection.php';
 
-// Check if user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     echo json_encode([
         'success' => false,
@@ -67,7 +19,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 
-// Get story_id parameter
+
 $storyId = $_GET['story_id'] ?? null;
 
 if (!$storyId) {
@@ -79,9 +31,9 @@ if (!$storyId) {
 }
 
 try {
-    // ============================================
-    // 1. Get story metadata with avatar from custom_voices
-    // ============================================
+    
+    
+    
     $storyQuery = "
         SELECT
             s.*,
@@ -107,9 +59,9 @@ try {
     $storyRow = $result->fetch_assoc();
     $stmt->close();
 
-    // ============================================
-    // 2. Get all scenes
-    // ============================================
+    
+    
+    
     $scenesQuery = "
         SELECT
             ss.*
@@ -128,9 +80,9 @@ try {
         $sceneId = $sceneRow['id'];
         $sceneNumber = $sceneRow['scene_number'];
 
-        // ============================================
-        // 3. Get audio files for this scene
-        // ============================================
+        
+        
+        
         $audioQuery = "
             SELECT
                 line_number,
@@ -154,7 +106,7 @@ try {
         while ($audioRow = $audioResult->fetch_assoc()) {
             $audioUrls[] = $audioRow['audio_url'];
 
-            // Decode viseme data if available
+            
             if ($audioRow['viseme_data']) {
                 $visemeDataArray[] = json_decode($audioRow['viseme_data'], true);
             } else {
@@ -163,9 +115,9 @@ try {
         }
         $audioStmt->close();
 
-        // ============================================
-        // 4. Get gamification question for this scene (if any)
-        // ============================================
+        
+        
+        
         $gamificationQuery = "
             SELECT
                 question,
@@ -188,7 +140,7 @@ try {
                 'hasQuestion' => true,
                 'question' => $gamRow['question'],
                 'choices' => json_decode($gamRow['choices'], true),
-                // Parse correctAnswer JSON back to object
+                
                 'correctAnswer' => json_decode($gamRow['correct_answer'], true)
             ];
         } else {
@@ -196,7 +148,7 @@ try {
         }
         $gamStmt->close();
 
-        // Build scene object
+        
         $scenes[] = [
             'number' => intval($sceneNumber),
             'narration' => $sceneRow['narration'],
@@ -213,9 +165,9 @@ try {
 
     $stmt->close();
 
-    // ============================================
-    // 5. Get after-story questions
-    // ============================================
+    
+    
+    
     $afterQuestionsQuery = "
         SELECT
             question,
@@ -236,15 +188,15 @@ try {
         $afterStoryQuestions[] = [
             'question' => $afterRow['question'],
             'choices' => json_decode($afterRow['choices'], true),
-            // Parse correctAnswer JSON back to object
+            
             'correctAnswer' => json_decode($afterRow['correct_answer'], true)
         ];
     }
     $stmt->close();
 
-    // ============================================
-    // 6. Build response
-    // ============================================
+    
+    
+    
     $story = [
         'id' => intval($storyRow['id']),
         'title' => $storyRow['title'],
@@ -260,8 +212,8 @@ try {
             'enabled' => !empty($storyRow['music_file']),
             'name' => $storyRow['music_name'],
             'file' => $storyRow['music_file'],
-            'fileName' => $storyRow['music_file'] ?: 'adventure.mp3',  // Default to adventure.mp3 if empty
-            'volume' => floatval($storyRow['music_volume']) * 100  // Convert to 0-100 scale
+            'fileName' => $storyRow['music_file'] ?: 'adventure.mp3',  
+            'volume' => floatval($storyRow['music_volume']) * 100  
         ],
         'gamificationEnabled' => boolval($storyRow['gamification_enabled']),
         'questionTiming' => $storyRow['question_timing'],

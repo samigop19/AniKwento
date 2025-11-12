@@ -1,9 +1,5 @@
 <?php
-/**
- * Migration script to update teacher_profiles table structure
- * Adds missing columns: full_name, position, degree, institution, etc.
- * Run this on Railway to fix the profile save issue
- */
+
 
 require_once __DIR__ . '/source/config/env.php';
 
@@ -24,7 +20,7 @@ try {
     echo "Database: " . EnvLoader::get('DB_NAME', 'railway') . "\n";
     echo "Host: " . EnvLoader::get('DB_HOST', 'localhost') . "\n\n";
 
-    // Check current table structure
+    
     echo "Current teacher_profiles table structure:\n";
     echo "==========================================\n";
     $stmt = $pdo->query("DESCRIBE teacher_profiles");
@@ -42,7 +38,7 @@ try {
     }
     echo "\n";
 
-    // Define required columns
+    
     $requiredColumns = [
         'full_name' => "VARCHAR(255) DEFAULT NULL",
         'position' => "VARCHAR(255) DEFAULT NULL",
@@ -58,7 +54,7 @@ try {
         'share_token' => "VARCHAR(64) DEFAULT NULL"
     ];
 
-    // Add missing columns
+    
     $columnsAdded = 0;
     foreach ($requiredColumns as $columnName => $columnDef) {
         if (!in_array($columnName, $columnNames)) {
@@ -78,7 +74,7 @@ try {
         echo "All columns already exist. No migration needed.\n";
     }
 
-    // Show final table structure
+    
     echo "\nFinal teacher_profiles table structure:\n";
     echo "========================================\n";
     $stmt = $pdo->query("DESCRIBE teacher_profiles");

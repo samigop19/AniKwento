@@ -1,19 +1,15 @@
 <?php
-/**
- * Fal.ai Image Generation API Handler
- * Generates images using Fal.ai's nano-banana models
- * Supports: thumbnail, context character, and scene images
- */
 
-// Load environment variables
+
+
 require_once __DIR__ . '/../config/env.php';
 EnvLoader::load();
 
-// Enable error logging for debugging
+
 error_reporting(E_ALL);
-ini_set('display_errors', 0); // Don't display errors in output
+ini_set('display_errors', 0); 
 ini_set('log_errors', 1);
-ini_set('max_execution_time', 150); // Increase PHP execution time to 150 seconds
+ini_set('max_execution_time', 150); 
 error_log("=== Fal.ai Image Generation Handler Started ===");
 
 header('Content-Type: application/json');
@@ -21,20 +17,20 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Handle preflight requests
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
-// Only allow POST requests
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['error' => 'Method not allowed']);
     exit();
 }
 
-// Fal.ai API Configuration - Load from environment
+
 $FAL_KEY = EnvLoader::get('FAL_API_KEY');
 if (!$FAL_KEY) {
     error_log("❌ ERROR: FAL_API_KEY not set in environment");
@@ -42,9 +38,9 @@ if (!$FAL_KEY) {
     echo json_encode(['error' => 'API key not configured']);
     exit();
 }
-const FAL_API_URL = 'https://fal.run'; // Fixed: was queue.fal.run
+const FAL_API_URL = 'https://fal.run'; 
 
-// Get request data
+
 $rawInput = file_get_contents('php://input');
 error_log("Received input: " . substr($rawInput, 0, 200));
 
@@ -57,7 +53,7 @@ if (!$input) {
     exit();
 }
 
-// Validate required fields
+
 if (!isset($input['prompt']) || !isset($input['type'])) {
     error_log("ERROR: Missing required fields");
     http_response_code(400);
@@ -66,31 +62,31 @@ if (!isset($input['prompt']) || !isset($input['type'])) {
 }
 
 $prompt = trim($input['prompt']);
-$type = $input['type']; // 'thumbnail', 'context', 'thumbnail_with_context', or 'scene'
+$type = $input['type']; 
 error_log("Processing request - Type: $type, Prompt: " . substr($prompt, 0, 100));
 
-// Determine which model to use
+
 $model = '';
 $requestData = [];
 
 switch ($type) {
     case 'thumbnail':
     case 'context':
-        // Use nano-banana for thumbnail and context character images
+        
         $model = 'fal-ai/nano-banana';
-        // Send parameters at root level (not wrapped in "input")
+        
         $requestData = [
             'prompt' => $prompt,
             'num_images' => 1,
             'aspect_ratio' => '16:9',
             'output_format' => 'png',
-            'num_inference_steps' => 100,  // Increased to 100 for higher quality thumbnails (90-120 range)
+            'num_inference_steps' => 100,  
             'enable_safety_checker' => false
         ];
         break;
 
     case 'thumbnail_with_context':
-        // Use nano-banana/edit for thumbnail with character reference
+        
         $model = 'fal-ai/nano-banana/edit';
 
         if (!isset($input['reference_image'])) {
@@ -99,20 +95,20 @@ switch ($type) {
             exit();
         }
 
-        // Send parameters at root level (not wrapped in "input")
+        
         $requestData = [
             'prompt' => $prompt,
-            'image_urls' => [$input['reference_image']],  // Must be an array
+            'image_urls' => [$input['reference_image']],  
             'num_images' => 1,
             'aspect_ratio' => '16:9',
             'output_format' => 'png',
-            'num_inference_steps' => 100,  // Increased to 100 for higher quality thumbnails with context (90-120 range)
+            'num_inference_steps' => 100,  
             'enable_safety_checker' => false
         ];
         break;
 
     case 'scene':
-        // Use nano-banana/edit for scene images with character reference
+        
         $model = 'fal-ai/nano-banana/edit';
 
         if (!isset($input['reference_image'])) {
@@ -121,14 +117,14 @@ switch ($type) {
             exit();
         }
 
-        // Send parameters at root level (not wrapped in "input")
+        
         $requestData = [
             'prompt' => $prompt,
-            'image_urls' => [$input['reference_image']],  // Must be an array
+            'image_urls' => [$input['reference_image']],  
             'num_images' => 1,
             'aspect_ratio' => '16:9',
             'output_format' => 'png',
-            'num_inference_steps' => 100,  // Increased to 100 for higher quality scene images (90-120 range)
+            'num_inference_steps' => 100,  
             'enable_safety_checker' => false
         ];
         break;
@@ -139,7 +135,7 @@ switch ($type) {
         exit();
 }
 
-// Submit job to Fal.ai queue
+
 $submitUrl = FAL_API_URL . '/' . $model;
 error_log("Submitting to URL: $submitUrl");
 error_log("Request data: " . json_encode($requestData));
@@ -153,8 +149,8 @@ curl_setopt_array($ch, [
         'Content-Type: application/json'
     ],
     CURLOPT_POSTFIELDS => json_encode($requestData),
-    CURLOPT_TIMEOUT => 120,  // Timeout for fal.ai API response
-    CURLOPT_CONNECTTIMEOUT => 30,  // Connection timeout
+    CURLOPT_TIMEOUT => 120,  
+    CURLOPT_CONNECTTIMEOUT => 30,  
     CURLOPT_SSL_VERIFYPEER => true
 ]);
 
@@ -177,11 +173,11 @@ if ($httpCode !== 200 && $httpCode !== 201) {
     error_log("ERROR: Fal.ai API returned HTTP $httpCode");
     error_log("Response: $response");
 
-    // Try to parse the error response
+    
     $errorDetails = 'Unknown error';
     $parsedError = json_decode($response, true);
     if ($parsedError && isset($parsedError['detail'])) {
-        // If detail is an array or object, convert to JSON string for proper display
+        
         $errorDetails = is_array($parsedError['detail']) || is_object($parsedError['detail'])
             ? json_encode($parsedError['detail'])
             : $parsedError['detail'];
@@ -208,7 +204,7 @@ if ($httpCode !== 200 && $httpCode !== 201) {
     exit();
 }
 
-// Parse the response
+
 $result = json_decode($response, true);
 
 if (json_last_error() !== JSON_ERROR_NONE) {
@@ -224,16 +220,16 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
 error_log("API Response: " . json_encode($result));
 
-// Extract image URL from result - handle both direct and wrapped formats
+
 $images = null;
 $description = null;
 
-// Check if response is wrapped in "data" (SDK format)
+
 if (isset($result['data']) && isset($result['data']['images'])) {
     $images = $result['data']['images'];
     $description = $result['data']['description'] ?? null;
 }
-// Check direct format
+
 elseif (isset($result['images'])) {
     $images = $result['images'];
     $description = $result['description'] ?? null;
@@ -255,8 +251,8 @@ if ($images && count($images) > 0) {
     }
 }
 
-// If we reach here, no valid images were found
-// Check if there's an error message from fal.ai
+
+
 $errorMsg = 'No images in result';
 
 if (isset($result['error'])) {

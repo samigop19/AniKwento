@@ -1,9 +1,7 @@
 <?php
-/**
- * Verify Railway Database Schema
- */
 
-// Use Railway database connection
+
+
 $host = getenv('MYSQL_HOST') ?: getenv('DB_HOST');
 $port = getenv('MYSQL_PORT') ?: '3306';
 $dbname = getenv('MYSQL_DATABASE') ?: getenv('DB_NAME');
@@ -31,7 +29,7 @@ try {
     echo "Host: $host:$port\n";
     echo "Database: $dbname\n\n";
 
-    // Get all tables
+    
     echo "Tables in database:\n";
     echo "==================\n";
     $stmt = $pdo->query("SHOW TABLES");
@@ -40,7 +38,7 @@ try {
     foreach ($tables as $table) {
         echo "  ✓ $table\n";
 
-        // Get column count
+        
         $stmt = $pdo->query("SELECT COUNT(*) as count FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '$dbname' AND TABLE_NAME = '$table'");
         $colCount = $stmt->fetch()['count'];
         echo "     ($colCount columns)\n";
@@ -63,7 +61,7 @@ try {
         if (in_array($expectedTable, $tables)) {
             echo "✓ $expectedTable - EXISTS\n";
 
-            // Show a few columns
+            
             $stmt = $pdo->query("SHOW COLUMNS FROM `$expectedTable`");
             $columns = $stmt->fetchAll();
             echo "  Columns:\n";
@@ -79,7 +77,7 @@ try {
         }
     }
 
-    // Check if teacher_profile (without s) exists
+    
     if (in_array('teacher_profile', $tables)) {
         echo "⚠️  WARNING: 'teacher_profile' (singular) still exists - should be deleted!\n";
     } else {

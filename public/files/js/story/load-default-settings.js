@@ -1,12 +1,9 @@
-/**
- * Load Default Settings for Story Dashboard
- * This script loads user's default settings and applies them to the story creation modal
- */
+
 
 (function() {
     'use strict';
 
-    // Global storage for user settings
+    
     window.userSettings = {
         voice_mode: 'Rachel',
         custom_voice_id: null,
@@ -19,12 +16,10 @@
         question_types: []
     };
 
-    // Global storage for custom voices
+    
     window.customVoices = [];
 
-    /**
-     * Load custom voices from server
-     */
+    
     async function loadCustomVoices() {
         try {
             console.log('📥 Loading custom voices...');
@@ -46,21 +41,19 @@
         }
     }
 
-    /**
-     * Load user settings from server
-     */
+    
     async function loadUserSettings() {
         try {
             console.log('📥 Loading user default settings...');
 
-            // Load custom voices first
+            
             await loadCustomVoices();
 
             const response = await fetch('/source/handlers/get_settings.php');
             const data = await response.json();
 
             if (data.success && data.settings) {
-                // Store settings globally
+                
                 window.userSettings = {
                     voice_mode: data.settings.voice_mode || 'Rachel',
                     custom_voice_id: data.settings.custom_voice_id,
@@ -75,7 +68,7 @@
 
                 console.log('✅ User settings loaded:', window.userSettings);
 
-                // Apply settings to story creation modal
+                
                 applySettingsToModal();
 
                 return true;
@@ -91,9 +84,7 @@
         }
     }
 
-    /**
-     * Parse question types from JSON string or array
-     */
+    
     function parseQuestionTypes(questionTypes) {
         if (!questionTypes) return [];
 
@@ -109,41 +100,37 @@
         return Array.isArray(questionTypes) ? questionTypes : [];
     }
 
-    /**
-     * Apply loaded settings to story creation modal
-     */
+    
     function applySettingsToModal() {
         console.log('🎨 Applying default settings to story creation modal...');
 
-        // Apply voice selection
+        
         applyVoiceSettings();
 
-        // Apply question settings
+        
         applyQuestionSettings();
 
-        // Note: Music settings are not currently in the story modal,
-        // but we keep them in userSettings for future use
+        
+        
 
         console.log('✅ Default settings applied to modal');
     }
 
-    /**
-     * Ensure avatar URL has lip sync support morphTargets
-     */
+    
     function ensureLipSyncSupport(avatarUrl) {
         if (!avatarUrl) return avatarUrl;
 
-        // Check if it's a ReadyPlayerMe URL
+        
         if (!avatarUrl.includes('readyplayer.me')) {
             return avatarUrl;
         }
 
-        // Check if morphTargets parameter already exists
+        
         if (avatarUrl.includes('morphTargets')) {
             return avatarUrl;
         }
 
-        // Add morphTargets parameter for lip sync support
+        
         const separator = avatarUrl.includes('?') ? '&' : '?';
         const enhancedUrl = avatarUrl + separator + 'morphTargets=ARKit,Oculus Visemes';
 
@@ -151,9 +138,7 @@
         return enhancedUrl;
     }
 
-    /**
-     * Apply voice settings to modal
-     */
+    
     function applyVoiceSettings() {
         const voiceSelect = document.getElementById('voiceOption');
         if (!voiceSelect) {
@@ -161,11 +146,11 @@
             return;
         }
 
-        // Remove any existing custom voice options first
+        
         const existingCustomOptions = voiceSelect.querySelectorAll('option[value^="custom_"]');
         existingCustomOptions.forEach(opt => opt.remove());
 
-        // Add all custom voices from the custom_voices table
+        
         if (window.customVoices && window.customVoices.length > 0) {
             window.customVoices.forEach(voice => {
                 const customOption = document.createElement('option');
@@ -173,13 +158,13 @@
                 customOption.textContent = voice.voice_name + ' - Custom Storyteller';
                 customOption.setAttribute('data-voice-id', voice.voice_id);
 
-                // Ensure avatar URL has lip sync support
+                
                 if (voice.avatar_url) {
                     const enhancedAvatarUrl = ensureLipSyncSupport(voice.avatar_url);
                     customOption.setAttribute('data-avatar-url', enhancedAvatarUrl);
                 }
 
-                // Add preview URL if available
+                
                 if (voice.preview_url) {
                     customOption.setAttribute('data-preview-url', voice.preview_url);
                 }
@@ -188,37 +173,35 @@
             });
         }
 
-        // Select the saved voice mode
+        
         const voiceValue = mapVoiceMode(window.userSettings.voice_mode);
 
-        // Check if it's a custom voice
+        
         if (voiceValue.startsWith('custom_')) {
-            // Try to select the custom voice
+            
             if (voiceSelect.querySelector(`option[value="${voiceValue}"]`)) {
                 voiceSelect.value = voiceValue;
                 console.log('✅ Custom voice applied:', voiceValue);
             } else {
-                // Custom voice not found, fallback to default
+                
                 voiceSelect.value = 'Rachel';
                 console.warn('⚠️ Custom voice not found, using default');
             }
         } else {
-            // Select default voice
+            
             if (voiceSelect.querySelector(`option[value="${voiceValue}"]`)) {
                 voiceSelect.value = voiceValue;
                 console.log('✅ Default voice applied:', voiceValue);
             }
         }
 
-        // Trigger change event to update UI
+        
         voiceSelect.dispatchEvent(new Event('change'));
     }
 
-    /**
-     * Map voice_mode to actual voice option value
-     */
+    
     function mapVoiceMode(voiceMode) {
-        // Map old voice mode values to actual voices
+        
         const voiceMap = {
             'teacher': 'Rachel',
             'ai-cheerful': 'Amara',
@@ -230,24 +213,22 @@
         return voiceMap[voiceMode] || voiceMode || 'Rachel';
     }
 
-    /**
-     * Apply question settings to modal
-     */
+    
     function applyQuestionSettings() {
-        // Apply question timing
+        
         const timingRadio = getQuestionTimingRadio(window.userSettings.question_timing);
         if (timingRadio) {
             timingRadio.checked = true;
             console.log('✅ Question timing applied:', window.userSettings.question_timing);
         }
 
-        // Apply question types
+        
         if (window.userSettings.question_types.length > 0) {
-            // Uncheck all first
+            
             const allCheckboxes = document.querySelectorAll('.question-type-checkbox');
             allCheckboxes.forEach(cb => cb.checked = false);
 
-            // Check the saved types
+            
             window.userSettings.question_types.forEach(typeValue => {
                 const checkbox = document.getElementById(typeValue);
                 if (checkbox) {
@@ -257,14 +238,12 @@
 
             console.log('✅ Question types applied:', window.userSettings.question_types);
 
-            // Update the selection counter if it exists
+            
             updateQuestionTypeCounter();
         }
     }
 
-    /**
-     * Get question timing radio button element
-     */
+    
     function getQuestionTimingRadio(timing) {
         const radioMap = {
             'none': 'noneQuestions',
@@ -277,9 +256,7 @@
         return radioId ? document.getElementById(radioId) : null;
     }
 
-    /**
-     * Update question type counter display
-     */
+    
     function updateQuestionTypeCounter() {
         const counter = document.getElementById('selectionCounter');
         if (counter) {
@@ -288,20 +265,15 @@
         }
     }
 
-    /**
-     * Initialize on DOM ready
-     */
+    
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', loadUserSettings);
     } else {
-        // DOM already loaded
+        
         loadUserSettings();
     }
 
-    /**
-     * Also reload settings when the create story modal is opened
-     * This ensures fresh settings if the user just changed them
-     */
+    
     const createStoryModal = document.getElementById('createStoryModal');
     if (createStoryModal) {
         createStoryModal.addEventListener('show.bs.modal', function() {
@@ -310,7 +282,7 @@
         });
     }
 
-    // Export for external use
+    
     window.loadUserSettings = loadUserSettings;
     window.getUserSettings = function() {
         return window.userSettings;

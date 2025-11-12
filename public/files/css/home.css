@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Adlam&family=Segoe+UI:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
 
-/* Custom Scrollbar */
+
 body::-webkit-scrollbar,
 html::-webkit-scrollbar,
 *::-webkit-scrollbar {
@@ -29,7 +29,7 @@ html::-webkit-scrollbar-thumb:hover,
     background: #972542 !important;
 }
 
-/* Firefox */
+
 html {
     scrollbar-width: thin !important;
     scrollbar-color: #801B32 #f8f9fa !important;
@@ -337,7 +337,7 @@ header {
     opacity: 1;
 }
 
-/* Section 2 Styles */
+
 .section-2 {
     padding: 80px 0;
     background-color: #fff;
@@ -1073,7 +1073,7 @@ footer {
     }
 }
 
-/* ========== HOW ANI KWENTO WORKS SECTION ========== */
+
 .section-how-it-works {
     padding: 80px 0;
     background: #801B32;
@@ -1152,7 +1152,7 @@ footer {
     object-fit: contain; 
 }
 
-/*edit*/
+
 .how-tab-body {
   max-height: 0;
   overflow: hidden;
@@ -1167,7 +1167,7 @@ footer {
   cursor: pointer;
 }
 
-/* Responsive layout for mobile */
+
 @media (max-width: 768px) {
     .how-content {
         flex-direction: column;
