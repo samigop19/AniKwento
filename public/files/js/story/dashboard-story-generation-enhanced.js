@@ -2682,7 +2682,8 @@ Please add gamification questions following the EXACT pattern specified above fo
         let actualAvatarUrl = null;
         let voiceNameForTTS = selectedVoice; // Voice identifier to send to TTS
 
-        if (selectedVoice === 'custom' && voiceSelect) {
+        // Check if this is a custom voice (starts with 'custom_')
+        if (selectedVoice && selectedVoice.startsWith && selectedVoice.startsWith('custom_') && voiceSelect) {
             // Get custom voice details from selected option's data attributes
             const selectedOption = voiceSelect.options[voiceSelect.selectedIndex];
             const customVoiceId = selectedOption?.getAttribute('data-voice-id');
@@ -2698,8 +2699,8 @@ Please add gamification questions following the EXACT pattern specified above fo
                     avatarUrl: actualAvatarUrl
                 });
             }
-        } else {
-            // Use standard voice mapping
+        } else if (selectedVoice) {
+            // Use standard voice mapping for built-in voices (Rachel, Amara, Lily)
             actualVoiceId = voiceIdMap[selectedVoice] || null;
             actualAvatarUrl = avatarUrlMap[selectedVoice] || null;
         }
