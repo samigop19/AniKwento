@@ -272,7 +272,7 @@ html {
     background-color: white;
     box-shadow: 0 4px 15px var(--shadow);
     aspect-ratio: 16/9;
-    margin-top: 100px;
+    
 }
 
 .add-new:hover {
