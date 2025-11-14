@@ -405,9 +405,9 @@
             const checkboxContainer = checkbox.closest('.custom-checkbox');
 
             if (shouldDisable) {
-                // Disable all question type checkboxes when "No Questions" or "After" is selected
+                // Disable and uncheck all question type checkboxes when "No Questions" or "After" is selected
+                checkbox.checked = false; // Clear the checkbox FIRST
                 checkbox.disabled = true;
-                checkbox.checked = false; // Clear the checkbox
                 if (checkboxContainer) {
                     checkboxContainer.classList.add('disabled');
                 }
@@ -434,6 +434,9 @@
                 }
             }
         });
+
+        // Update preview panel after clearing checkboxes
+        updatePreviewPanel();
     }
 
     /**

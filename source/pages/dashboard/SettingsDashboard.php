@@ -317,7 +317,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../../public/files/js/story/notification-system.js?v=1.1"></script>
   <script src="../../../public/files/js/common/mobiletoggle.js?v=1.1"></script>
-  <script src="../../../public/files/js/story/settings-dashboard.js?v=1.1"></script>
+  <script src="../../../public/files/js/story/settings-dashboard.js?v=1.2"></script>
 
   <script>
     // Initialize Bootstrap tooltips
