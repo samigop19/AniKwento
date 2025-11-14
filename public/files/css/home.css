@@ -334,6 +334,9 @@ header {
     mix-blend-mode: normal;
     background: transparent;
     opacity: 1;
+    /* Ensure transparency is properly rendered */
+    will-change: transform;
+    isolation: isolate;
 }
 
 /* Section 2 Styles */
