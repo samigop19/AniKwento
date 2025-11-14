@@ -332,8 +332,7 @@ header {
 
 .hero-image video {
     mix-blend-mode: normal;
-    -webkit-mask-composite: clear;
-    background-color: transparent !important;
+    background: transparent;
     opacity: 1;
 }
 
