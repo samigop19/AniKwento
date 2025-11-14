@@ -18,7 +18,13 @@
       "Bash(find:*)",
       "Bash(sort:*)",
       "Bash(test:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(node -c:*)",
+      "Bash(for file in favicon-16x16.png favicon-32x32.png apple-touch-icon.png)",
+      "Bash(do echo \"=== Processing $file ===\")",
+      "Bash(convert:*)",
+      "Bash(magick:*)",
+      "Bash(for file in android-chrome-192x192.png android-chrome-512x512.png)"
     ],
     "deny": [],
     "ask": []
