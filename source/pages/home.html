@@ -215,7 +215,7 @@
             // Load appropriate video format with cache busting
             const heroVideo = document.getElementById('hero-video');
             if (heroVideo) {
-                const version = '?v=2'; // Update this when video changes
+                const version = '?v=3'; // Update this when video changes
                 heroVideo.src = supportsHEVCAlpha()
                     ? '../../public/files/images/book_gif.mov' + version
                     : '../../public/files/images/book_gif.webm' + version;
