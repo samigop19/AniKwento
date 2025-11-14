@@ -407,6 +407,7 @@
             if (shouldDisable) {
                 // Disable all question type checkboxes when "No Questions" or "After" is selected
                 checkbox.disabled = true;
+                checkbox.checked = false; // Clear the checkbox
                 if (checkboxContainer) {
                     checkboxContainer.classList.add('disabled');
                 }

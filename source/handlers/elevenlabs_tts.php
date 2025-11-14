@@ -40,9 +40,7 @@ const ELEVENLABS_API_URL = 'https://api.elevenlabs.io/v1/text-to-speech/';
 const VOICE_IDS = array(
     'Rachel' => '21m00Tcm4TlvDq8ikWAM',  // Rachel - calm and gentle
     'Amara' => 'GEcKlrQ1MWkJKoc7UTJd',   // Amara - warm and engaging narrator
-    'Lily' => 'qBDvhofpxp92JgXJxDjB',    // Lily - friendly and expressive voice
-    'Rod' => 'yXCvTL13fpQ4Uuqriplz',     // Rod - confident and dynamic narrator
-    'Aaron' => 'BVirrGoC94ipnqfb5ewn'    // Aaron - clear and professional voice
+    'Lily' => 'qBDvhofpxp92JgXJxDjB'     // Lily - friendly and expressive voice
 );
 
 // Log request for debugging
@@ -124,7 +122,7 @@ if (isset(VOICE_IDS[$voiceName])) {
     } else {
         error_log("❌ ERROR: Invalid voice name or ID: " . $voiceName);
         http_response_code(400);
-        echo json_encode(['error' => 'Invalid voice name or ID. Use: Rachel, Amara, Lily, Rod, Aaron, or a valid ElevenLabs voice ID']);
+        echo json_encode(['error' => 'Invalid voice name or ID. Use: Rachel, Amara, Lily, or a valid ElevenLabs voice ID']);
         exit();
     }
 }
