@@ -288,7 +288,7 @@ function getCustomInputs() {
 
 // API Configuration
 // OpenRouter API key is now handled securely on the backend
-let CURRENT_MODEL = 'openai/gpt-4.1-mini';
+let CURRENT_MODEL = 'openai/gpt-4o';
 
 // Global variables
 let currentStory = {};

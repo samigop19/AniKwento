@@ -64,7 +64,7 @@ if (!isset($data['prompt'])) {
 
 // Get parameters from request with defaults
 $prompt = $data['prompt'];
-$model = $data['model'] ?? 'google/gemini-2.0-flash-exp:free';
+$model = $data['model'] ?? 'openai/gpt-4o';
 $maxTokens = $data['max_tokens'] ?? 4000;
 $temperature = $data['temperature'] ?? 0.7;
 
