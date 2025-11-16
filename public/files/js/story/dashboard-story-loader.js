@@ -79,9 +79,9 @@ function showLoadingState(container) {
     const cards = container.querySelectorAll('.story-card:not([data-sample])');
     cards.forEach(card => card.remove());
 
-    // Add loading indicator before add button
+    // Add loading indicator after add button
     if (addNewBtn) {
-        addNewBtn.insertAdjacentHTML('beforebegin', loadingHTML);
+        addNewBtn.insertAdjacentHTML('afterend', loadingHTML);
     } else {
         container.insertAdjacentHTML('beforeend', loadingHTML);
     }
