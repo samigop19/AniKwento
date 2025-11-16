@@ -36,10 +36,12 @@ $skills = is_array($skills) ? $skills : explode(',', $teacher['skills']);
   <meta charset="UTF-8" />
   <title><?= safe($teacher['full_name']) ?> — Teacher Profile</title>
 
-  <link rel="icon" type="image/x-icon" href="/public/files/images/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/public/files/images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/public/files/images/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/public/files/images/apple-touch-icon.png">
+  <link rel="icon" type="image/x-icon" href="/public/files/images/AK_tab_logo.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/files/images/AK_tab_logo-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/files/images/AK_tab_logo-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/files/images/AK_tab_logo-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/public/files/images/AK_tab_logo-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/public/files/images/AK_tab_logo-512x512.png">
   <link rel="manifest" href="/public/site.webmanifest">
 
   <!-- Main styles -->

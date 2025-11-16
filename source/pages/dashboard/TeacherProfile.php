@@ -59,14 +59,16 @@ if (!is_array($skills)) $skills = array_filter(array_map('trim', explode(',', $s
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Teacher Profile - AniKwento</title>
 
-    <link rel="icon" type="image/x-icon" href="../../../public/files/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../../public/files/images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../../public/files/images/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../../../public/files/images/apple-touch-icon.png">
+    <link rel="icon" type="image/x-icon" href="../../../public/files/images/AK_tab_logo.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../public/files/images/AK_tab_logo-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../public/files/images/AK_tab_logo-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../public/files/images/AK_tab_logo-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../../../public/files/images/AK_tab_logo-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="../../../public/files/images/AK_tab_logo-512x512.png">
     <link rel="manifest" href="../../../public/site.webmanifest">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../public/files/css/TeacherProfilesample.css?v=2.2">
+    <link rel="stylesheet" href="../../../public/files/css/TeacherProfilesample.css?v=2.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
