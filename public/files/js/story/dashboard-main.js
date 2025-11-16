@@ -94,7 +94,7 @@ Session: ${Date.now()}`;
             },
             body: JSON.stringify({
                 prompt: promptForAI,
-                model: 'openai/gpt-4o',
+                model: 'openai/gpt-4o-mini',
                 max_tokens: 200,
                 temperature: 0.9
             })
