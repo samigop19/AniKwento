@@ -554,7 +554,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
     <script src="../../../public/files/js/story/tts-integration.js?v=1.2"></script>
     <script src="../../../public/files/js/story/tts-story-generator.js?v=1.2"></script>
     <script src="../../../public/files/js/story/voice-preview.js?v=1.2"></script>
-    <script src="../../../public/files/js/story/dashboard-story-generation-enhanced.js?v=1.2"></script>
+    <script src="../../../public/files/js/story/dashboard-story-generation-enhanced.js?v=1.3"></script>
 
     <script src="../../../public/files/js/story/dashboard-story-generator-EXACT.js?v=1.2"></script>
 
