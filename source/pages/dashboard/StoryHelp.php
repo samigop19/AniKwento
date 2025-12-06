@@ -400,9 +400,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                                                 </li>
                                             </ol>
                                         </div>
-                                        <div class="alert alert-info mt-2 mb-0">
-                                            <i class="fas fa-info-circle me-2"></i><strong>Note:</strong> The free plan gives you 10,000 characters per month - enough for several stories!
-                                        </div>
                                     </div>
 
                                     <div class="mb-4">
@@ -471,7 +468,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                                         </div>
                                     </div>
 
-                                    <div class="alert alert-warning">
+                                    <div class="alert alert-warning mb-0">
                                         <h6><i class="fas fa-exclamation-triangle me-2"></i>Important Reminders:</h6>
                                         <ul class="small mb-0">
                                             <li>Keep your ElevenLabs Voice ID safe - you'll need it for each custom voice</li>
@@ -479,10 +476,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                                             <li>You can create multiple custom voices for different storytelling styles</li>
                                             <li>Test your custom voice using the "Preview Voice" button before creating a story</li>
                                         </ul>
-                                    </div>
-
-                                    <div class="alert alert-success mb-0">
-                                        <i class="fas fa-star me-2"></i><strong>Pro Tip:</strong> Use your own voice to create a personal connection with your students! They'll love hearing their teacher's voice telling stories!
                                     </div>
                                 </div>
                             </div>
