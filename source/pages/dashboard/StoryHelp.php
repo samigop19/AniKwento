@@ -366,10 +366,135 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
-                                    <i class="fas fa-chalkboard-teacher me-2"></i> Classroom Tips
+                                    <i class="fas fa-microphone-alt me-2"></i> How to Add Custom Voice & Avatar
                                 </button>
                             </h2>
                             <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#guideAccordion">
+                                <div class="accordion-body">
+                                    <p class="mb-4">Want to use your own voice or create a custom storyteller? Follow these simple steps!</p>
+
+                                    <div class="mb-4">
+                                        <h6 class="text-primary"><i class="fas fa-microphone me-2"></i>Part 1: Get Your ElevenLabs Voice ID</h6>
+                                        <div class="bg-light p-3 rounded">
+                                            <ol class="mb-0 small">
+                                                <li class="mb-2">
+                                                    <strong>Visit ElevenLabs</strong>
+                                                    <br>Go to <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a> and create a free account
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Choose "Voice Library"</strong>
+                                                    <br>Click on the "Voice Library" tab at the top menu
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Pick a Voice or Create Your Own</strong>
+                                                    <br><strong>Option A:</strong> Browse pre-made voices and click "Add to My Voices"
+                                                    <br><strong>Option B:</strong> Click "Create Voice" to clone your own voice by recording samples
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Go to "My Voices"</strong>
+                                                    <br>Click the "My Voices" tab to see all your saved voices
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Copy the Voice ID</strong>
+                                                    <br>Click on your chosen voice, then click the ID icon to copy the Voice ID (it looks like: 21m00Tcm4TlvDq8ikWAM)
+                                                </li>
+                                            </ol>
+                                        </div>
+                                        <div class="alert alert-info mt-2 mb-0">
+                                            <i class="fas fa-info-circle me-2"></i><strong>Note:</strong> The free plan gives you 10,000 characters per month - enough for several stories!
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <h6 class="text-primary"><i class="fas fa-user me-2"></i>Part 2: Create Your ReadyPlayerMe Avatar</h6>
+                                        <div class="bg-light p-3 rounded">
+                                            <ol class="mb-0 small">
+                                                <li class="mb-2">
+                                                    <strong>Visit ReadyPlayerMe</strong>
+                                                    <br>Go to <a href="https://readyplayer.me/avatar" target="_blank">readyplayer.me/avatar</a>
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Start Creating</strong>
+                                                    <br>Click "Create Avatar" - no account needed!
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Choose Your Style</strong>
+                                                    <br>Select "Realistic" or "Stylized" avatar style
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Customize Your Avatar</strong>
+                                                    <br>You can:
+                                                    <ul class="mt-1">
+                                                        <li>Take a selfie to auto-generate a look-alike avatar</li>
+                                                        <li>Manually choose face, hair, skin tone, outfit, and accessories</li>
+                                                    </ul>
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Get the Avatar Link</strong>
+                                                    <br>Once finished, click "Next" and then click the <i class="fas fa-copy"></i> copy icon to copy the avatar URL
+                                                    <br><small class="text-muted">The URL looks like: https://models.readyplayer.me/64f1234abc...</small>
+                                                </li>
+                                            </ol>
+                                        </div>
+                                        <div class="alert alert-success mt-2 mb-0">
+                                            <i class="fas fa-check-circle me-2"></i><strong>Tip:</strong> Make your avatar look friendly and teacher-like so kids feel comfortable!
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <h6 class="text-primary"><i class="fas fa-plus-circle me-2"></i>Part 3: Add to AniKwento</h6>
+                                        <div class="bg-light p-3 rounded">
+                                            <ol class="mb-0 small">
+                                                <li class="mb-2">
+                                                    <strong>Go to Settings</strong>
+                                                    <br>Click "Settings" from the left menu
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Open Voice Selector</strong>
+                                                    <br>In the "Storyteller Voice" section, click the dropdown and select "+ Add Voice"
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Fill in the Form</strong>
+                                                    <br><strong>Voice Display Name:</strong> Give it a friendly name (e.g., "Miss Sarah", "Teacher John")
+                                                    <br><strong>ElevenLabs Voice ID:</strong> Paste the Voice ID you copied from Part 1
+                                                    <br><strong>ReadyPlayerMe Avatar URL:</strong> Paste the avatar link you copied from Part 2
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Save Your Custom Voice</strong>
+                                                    <br>Click "Save Voice" button
+                                                </li>
+                                                <li class="mb-0">
+                                                    <strong>Start Using It!</strong>
+                                                    <br>Your custom voice will now appear in the voice selector when creating stories!
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-warning">
+                                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Important Reminders:</h6>
+                                        <ul class="small mb-0">
+                                            <li>Keep your ElevenLabs Voice ID safe - you'll need it for each custom voice</li>
+                                            <li>The avatar URL must start with "https://models.readyplayer.me/"</li>
+                                            <li>You can create multiple custom voices for different storytelling styles</li>
+                                            <li>Test your custom voice using the "Preview Voice" button before creating a story</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="alert alert-success mb-0">
+                                        <i class="fas fa-star me-2"></i><strong>Pro Tip:</strong> Use your own voice to create a personal connection with your students! They'll love hearing their teacher's voice telling stories!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                    <i class="fas fa-chalkboard-teacher me-2"></i> Classroom Tips
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#guideAccordion">
                                 <div class="accordion-body">
                                     <h6><i class="fas fa-lightbulb me-2 text-success"></i>Get the Best Experience:</h6>
 
