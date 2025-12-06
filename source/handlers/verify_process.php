@@ -64,9 +64,12 @@ try {
     // Get the newly created user ID
     $new_user_id = $pdo->lastInsertId();
 
-    // Automatically create a new teacher profile for this user with empty/default fields
-    $stmt = $pdo->prepare("INSERT INTO teacher_profiles (user_id, full_name, position, degree, institution, year_graduated, experience_years, experience_desc, email, certifications, skills, photo) VALUES (?, '', '', '', '', 0, 0, '', ?, '[]', '[]', '')");
-    $stmt->execute([$new_user_id, $pending_user['email']]);
+    // Combine first_name and last_name to create full_name
+    $full_name = trim($pending_user['first_name'] . ' ' . $pending_user['last_name']);
+
+    // Automatically create a new teacher profile for this user with auto-populated full_name
+    $stmt = $pdo->prepare("INSERT INTO teacher_profiles (user_id, full_name, position, degree, institution, year_graduated, experience_years, experience_desc, email, certifications, skills, photo) VALUES (?, ?, '', '', '', 0, 0, '', ?, '[]', '[]', '')");
+    $stmt->execute([$new_user_id, $full_name, $pending_user['email']]);
 
     $stmt = $pdo->prepare("DELETE FROM pending_users WHERE email = ?");
     $stmt->execute([$email]);
