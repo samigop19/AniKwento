@@ -68,8 +68,9 @@
                                             <input type="text" name="email" id="emailInput" class="form-control"
                                                 placeholder="UB Mail"
                                                 style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0; margin-left: -1.5rem; width: calc(100% + 1.5rem);"
-                                                title="Enter your 7-digit student ID, email (firstname.lastname@ub.edu.ph), or ID (A-1234@ub.edu.ph)"
+                                                title="Enter your email (firstname.lastname@ub.edu.ph) or 7-digit ID (1234567@ub.edu.ph)"
                                                 required />
+                                            <div id="emailFormat" class="form-text" style="margin-left: 0;"></div>
                                         </div>
                                         <div class="mb-3">
                                             <input type="password" name="password" id="password" class="form-control"
@@ -110,26 +111,31 @@ function validateName(name) {
 
 // Function to validate email format
 function validateEmailFormat(email) {
-    // Pattern 1: 7-digit student ID (will be converted to email)
-    const studentIdPattern = /^\d{7}$/;
-    // Pattern 2: 7-digit student ID with @ub.edu.ph
+    // Pattern 1: 7-digit student ID with @ub.edu.ph
     const digitEmailPattern = /^\d{7}@ub\.edu\.ph$/;
-    // Pattern 3: firstname.lastname@ub.edu.ph
+    // Pattern 2: firstname.lastname@ub.edu.ph
     const nameEmailPattern = /^[a-zA-Z]+\.[a-zA-Z]+@ub\.edu\.ph$/;
-    // Pattern 4: A-#### format (A-1234@ub.edu.ph)
-    const aIdPattern = /^A-\d{4}@ub\.edu\.ph$/;
 
-    return studentIdPattern.test(email) || digitEmailPattern.test(email) || nameEmailPattern.test(email) || aIdPattern.test(email);
+    return digitEmailPattern.test(email) || nameEmailPattern.test(email);
 }
 
-// Function to convert input to full email if needed
-function convertToEmail(input) {
-    // If it's just 7 digits, append @ub.edu.ph
-    if (/^\d{7}$/.test(input)) {
-        return input + '@ub.edu.ph';
+// Function to check email format with visual feedback
+function checkEmailFormat() {
+    const emailInput = document.getElementById('emailInput').value.trim();
+    const formatDiv = document.getElementById('emailFormat');
+
+    if (emailInput.length > 0) {
+        if (validateEmailFormat(emailInput)) {
+            formatDiv.innerHTML = '<span style="color: green;">✓ Valid UB email format</span>';
+            return true;
+        } else {
+            formatDiv.innerHTML = '<span style="color: red;">✗ Use firstname.lastname@ub.edu.ph or 1234567@ub.edu.ph</span>';
+            return false;
+        }
+    } else {
+        formatDiv.innerHTML = '';
+        return false;
     }
-    // Otherwise, return as-is (already a full email)
-    return input;
 }
 
 function checkPasswordMatch() {
@@ -199,6 +205,10 @@ document.getElementById('confirmPassword').addEventListener('input', function(e)
     checkPasswordMatch();
 });
 
+document.getElementById('emailInput').addEventListener('input', function(e) {
+    checkEmailFormat();
+});
+
 document.getElementById('registerForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -229,7 +239,7 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
 
     // Validate email format
     if (!validateEmailFormat(inputValue)) {
-        showMessage('Please enter a valid format: 7-digit ID, firstname.lastname@ub.edu.ph, or A-1234@ub.edu.ph', 'danger');
+        showMessage('Please enter a valid UB email: firstname.lastname@ub.edu.ph or 1234567@ub.edu.ph', 'danger');
         emailInput.focus();
         return;
     }
@@ -252,8 +262,8 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     setRegisterButtonLoading(submitButton, true);
     showMessage('<span class="loading-spinner"></span>Creating your account...', 'info', 0);
 
-    // Convert to full email if needed
-    const email = convertToEmail(inputValue);
+    // Use the email as-is (already in correct format)
+    const email = inputValue;
 
     const formData = new FormData(this);
     formData.set('email', email);
