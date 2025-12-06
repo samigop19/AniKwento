@@ -34,8 +34,10 @@ if (!$teacher) {
     ];
     $is_new_profile = true;
 } else {
-    // Check if profile has been filled out (check if full_name is empty)
-    $is_new_profile = empty(trim($teacher['full_name']));
+    // Check if profile has been filled out (check if essential fields are empty)
+    $is_new_profile = empty(trim($teacher['position'])) &&
+                      empty(trim($teacher['degree'])) &&
+                      empty(trim($teacher['institution']));
 }
 
 // helper
