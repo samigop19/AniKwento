@@ -68,7 +68,7 @@
                                             <input type="text" name="email" id="emailInput" class="form-control"
                                                 placeholder="UB Mail"
                                                 style="padding-left: 0.75rem; border: none; border-bottom: 2px solid #801B32; border-radius: 0; margin-left: -1.5rem; width: calc(100% + 1.5rem);"
-                                                title="Enter your email (firstname.lastname@ub.edu.ph) or 7-digit ID (1234567@ub.edu.ph)"
+                                                title="Enter your UB email (firstname.lastname@ub.edu.ph)"
                                                 required />
                                             <div id="emailFormat" class="form-text" style="margin-left: 0;"></div>
                                         </div>
@@ -129,7 +129,7 @@ function checkEmailFormat() {
             formatDiv.innerHTML = '<span style="color: green;">✓ Valid UB email format</span>';
             return true;
         } else {
-            formatDiv.innerHTML = '<span style="color: red;">✗ Use firstname.lastname@ub.edu.ph or 1234567@ub.edu.ph</span>';
+            formatDiv.innerHTML = '<span style="color: red;">✗ Use firstname.lastname@ub.edu.ph</span>';
             return false;
         }
     } else {
@@ -239,7 +239,7 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
 
     // Validate email format
     if (!validateEmailFormat(inputValue)) {
-        showMessage('Please enter a valid UB email: firstname.lastname@ub.edu.ph or 1234567@ub.edu.ph', 'danger');
+        showMessage('Please enter a valid UB email: firstname.lastname@ub.edu.ph', 'danger');
         emailInput.focus();
         return;
     }
