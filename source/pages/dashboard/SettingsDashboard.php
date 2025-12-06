@@ -298,11 +298,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/source/handlers/get_user_info.php';
               <label for="modalVoiceId" class="form-label">ElevenLabs Voice ID <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="modalVoiceId" placeholder="Enter voice ID from ElevenLabs" required>
               <small class="form-text text-muted">Get this from your ElevenLabs account</small>
+              <a href="https://elevenlabs.io/app/voice-library" target="_blank" rel="noopener noreferrer" class="d-block mt-1" style="font-size: 0.875rem;">
+                <i class="fas fa-external-link-alt"></i> Visit ElevenLabs Voice Library
+              </a>
             </div>
             <div class="mb-3">
               <label for="modalAvatarUrl" class="form-label">ReadyPlayerMe Avatar URL <span class="text-danger">*</span></label>
               <input type="url" class="form-control" id="modalAvatarUrl" placeholder="https://models.readyplayer.me/..." required>
               <small class="form-text text-muted">Link to your ReadyPlayerMe 3D avatar</small>
+              <a href="https://readyplayer.me/avatar" target="_blank" rel="noopener noreferrer" class="d-block mt-1" style="font-size: 0.875rem;">
+                <i class="fas fa-external-link-alt"></i> Create ReadyPlayerMe Avatar
+              </a>
             </div>
           </form>
         </div>
